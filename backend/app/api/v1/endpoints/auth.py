@@ -18,7 +18,7 @@ def login_access_token(
     """
     OAuth2 compatible token login, retrieve an access token for future requests
     """
-    user = session.exec(select(User).where(User.username == form_data.username)).first()
+    user = session.exec(select(User).where(User.username == form_data.username.strip())).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

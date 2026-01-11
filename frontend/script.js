@@ -219,8 +219,8 @@ function initAuthForm() {
         authForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
             const errorMessage = document.getElementById('errorMessage');
             const submitBtn = authForm.querySelector('button[type="submit"]');
 
@@ -260,12 +260,12 @@ function initRegisterForm() {
             e.preventDefault();
 
             const role = document.getElementById('regRole').value;
-            const username = document.getElementById('regUsername').value;
-            const firstName = document.getElementById('regPrenom').value;
-            const lastName = document.getElementById('regNom').value;
-            const phone = document.getElementById('regPhone').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
+            const username = document.getElementById('regUsername').value.trim();
+            const firstName = document.getElementById('regPrenom').value.trim();
+            const lastName = document.getElementById('regNom').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
             const confirmPassword = document.getElementById('regConfirmPassword').value;
             const errorMessage = document.getElementById('errorMessage');
             const successMessage = document.getElementById('successMessage');

@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -6,25 +6,29 @@ from sklearn.linear_model import LinearRegression
 from core.config import settings
 
 # Configure Gemini
+client = None
 if settings.GEMINI_API_KEY:
-    genai.configure(api_key=settings.GEMINI_API_KEY)
+    client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 async def chat_with_gemini(prompt: str, history: list = None):
-    if not settings.GEMINI_API_KEY:
+    if not client:
         return "L'IA est actuellement désactivée (Clé API manquante)."
     
     try:
         # gemini-2.0-flash is the current free-tier model
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        # Using the new SDK pattern
         
         # System Instruction Context
         context = "Tu es l'assistant intelligent de ManiocAgri, une plateforme agricole au Togo. Tu aides les utilisateurs (producteurs, clients, admins) sur des sujets comme le prix du manioc, les livraisons, et l'utilisation de la plateforme. Réponds de manière concise et professionnelle en français."
         
         full_prompt = f"{context}\n\nUtilisateur: {prompt}"
         
-        response = model.generate_content(full_prompt)
+        response = client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=full_prompt
+        )
         
-        if response.candidates:
+        if response.text:
             return response.text
         else:
             return "Désolé, je n'ai pas pu générer de réponse. Le contenu a peut-être été filtré."

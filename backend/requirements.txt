@@ -9,6 +9,6 @@ python-dotenv
 alembic
 pandas
 scikit-learn
-google-generativeai
+google-genai
 fastapi-mail
 jinja2
