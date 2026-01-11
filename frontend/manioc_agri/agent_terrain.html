@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent de Terrain - ManiocAgri</title>
+    <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="#">ManiocAgri - Agent de Terrain</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <h2>Saisie des Données de Terrain</h2>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Données du champ</h5>
+            </div>
+            <div class="card-body">
+                <form id="fieldForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="fieldLocation" class="form-label">Localisation du champ</label>
+                            <input type="text" class="form-control" id="fieldLocation" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="fieldSize" class="form-label">Taille du champ (hectares)</label>
+                            <input type="number" class="form-control" id="fieldSize" step="0.01" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="season" class="form-label">Saison</label>
+                            <select class="form-select" id="season" required>
+                                <option value="sèche">Saison sèche</option>
+                                <option value="pluvieuse">Saison pluvieuse</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="soilType" class="form-label">Type de sol</label>
+                            <input type="text" class="form-control" id="soilType" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="plantingDate" class="form-label">Date de plantation</label>
+                            <input type="date" class="form-control" id="plantingDate" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="expectedHarvest" class="form-label">Récolte attendue (kg)</label>
+                            <input type="number" class="form-control" id="expectedHarvest" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Historique des données</h5>
+            </div>
+            <div class="card-body">
+                <div id="fieldDataList">
+                    <!-- Liste des données saisies -->
+                </div>
+            </div>
+        </div>
+    </div>
+<footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

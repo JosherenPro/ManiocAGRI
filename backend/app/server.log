@@ -1,0 +1,710 @@
+nohup: ignoring input
+/home/eren/Downloads/projet tutoré/projet tutoré/backend/app/core/ai_service.py:1: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:     Started server process [27670]
+INFO:     Waiting for application startup.
+2026-01-10 14:29:34,003 INFO sqlalchemy.engine.Engine select pg_catalog.version()
+2026-01-10 14:29:34,003 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-10 14:29:34,724 INFO sqlalchemy.engine.Engine select current_schema()
+2026-01-10 14:29:34,725 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-10 14:29:35,282 INFO sqlalchemy.engine.Engine show standard_conforming_strings
+2026-01-10 14:29:35,283 INFO sqlalchemy.engine.Engine [raw sql] {}
+2026-01-10 14:29:35,844 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:29:35,856 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:35,856 INFO sqlalchemy.engine.Engine [generated in 0.00057s] {'table_name': 'user', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:36,417 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:36,418 INFO sqlalchemy.engine.Engine [cached since 0.5618s ago] {'table_name': 'product', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:36,697 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:36,697 INFO sqlalchemy.engine.Engine [cached since 0.8409s ago] {'table_name': 'orderitem', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:36,976 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:36,977 INFO sqlalchemy.engine.Engine [cached since 1.121s ago] {'table_name': 'order', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:37,257 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:37,258 INFO sqlalchemy.engine.Engine [cached since 1.402s ago] {'table_name': 'fielddata', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:37,540 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = %(typname_1)s AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:37,540 INFO sqlalchemy.engine.Engine [generated in 0.00015s] {'typname_1': 'userrole', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:37,957 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = %(typname_1)s AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-01-10 14:29:37,958 INFO sqlalchemy.engine.Engine [cached since 0.4178s ago] {'typname_1': 'orderstatus', 'nspname_1': 'pg_catalog'}
+2026-01-10 14:29:38,238 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:45536 - "GET /catalogue.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:45536 - "GET /script.js HTTP/1.1" 200 OK
+2026-01-10 14:30:03,938 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:30:03,947 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:30:03,947 INFO sqlalchemy.engine.Engine [generated in 0.00021s] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:45536 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:30:04,530 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:45552 - "GET /images/products/bdc10e252dce46e0ab8b1049ca8cf45e.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:34586 - "GET /images/products/10908ba97c4141899dac95946d98c2fd.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:34582 - "GET /images/products/f1924716b8d64108bab8f139679a3f2c.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:45536 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34578 - "GET /images/products/c4f6c942295943cea6062e17c240405f.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35240 - "GET /manioc_agri/admin.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35240 - "GET /style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35248 - "GET /bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35254 - "GET /script.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35254 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35256 - "GET /api/v1/orders/ HTTP/1.1" 401 Unauthorized
+2026-01-10 14:30:48,758 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:     127.0.0.1:35248 - "GET /api/v1/orders/pending HTTP/1.1" 401 Unauthorized
+2026-01-10 14:30:48,759 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:30:48,760 INFO sqlalchemy.engine.Engine [cached since 44.81s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:35266 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35240 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:30:49,323 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:35240 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35248 - "GET /images/products/f1924716b8d64108bab8f139679a3f2c.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35266 - "GET /images/products/bdc10e252dce46e0ab8b1049ca8cf45e.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35256 - "GET /images/products/c4f6c942295943cea6062e17c240405f.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35254 - "GET /images/products/10908ba97c4141899dac95946d98c2fd.jpg HTTP/1.1" 304 Not Modified
+2026-01-10 14:31:27,843 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:31:27,845 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:31:27,846 INFO sqlalchemy.engine.Engine [generated in 0.00030s] {'id_1': 2}
+2026-01-10 14:31:29,237 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:53344 - "POST /api/v1/ai/chat?prompt=hi HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:56366 - "POST /api/v1/ai/chat?prompt=Bonjour%2C%20que%20fais-tu%20%3F HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:40232 - "GET /manioc_agri/authentification.html?redirect=manioc_agri/client.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40232 - "GET /script.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53766 - "GET /manioc_agri/authentification.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53766 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53782 - "GET /script.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42458 - "POST /api/v1/ai/chat?prompt=hi HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:42458 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42468 - "GET /script.js HTTP/1.1" 304 Not Modified
+2026-01-10 14:33:55,599 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:33:55,601 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 14:33:55,601 INFO sqlalchemy.engine.Engine [generated in 0.00027s] {'username_1': 'admin'}
+2026-01-10 14:33:56,190 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:44266 - "POST /api/v1/auth/login/access-token HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:49716 - "GET /manioc_agri/admin.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:49716 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:49720 - "GET /script.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:49720 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+2026-01-10 14:34:48,776 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:34:48,777 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:34:48,777 INFO sqlalchemy.engine.Engine [cached since 284.8s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:49736 - "GET /api/v1/orders/pending HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49748 - "GET /api/v1/orders/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49764 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49716 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:34:49,343 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:49716 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60390 - "POST /api/v1/ai/chat?prompt=Bonjour%2C%20comment%20peux-tu%20m%27aider%20%3F HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:47342 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47342 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48704 - "POST /api/v1/auth/login/access-token HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:46514 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:46516 - "GET /script.js HTTP/1.1" 304 Not Modified
+2026-01-10 14:37:33,943 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:37:33,944 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 14:37:33,944 INFO sqlalchemy.engine.Engine [cached since 218.3s ago] {'username_1': 'admin'}
+2026-01-10 14:37:34,725 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:60214 - "POST /api/v1/auth/login/access-token HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:59494 - "GET /manioc_agri/admin.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59494 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+2026-01-10 14:37:47,135 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:37:47,136 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:37:47,136 INFO sqlalchemy.engine.Engine [cached since 463.2s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:59526 - "GET /api/v1/orders/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59520 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59494 - "GET /api/v1/orders/pending HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59506 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:37:47,700 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:59506 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59520 - "GET /images/products/10908ba97c4141899dac95946d98c2fd.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51892 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51892 - "GET /script.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:34986 - "POST /api/v1/ai/chat?prompt=Bonjour%2C%20que%20peux-tu%20faire%20pour%20m%27aider%20sur%20ManiocAgri%20%3F HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35316 - "GET /manioc_agri/admin.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35316 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35320 - "GET /script.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:35320 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+2026-01-10 14:41:14,728 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:41:14,728 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:41:14,728 INFO sqlalchemy.engine.Engine [cached since 670.8s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:35338 - "GET /api/v1/orders/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35322 - "GET /api/v1/orders/pending HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35344 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35316 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:41:15,291 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:35316 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36422 - "POST /api/v1/ai/chat?prompt=Bonjour%2C%20que%20peux-tu%20faire%20pour%20m%27aider%20sur%20ManiocAgri%20%3F HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52810 - "POST /api/v1/ai/chat?prompt=Test HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58572 - "GET /index.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58576 - "GET /images/champ2.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58572 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58582 - "GET /images/champ.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58572 - "GET /images/gari.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58576 - "GET /images/tapioca.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58584 - "GET /script.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58582 - "GET /images/farine_manic_s%C3%A9ch%C3%A9.jpeg HTTP/1.1" 304 Not Modified
+2026-01-10 14:44:16,275 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:16,276 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 14:44:16,276 INFO sqlalchemy.engine.Engine [cached since 620.7s ago] {'username_1': 'admin'}
+INFO:     127.0.0.1:58594 - "POST /api/v1/auth/login/access-token HTTP/1.1" 200 OK
+2026-01-10 14:44:16,852 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:44:19,177 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:19,177 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:44:19,177 INFO sqlalchemy.engine.Engine [cached since 771.3s ago] {'id_1': 2}
+INFO:     127.0.0.1:58594 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+2026-01-10 14:44:20,012 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:58594 - "GET /manioc_agri/admin.html HTTP/1.1" 304 Not Modified
+2026-01-10 14:44:20,566 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:20,567 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:44:20,567 INFO sqlalchemy.engine.Engine [cached since 772.7s ago] {'id_1': 2}
+2026-01-10 14:44:20,567 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:20,569 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:44:20,569 INFO sqlalchemy.engine.Engine [cached since 856.6s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:58604 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:44:21,130 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:44:21,130 INFO sqlalchemy.engine.Engine [generated in 0.00048s] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:44:21,131 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:33352 - "GET /images/products/10908ba97c4141899dac95946d98c2fd.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58604 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58594 - "GET /api/v1/users/ HTTP/1.1" 200 OK
+2026-01-10 14:44:21,420 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:44:21,425 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:21,425 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:44:21,425 INFO sqlalchemy.engine.Engine [cached since 773.6s ago] {'id_1': 2}
+2026-01-10 14:44:22,088 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:44:22,089 INFO sqlalchemy.engine.Engine [cached since 0.9586s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:58594 - "GET /api/v1/users/ HTTP/1.1" 200 OK
+2026-01-10 14:44:22,366 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:44:22,385 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:22,386 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:44:22,386 INFO sqlalchemy.engine.Engine [cached since 774.5s ago] {'id_1': 2}
+2026-01-10 14:44:22,387 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:22,387 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:44:22,387 INFO sqlalchemy.engine.Engine [cached since 774.5s ago] {'id_1': 2}
+2026-01-10 14:44:22,945 INFO sqlalchemy.engine.Engine SELECT "order".order_number, "order".client_name, "order".phone, "order".delivery_address, "order".status, "order".total_price, "order".created_at, "order".client_id, "order".livreur_id, "order".id 
+FROM "order" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:44:22,945 INFO sqlalchemy.engine.Engine [generated in 0.00014s] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:44:22,947 INFO sqlalchemy.engine.Engine SELECT "order".order_number, "order".client_name, "order".phone, "order".delivery_address, "order".status, "order".total_price, "order".created_at, "order".client_id, "order".livreur_id, "order".id 
+FROM "order" 
+WHERE ("order".status = %(status_1)s OR "order".status = %(status_2)s) AND "order".livreur_id IS NULL 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:44:22,947 INFO sqlalchemy.engine.Engine [generated in 0.00016s] {'status_1': 'PENDING', 'status_2': 'VALIDATED', 'param_1': 100, 'param_2': 0}
+2026-01-10 14:44:23,350 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:23,350 INFO sqlalchemy.engine.Engine [generated in 0.00014s] {'param_1': 4}
+2026-01-10 14:44:23,351 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:23,351 INFO sqlalchemy.engine.Engine [cached since 0.0005075s ago] {'param_1': 4}
+2026-01-10 14:44:23,797 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:23,797 INFO sqlalchemy.engine.Engine [cached since 0.4469s ago] {'param_1': 5}
+2026-01-10 14:44:23,798 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:23,799 INFO sqlalchemy.engine.Engine [cached since 0.4484s ago] {'param_1': 5}
+2026-01-10 14:44:24,102 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:24,102 INFO sqlalchemy.engine.Engine [cached since 0.752s ago] {'param_1': 6}
+2026-01-10 14:44:24,103 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:24,103 INFO sqlalchemy.engine.Engine [cached since 0.7525s ago] {'param_1': 6}
+2026-01-10 14:44:24,382 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:24,382 INFO sqlalchemy.engine.Engine [cached since 1.032s ago] {'param_1': 7}
+2026-01-10 14:44:24,384 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:24,384 INFO sqlalchemy.engine.Engine [cached since 1.034s ago] {'param_1': 7}
+2026-01-10 14:44:24,820 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:24,821 INFO sqlalchemy.engine.Engine [cached since 1.47s ago] {'param_1': 8}
+2026-01-10 14:44:24,822 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:24,822 INFO sqlalchemy.engine.Engine [cached since 1.472s ago] {'param_1': 8}
+2026-01-10 14:44:25,127 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:25,128 INFO sqlalchemy.engine.Engine [cached since 1.778s ago] {'param_1': 9}
+2026-01-10 14:44:25,130 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:25,130 INFO sqlalchemy.engine.Engine [cached since 1.78s ago] {'param_1': 9}
+2026-01-10 14:44:25,536 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:25,536 INFO sqlalchemy.engine.Engine [cached since 2.186s ago] {'param_1': 10}
+2026-01-10 14:44:25,537 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:25,537 INFO sqlalchemy.engine.Engine [cached since 2.187s ago] {'param_1': 10}
+2026-01-10 14:44:25,908 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:25,909 INFO sqlalchemy.engine.Engine [cached since 2.559s ago] {'param_1': 11}
+2026-01-10 14:44:25,911 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:25,911 INFO sqlalchemy.engine.Engine [cached since 2.561s ago] {'param_1': 11}
+2026-01-10 14:44:26,283 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+INFO:     127.0.0.1:33328 - "GET /api/v1/orders/pending HTTP/1.1" 200 OK
+2026-01-10 14:44:26,284 INFO sqlalchemy.engine.Engine [cached since 2.933s ago] {'param_1': 13}
+2026-01-10 14:44:26,284 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:44:26,562 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:26,563 INFO sqlalchemy.engine.Engine [cached since 3.213s ago] {'param_1': 1}
+2026-01-10 14:44:26,868 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:26,868 INFO sqlalchemy.engine.Engine [cached since 3.518s ago] {'param_1': 2}
+2026-01-10 14:44:27,149 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:27,149 INFO sqlalchemy.engine.Engine [cached since 3.799s ago] {'param_1': 12}
+2026-01-10 14:44:27,429 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:44:27,429 INFO sqlalchemy.engine.Engine [cached since 4.079s ago] {'param_1': 3}
+INFO:     127.0.0.1:33336 - "GET /api/v1/orders/ HTTP/1.1" 200 OK
+2026-01-10 14:44:27,893 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:44:41,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:44:41,113 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:44:41,113 INFO sqlalchemy.engine.Engine [cached since 793.3s ago] {'id_1': 2}
+2026-01-10 14:44:42,295 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:53070 - "POST /api/v1/ai/chat?prompt=hi HTTP/1.1" 500 Internal Server Error
+2026-01-10 14:45:16,761 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:16,762 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 14:45:16,762 INFO sqlalchemy.engine.Engine [cached since 681.2s ago] {'username_1': 'admin'}
+INFO:     127.0.0.1:59106 - "POST /api/v1/auth/login/access-token HTTP/1.1" 200 OK
+2026-01-10 14:45:17,340 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:45:17,347 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:17,347 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:45:17,347 INFO sqlalchemy.engine.Engine [cached since 829.5s ago] {'id_1': 2}
+INFO:     127.0.0.1:59106 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+2026-01-10 14:45:17,967 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:45:18,563 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:18,564 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:45:18,564 INFO sqlalchemy.engine.Engine [cached since 830.7s ago] {'id_1': 2}
+2026-01-10 14:45:18,566 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:18,566 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:45:18,566 INFO sqlalchemy.engine.Engine [cached since 914.6s ago] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:45:18,567 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:18,567 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:45:18,568 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:18,568 INFO sqlalchemy.engine.Engine [cached since 830.7s ago] {'id_1': 2}
+2026-01-10 14:45:18,569 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:45:18,569 INFO sqlalchemy.engine.Engine [cached since 830.7s ago] {'id_1': 2}
+2026-01-10 14:45:19,120 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:45:19,120 INFO sqlalchemy.engine.Engine [cached since 57.99s ago] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:45:19,125 INFO sqlalchemy.engine.Engine SELECT "order".order_number, "order".client_name, "order".phone, "order".delivery_address, "order".status, "order".total_price, "order".created_at, "order".client_id, "order".livreur_id, "order".id 
+FROM "order" 
+WHERE ("order".status = %(status_1)s OR "order".status = %(status_2)s) AND "order".livreur_id IS NULL 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:45:19,125 INFO sqlalchemy.engine.Engine [cached since 56.18s ago] {'status_1': 'PENDING', 'status_2': 'VALIDATED', 'param_1': 100, 'param_2': 0}
+2026-01-10 14:45:19,126 INFO sqlalchemy.engine.Engine SELECT "order".order_number, "order".client_name, "order".phone, "order".delivery_address, "order".status, "order".total_price, "order".created_at, "order".client_id, "order".livreur_id, "order".id 
+FROM "order" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:45:19,126 INFO sqlalchemy.engine.Engine [cached since 56.18s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:59120 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:45:19,129 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:59120 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59106 - "GET /api/v1/users/ HTTP/1.1" 200 OK
+2026-01-10 14:45:19,400 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:45:19,405 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:19,405 INFO sqlalchemy.engine.Engine [cached since 56.05s ago] {'param_1': 4}
+2026-01-10 14:45:19,406 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:19,406 INFO sqlalchemy.engine.Engine [cached since 56.06s ago] {'param_1': 4}
+2026-01-10 14:45:19,683 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:19,683 INFO sqlalchemy.engine.Engine [cached since 56.33s ago] {'param_1': 5}
+2026-01-10 14:45:19,684 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:19,684 INFO sqlalchemy.engine.Engine [cached since 56.33s ago] {'param_1': 5}
+2026-01-10 14:45:20,117 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:20,117 INFO sqlalchemy.engine.Engine [cached since 56.77s ago] {'param_1': 6}
+2026-01-10 14:45:20,118 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:20,119 INFO sqlalchemy.engine.Engine [cached since 56.77s ago] {'param_1': 6}
+2026-01-10 14:45:20,397 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:20,397 INFO sqlalchemy.engine.Engine [cached since 57.05s ago] {'param_1': 7}
+2026-01-10 14:45:20,398 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:20,398 INFO sqlalchemy.engine.Engine [cached since 57.05s ago] {'param_1': 7}
+2026-01-10 14:45:20,675 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:20,675 INFO sqlalchemy.engine.Engine [cached since 57.32s ago] {'param_1': 8}
+2026-01-10 14:45:20,675 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:20,676 INFO sqlalchemy.engine.Engine [cached since 57.33s ago] {'param_1': 8}
+2026-01-10 14:45:21,140 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,140 INFO sqlalchemy.engine.Engine [cached since 57.79s ago] {'param_1': 9}
+2026-01-10 14:45:21,141 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,141 INFO sqlalchemy.engine.Engine [cached since 57.79s ago] {'param_1': 9}
+2026-01-10 14:45:21,419 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,419 INFO sqlalchemy.engine.Engine [cached since 58.07s ago] {'param_1': 10}
+2026-01-10 14:45:21,420 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,420 INFO sqlalchemy.engine.Engine [cached since 58.07s ago] {'param_1': 10}
+2026-01-10 14:45:21,436 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:21,436 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:45:21,436 INFO sqlalchemy.engine.Engine [cached since 833.6s ago] {'id_1': 2}
+2026-01-10 14:45:21,698 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,699 INFO sqlalchemy.engine.Engine [cached since 58.35s ago] {'param_1': 11}
+2026-01-10 14:45:21,700 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,701 INFO sqlalchemy.engine.Engine [cached since 58.35s ago] {'param_1': 11}
+2026-01-10 14:45:21,979 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:21,979 INFO sqlalchemy.engine.Engine [cached since 58.63s ago] {'param_1': 13}
+INFO:     127.0.0.1:49598 - "GET /api/v1/orders/pending HTTP/1.1" 200 OK
+2026-01-10 14:45:21,981 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:45:21,992 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:45:21,992 INFO sqlalchemy.engine.Engine [cached since 60.86s ago] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:45:22,257 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:22,258 INFO sqlalchemy.engine.Engine [cached since 58.91s ago] {'param_1': 1}
+INFO:     127.0.0.1:59106 - "GET /api/v1/users/ HTTP/1.1" 200 OK
+2026-01-10 14:45:22,274 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:45:22,676 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:22,677 INFO sqlalchemy.engine.Engine [cached since 59.33s ago] {'param_1': 2}
+2026-01-10 14:45:22,980 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:22,981 INFO sqlalchemy.engine.Engine [cached since 59.63s ago] {'param_1': 12}
+2026-01-10 14:45:23,258 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:45:23,258 INFO sqlalchemy.engine.Engine [cached since 59.91s ago] {'param_1': 3}
+INFO:     127.0.0.1:49600 - "GET /api/v1/orders/ HTTP/1.1" 200 OK
+2026-01-10 14:45:23,539 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:45:43,135 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:45:43,135 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:45:43,136 INFO sqlalchemy.engine.Engine [cached since 855.3s ago] {'id_1': 2}
+2026-01-10 14:45:43,844 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:42048 - "POST /api/v1/ai/chat?prompt=Comment%20vas-tu%20%3F HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:35238 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+2026-01-10 14:46:23,148 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:     127.0.0.1:35262 - "GET /api/v1/orders/pending HTTP/1.1" 401 Unauthorized
+2026-01-10 14:46:23,149 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:46:23,151 INFO sqlalchemy.engine.Engine [cached since 979.2s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:35264 - "GET /api/v1/orders/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35272 - "GET /api/v1/users/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:35246 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:46:23,707 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:35246 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34464 - "GET /manioc_agri/authentification.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:34464 - "GET /style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:34464 - "GET /script.js HTTP/1.1" 200 OK
+2026-01-10 14:47:21,251 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:21,252 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 14:47:21,252 INFO sqlalchemy.engine.Engine [cached since 805.7s ago] {'username_1': 'admin'}
+INFO:     127.0.0.1:34476 - "POST /api/v1/auth/login/access-token HTTP/1.1" 200 OK
+2026-01-10 14:47:21,833 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:47:21,843 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:21,844 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:47:21,844 INFO sqlalchemy.engine.Engine [cached since 954s ago] {'id_1': 2}
+INFO:     127.0.0.1:34476 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+2026-01-10 14:47:22,399 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:34476 - "GET /manioc_agri/admin.html HTTP/1.1" 304 Not Modified
+2026-01-10 14:47:23,005 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:23,005 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:23,006 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:47:23,007 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:23,008 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:23,008 INFO sqlalchemy.engine.Engine SELECT product.name, product.description, product.price, product.stock_quantity, product.image_url, product.producer_id, product.id 
+FROM product 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:47:23,008 INFO sqlalchemy.engine.Engine [cached since 955.2s ago] {'id_1': 2}
+2026-01-10 14:47:23,009 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:47:23,009 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:47:23,009 INFO sqlalchemy.engine.Engine [cached since 1039s ago] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:47:23,009 INFO sqlalchemy.engine.Engine [cached since 955.2s ago] {'id_1': 2}
+2026-01-10 14:47:23,010 INFO sqlalchemy.engine.Engine [cached since 955.2s ago] {'id_1': 2}
+2026-01-10 14:47:23,564 INFO sqlalchemy.engine.Engine SELECT "order".order_number, "order".client_name, "order".phone, "order".delivery_address, "order".status, "order".total_price, "order".created_at, "order".client_id, "order".livreur_id, "order".id 
+FROM "order" 
+WHERE ("order".status = %(status_1)s OR "order".status = %(status_2)s) AND "order".livreur_id IS NULL 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:47:23,564 INFO sqlalchemy.engine.Engine [cached since 180.6s ago] {'status_1': 'PENDING', 'status_2': 'VALIDATED', 'param_1': 100, 'param_2': 0}
+2026-01-10 14:47:23,567 INFO sqlalchemy.engine.Engine SELECT "order".order_number, "order".client_name, "order".phone, "order".delivery_address, "order".status, "order".total_price, "order".created_at, "order".client_id, "order".livreur_id, "order".id 
+FROM "order" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:47:23,567 INFO sqlalchemy.engine.Engine [cached since 180.6s ago] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:47:23,567 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:47:23,567 INFO sqlalchemy.engine.Engine [cached since 182.4s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:48394 - "GET /api/v1/products/ HTTP/1.1" 200 OK
+2026-01-10 14:47:23,570 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:48394 - "GET /static/images/default-product.jpg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48394 - "GET /images/products/f1924716b8d64108bab8f139679a3f2c.png HTTP/1.1" 304 Not Modified
+2026-01-10 14:47:23,921 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:23,921 INFO sqlalchemy.engine.Engine [cached since 180.6s ago] {'param_1': 4}
+INFO:     127.0.0.1:34476 - "GET /api/v1/users/ HTTP/1.1" 200 OK
+2026-01-10 14:47:23,923 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:47:23,923 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:23,923 INFO sqlalchemy.engine.Engine [cached since 180.6s ago] {'param_1': 4}
+2026-01-10 14:47:23,925 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:23,926 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:47:23,926 INFO sqlalchemy.engine.Engine [cached since 956.1s ago] {'id_1': 2}
+2026-01-10 14:47:24,199 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:24,199 INFO sqlalchemy.engine.Engine [cached since 180.8s ago] {'param_1': 5}
+2026-01-10 14:47:24,202 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:24,202 INFO sqlalchemy.engine.Engine [cached since 180.9s ago] {'param_1': 5}
+2026-01-10 14:47:24,533 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:24,534 INFO sqlalchemy.engine.Engine [cached since 181.2s ago] {'param_1': 6}
+2026-01-10 14:47:24,534 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:24,534 INFO sqlalchemy.engine.Engine [cached since 181.2s ago] {'param_1': 6}
+2026-01-10 14:47:24,535 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-01-10 14:47:24,535 INFO sqlalchemy.engine.Engine [cached since 183.4s ago] {'param_1': 100, 'param_2': 0}
+2026-01-10 14:47:24,812 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:24,813 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:24,813 INFO sqlalchemy.engine.Engine [cached since 181.5s ago] {'param_1': 7}
+2026-01-10 14:47:24,813 INFO sqlalchemy.engine.Engine [cached since 181.5s ago] {'param_1': 7}
+INFO:     127.0.0.1:34476 - "GET /api/v1/users/ HTTP/1.1" 200 OK
+2026-01-10 14:47:24,815 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:47:25,108 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:25,108 INFO sqlalchemy.engine.Engine [cached since 181.8s ago] {'param_1': 8}
+2026-01-10 14:47:25,109 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:25,109 INFO sqlalchemy.engine.Engine [cached since 181.8s ago] {'param_1': 8}
+2026-01-10 14:47:25,557 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:25,557 INFO sqlalchemy.engine.Engine [cached since 182.2s ago] {'param_1': 9}
+2026-01-10 14:47:25,557 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:25,557 INFO sqlalchemy.engine.Engine [cached since 182.2s ago] {'param_1': 9}
+2026-01-10 14:47:25,834 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:25,834 INFO sqlalchemy.engine.Engine [cached since 182.5s ago] {'param_1': 10}
+2026-01-10 14:47:25,835 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:25,835 INFO sqlalchemy.engine.Engine [cached since 182.5s ago] {'param_1': 10}
+2026-01-10 14:47:26,114 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:26,114 INFO sqlalchemy.engine.Engine [cached since 182.8s ago] {'param_1': 11}
+2026-01-10 14:47:26,114 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:26,114 INFO sqlalchemy.engine.Engine [cached since 182.8s ago] {'param_1': 11}
+INFO:     127.0.0.1:48398 - "GET /api/v1/orders/pending HTTP/1.1" 200 OK
+2026-01-10 14:47:26,393 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:26,393 INFO sqlalchemy.engine.Engine [cached since 183s ago] {'param_1': 13}
+2026-01-10 14:47:26,393 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:47:26,671 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:26,671 INFO sqlalchemy.engine.Engine [cached since 183.3s ago] {'param_1': 1}
+2026-01-10 14:47:26,948 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:26,948 INFO sqlalchemy.engine.Engine [cached since 183.6s ago] {'param_1': 2}
+2026-01-10 14:47:27,227 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:27,227 INFO sqlalchemy.engine.Engine [cached since 183.9s ago] {'param_1': 12}
+2026-01-10 14:47:27,504 INFO sqlalchemy.engine.Engine SELECT orderitem.product_id AS orderitem_product_id, orderitem.quantity AS orderitem_quantity, orderitem.unit_price AS orderitem_unit_price, orderitem.id AS orderitem_id, orderitem.order_id AS orderitem_order_id 
+FROM orderitem 
+WHERE %(param_1)s = orderitem.order_id
+2026-01-10 14:47:27,504 INFO sqlalchemy.engine.Engine [cached since 184.2s ago] {'param_1': 3}
+INFO:     127.0.0.1:48406 - "GET /api/v1/orders/ HTTP/1.1" 200 OK
+2026-01-10 14:47:27,783 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 14:47:44,769 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:47:44,770 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:47:44,770 INFO sqlalchemy.engine.Engine [cached since 976.9s ago] {'id_1': 2}
+2026-01-10 14:47:45,480 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:51104 - "POST /api/v1/ai/chat?prompt=Comment%20vas-tu%20%3F HTTP/1.1" 500 Internal Server Error
+2026-01-10 14:49:45,315 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:49:45,316 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:49:45,316 INFO sqlalchemy.engine.Engine [cached since 1097s ago] {'id_1': 2}
+2026-01-10 14:49:46,075 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:56974 - "POST /api/v1/ai/chat?prompt=hi HTTP/1.1" 500 Internal Server Error
+2026-01-10 14:52:22,461 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 14:52:22,462 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 14:52:22,463 INFO sqlalchemy.engine.Engine [cached since 1255s ago] {'id_1': 2}
+2026-01-10 14:52:23,165 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:48038 - "POST /api/v1/ai/chat?prompt=hi HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:45896 - "POST /api/v1/ai/chat?prompt=hello HTTP/1.1" 403 Forbidden
+2026-01-10 15:08:12,991 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 15:08:12,991 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 15:08:12,991 INFO sqlalchemy.engine.Engine [cached since 2057s ago] {'username_1': 'admin'}
+2026-01-10 15:08:13,739 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:58844 - "POST /api/v1/auth/login/access-token HTTP/1.1" 400 Bad Request
+2026-01-10 15:08:35,309 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 15:08:35,309 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".username = %(username_1)s
+2026-01-10 15:08:35,309 INFO sqlalchemy.engine.Engine [cached since 2080s ago] {'username_1': 'admin'}
+INFO:     127.0.0.1:35390 - "POST /api/v1/auth/login/access-token HTTP/1.1" 200 OK
+2026-01-10 15:08:35,962 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-10 15:08:35,964 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-10 15:08:35,964 INFO sqlalchemy.engine.Engine SELECT "user".username, "user".email, "user".role, "user".is_active, "user".is_approved, "user".last_name, "user".first_name, "user".phone, "user".id, "user".hashed_password 
+FROM "user" 
+WHERE "user".id = %(id_1)s
+2026-01-10 15:08:35,964 INFO sqlalchemy.engine.Engine [cached since 2228s ago] {'id_1': 2}
+2026-01-10 15:08:37,044 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:35396 - "POST /api/v1/ai/chat?prompt=hello HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [27670]

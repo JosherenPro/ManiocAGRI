@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification - ManiocAgri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient d-flex align-items-center" style="min-height: 100vh;">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+                <div class="text-center mb-5">
+                    <a href="../index.html" class="text-decoration-none h2 fw-bold text-success">ManiocAgri</a>
+                    <p class="text-muted">La plateforme d'excellence pour la gestion de la ferme MOKPOKPO</p>
+                </div>
+
+                <div class="card border-0 shadow-lg p-3 rounded-4 bg-white bg-opacity-75"
+                    style="backdrop-filter: blur(10px);">
+                    <div class="card-body p-4">
+                        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill" id="authTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active rounded-pill fw-bold" id="login-tab" data-bs-toggle="tab"
+                                    data-bs-target="#login" type="button" role="tab">S'identifier</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link rounded-pill fw-bold" id="register-tab" data-bs-toggle="tab"
+                                    data-bs-target="#register" type="button" role="tab">Créer un compte</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="authTabsContent">
+                            <!-- Onglet Connexion -->
+                            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                <form id="authForm">
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label small fw-bold text-muted">VOTRE RÔLE</label>
+                                        <select class="form-select bg-light border-0 py-2" id="role" required>
+                                            <option value="">Choisissez votre accès...</option>
+                                            <option value="admin">Administrateur</option>
+                                            <option value="livreur">Livreur</option>
+                                            <option value="producteur">Producteur</option>
+                                            <option value="gestionnaire">Gestionnaire</option>
+                                            <option value="agent">Agent de terrain</option>
+                                            <option value="client">Client</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label small fw-bold text-muted">NOM
+                                            D'UTILISATEUR</label>
+                                        <input type="text" class="form-control bg-light border-0 py-2" id="username"
+                                            placeholder="votre_pseudo" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label small fw-bold text-muted">MOT DE
+                                            PASSE</label>
+                                        <input type="password" class="form-control bg-light border-0 py-2" id="password"
+                                            placeholder="••••••••" required>
+                                    </div>
+                                    <button type="submit"
+                                        class="btn btn-success w-100 py-3 fw-bold rounded-3 shadow-sm">SE
+                                        CONNECTER</button>
+                                </form>
+                            </div>
+
+                            <!-- Onglet Inscription -->
+                            <div class="tab-pane fade" id="register" role="tabpanel">
+                                <form id="registerForm">
+                                    <div class="mb-3">
+                                        <label for="regRole" class="form-label small fw-bold text-muted">RÔLE
+                                            SOUHAITÉ</label>
+                                        <select class="form-select bg-light border-0 py-2" id="regRole" required>
+                                            <option value="">Sélectionnez votre rôle</option>
+                                            <option value="livreur">Livreur</option>
+                                            <option value="producteur">Producteur</option>
+                                            <option value="gestionnaire">Gestionnaire</option>
+                                            <option value="agent">Agent de terrain</option>
+                                            <option value="client">Client</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regUsername"
+                                            class="form-label small fw-bold text-muted">PSEUDO</label>
+                                        <input type="text" class="form-control bg-light border-0 py-2" id="regUsername"
+                                            required>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <label for="regPrenom"
+                                                class="form-label small fw-bold text-muted">PRÉNOM</label>
+                                            <input type="text" class="form-control bg-light border-0 py-2"
+                                                id="regPrenom" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="regNom" class="form-label small fw-bold text-muted">NOM</label>
+                                            <input type="text" class="form-control bg-light border-0 py-2" id="regNom"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regPhone"
+                                            class="form-label small fw-bold text-muted">TÉLÉPHONE</label>
+                                        <input type="tel" class="form-control bg-light border-0 py-2" id="regPhone"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regEmail" class="form-label small fw-bold text-muted">EMAIL
+                                            PROFESSIONNEL</label>
+                                        <input type="email" class="form-control bg-light border-0 py-2" id="regEmail"
+                                            placeholder="nom@exemple.com" required>
+                                    </div>
+                                    <div class="row g-2 mb-4">
+                                        <div class="col-6">
+                                            <label for="regPassword"
+                                                class="form-label small fw-bold text-muted">PASSWORD</label>
+                                            <input type="password" class="form-control bg-light border-0 py-2"
+                                                id="regPassword" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="regConfirmPassword"
+                                                class="form-label small fw-bold text-muted">CONFIRM</label>
+                                            <input type="password" class="form-control bg-light border-0 py-2"
+                                                id="regConfirmPassword" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit"
+                                        class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm border-0">CRÉER
+                                        MON COMPTE</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="errorMessage" class="mt-4 alert alert-danger border-0 small py-2 d-none" role="alert">
+                        </div>
+                        <div id="successMessage" class="mt-4 alert alert-success border-0 small py-2 d-none"
+                            role="alert"></div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="../index.html" class="text-muted text-decoration-none small">← Retour au site principal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script.js?v=2"></script>
+</body>
+
+</html>

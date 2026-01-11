@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Client - ManiocAgri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">ManiocAgri <span class="text-warning">Client</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="../catalogue.html">Catalogue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm px-4" href="#" id="logoutBtn">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="fw-extrabold text-primary-dark mb-4">Mon Tableau de Bord</h2>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-4 text-center">
+                        <div class="display-6 fw-bold text-success mb-1" id="totalOrders">0</div>
+                        <div class="text-muted small fw-bold uppercase tracking-wider">TOTAL COMMANDES</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-4 text-center">
+                        <div class="display-6 fw-bold text-warning mb-1" id="pendingOrders">0</div>
+                        <div class="text-muted small fw-bold uppercase tracking-wider">EN ATTENTE</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 bg-white">
+                    <div class="card-body p-4 text-center">
+                        <div class="display-6 fw-bold text-primary mb-1" id="deliveredOrders">0</div>
+                        <div class="text-muted small fw-bold uppercase tracking-wider">DÉJÀ LIVRÉE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header border-0 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Historique des Commandes</h5>
+                        <a href="../catalogue.html" class="btn btn-success btn-sm px-3">Nouvelle Commande</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Commande</th>
+                                        <th>Date</th>
+                                        <th>Destination</th>
+                                        <th>Statut</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersList">
+                                    <!-- Dynamique par script.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header border-0 py-3">
+                        <h5 class="mb-0">Mon Profil</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-light rounded-circle p-3 me-3">
+                                <span class="fs-2">👤</span>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold" id="clientNameDisplay">Chargement...</h6>
+                                <p class="text-muted small mb-0">Client Certifié</p>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-success btn-sm">Modifier mes infos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm bg-success text-white">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold mb-3">Besoin d'aide ?</h6>
+                        <p class="small opacity-90 mb-4">Un problème avec votre livraison ou une question sur nos
+                            produits ?</p>
+                        <a href="../index.html#contact"
+                            class="btn btn-light btn-sm w-100 fw-bold text-success">Contacter le Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tracking -->
+    <div class="modal fade" id="trackingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-success text-white border-0 py-3">
+                    <h5 class="modal-title fw-bold" id="trackingTitle">Suivi de commande</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="trackingDetails">
+                    <!-- Contenu dynamique -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container text-center">
+            <p class="mb-0 opacity-75">&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script.js"></script>
+</body>
+
+</html>

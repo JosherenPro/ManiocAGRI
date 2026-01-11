@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - ManiocAgri</title>
+    <meta name="description" content="Panneau d'administration ManiocAgri - Gérez vos produits et utilisateurs">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts & Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="../style.css" rel="stylesheet">
+    <style>
+        .admin-sidebar {
+            background: linear-gradient(180deg, #1a4d2e 0%, #2e7d32 100%);
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-pills .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-pills .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff !important;
+            transform: translateX(5px);
+        }
+
+        .nav-pills .nav-link.active {
+            background: rgba(255, 255, 255, 0.95) !important;
+            color: #1a4d2e !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+
+        .stat-card {
+            transition: transform 0.2s;
+            cursor: default;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .badge-notification {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+        }
+
+        /* Product Card Styles */
+        .admin-product-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            height: 100%;
+            background: #fff;
+        }
+
+        .admin-product-card img {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .admin-product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-name {
+            font-weight: 700;
+            color: #1a4d2e;
+            margin-bottom: 2px;
+            font-size: 1.1rem;
+        }
+
+        .product-price {
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="d-flex" style="min-height: 100vh;">
+        <!-- Sidebar (Responsive: Offcanvas on mobile, Static on desktop) -->
+        <div class="offcanvas-lg offcanvas-start p-3 text-white admin-sidebar" tabindex="-1" id="sidebarMenu"
+            aria-labelledby="sidebarMenuLabel" style="width: 260px;">
+            <div class="d-flex align-items-center justify-content-between mb-3 d-lg-none">
+                <h5 class="offcanvas-title fw-bold" id="sidebarMenuLabel">Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                    data-bs-target="#sidebarMenu" aria-label="Close"></button>
+            </div>
+
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <i class="fas fa-leaf fa-2x text-success me-2"></i>
+                <span class="fs-4 fw-bold">ManiocAgri</span>
+            </a>
+            <hr>
+            <div class="mb-4">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="avatar bg-success rounded-circle me-2 d-flex align-items-center justify-content-center"
+                        style="width: 32px; height: 32px;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <small class="d-block text-muted" style="font-size: 0.75rem;">Connecté en tant que</small>
+                        <strong id="adminUsername">Admin</strong>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <button class="nav-link active text-white w-100 text-start" data-bs-toggle="pill"
+                        data-bs-target="#tab-dashboard">
+                        <i class="fas fa-chart-line me-2"></i> Tableau de bord
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link text-white w-100 text-start" data-bs-toggle="pill"
+                        data-bs-target="#tab-users">
+                        <i class="fas fa-users me-2"></i> Utilisateurs
+                        <span class="badge bg-warning text-dark ms-auto" id="pendingBadgeSidebar"></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link text-white w-100 text-start" data-bs-toggle="pill"
+                        data-bs-target="#tab-products">
+                        <i class="fas fa-box me-2"></i> Produits
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link text-white w-100 text-start" data-bs-toggle="pill"
+                        data-bs-target="#tab-orders">
+                        <i class="fas fa-tasks me-2"></i> Commandes
+                        <span class="badge bg-danger rounded-pill ms-auto" id="ordersBadgeSidebar"></span>
+                    </button>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-cog me-2"></i>
+                    <strong>Paramètres</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="#">Profil</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#" id="logoutBtn">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow-1 bg-light w-100">
+            <!-- Topbar -->
+            <header class="py-3 mb-4 border-bottom bg-white shadow-sm px-4 sticky-top">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary d-lg-none me-3" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h4 class="mb-0 fw-bold text-truncate" id="pageTitle" style="max-width: 200px;">Vue d'ensemble
+                        </h4>
+                    </div>
+                    <span class="text-muted small d-none d-md-inline" id="currentDate"></span>
+                </div>
+            </header>
+
+            <div class="container-fluid px-4 h-100 overflow-auto">
+                <div class="tab-content" id="v-pills-tabContent">
+
+                    <!-- TAB: DASHBOARD -->
+                    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel">
+                        <div class="row g-4 mb-4" id="statsRow">
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-primary">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">PRODUITS</div>
+                                            <div class="fs-3 fw-bold primary-text" id="totalProducts">0</div>
+                                        </div>
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded text-primary">
+                                            <i class="fas fa-box fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-success">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">UTILISATEURS</div>
+                                            <div class="fs-3 fw-bold text-success" id="totalUsers">0</div>
+                                        </div>
+                                        <div class="bg-success bg-opacity-10 p-2 rounded text-success">
+                                            <i class="fas fa-users fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-warning">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">INSCRIPTIONS</div>
+                                            <div class="fs-3 fw-bold text-warning" id="pendingCount">0</div>
+                                        </div>
+                                        <div class="bg-warning bg-opacity-10 p-2 rounded text-warning">
+                                            <i class="fas fa-clock fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-info">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="text-uppercase small opacity-75">STOCK TOTAL (KG)</h6>
+                                            <h2 class="mb-0 fw-bold" id="totalStock">0</h2>
+                                            <span class="badge bg-danger rounded-pill mt-1" id="lowStockAlert">0</span>
+                                            <small>alertes</small>
+                                        </div>
+                                        <div class="bg-info bg-opacity-10 p-2 rounded text-info">
+                                            <i class="fas fa-warehouse fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Statistics Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-primary">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">COMMANDES TOTALES</div>
+                                            <div class="fs-3 fw-bold text-primary" id="totalOrders">0</div>
+                                        </div>
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded text-primary">
+                                            <i class="fas fa-shopping-cart fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-warning">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">EN ATTENTE</div>
+                                            <div class="fs-3 fw-bold text-warning" id="pendingOrdersStat">0</div>
+                                        </div>
+                                        <div class="bg-warning bg-opacity-10 p-2 rounded text-warning">
+                                            <i class="fas fa-hourglass-half fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-success">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">LIVRÉES</div>
+                                            <div class="fs-3 fw-bold text-success" id="deliveredOrdersStat">0</div>
+                                        </div>
+                                        <div class="bg-success bg-opacity-10 p-2 rounded text-success">
+                                            <i class="fas fa-check-circle fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div
+                                    class="stat-card bg-white p-4 rounded-4 shadow-sm h-100 border-start border-4 border-danger">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-muted small mb-1">REFUSÉES</div>
+                                            <div class="fs-3 fw-bold text-danger" id="rejectedOrdersStat">0</div>
+                                        </div>
+                                        <div class="bg-danger bg-opacity-10 p-2 rounded text-danger">
+                                            <i class="fas fa-times-circle fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Analytics Charts Row -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div
+                                        class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 fw-bold">Tendance des Commandes</h5>
+                                        <select class="form-select form-select-sm w-auto border-0 bg-light">
+                                            <option>7 dernières jours</option>
+                                        </select>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div style="height: 300px;">
+                                            <canvas id="orderChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0">
+                                        <h5 class="mb-0 fw-bold"><i
+                                                class="fas fa-magic me-2 text-warning"></i>Prévisions IA</h5>
+                                        <p class="small text-muted mb-0">Anticipation de la demande (7j)</p>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div style="height: 250px;">
+                                            <canvas id="forecastChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions / Highlights could go here -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-success border-0 shadow-sm d-flex align-items-center">
+                                    <i class="fas fa-info-circle me-3 fa-2x"></i>
+                                    <div>
+                                        <strong>Système opérationnel</strong>
+                                        <p class="mb-0 small">Toutes les fonctionnalités sont actives. Sélectionnez un
+                                            onglet dans la barre latérale pour commencer.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: UTILISATEURS -->
+                    <div class="tab-pane fade" id="tab-users" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                            <h4 class="mb-0">Gestion des Utilisateurs</h4>
+                            <div class="input-group" style="max-width: 350px;">
+                                <span class="input-group-text bg-white border-end-0 shadow-sm">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" id="userSearch" class="form-control border-start-0 shadow-sm"
+                                    placeholder="Rechercher par nom, email ou rôle..." onkeyup="filterUsers()">
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <!-- Inscriptions en attente -->
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div
+                                        class="card-header bg-warning bg-opacity-10 border-0 d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 text-dark"><i class="fas fa-user-clock me-2"></i>Inscriptions en
+                                            attente</h5>
+                                        <span class="badge bg-warning text-dark" id="pendingBadge">0</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="pendingRegistrations">
+                                            <div class="text-center text-muted py-4">Chargement...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ajouter User -->
+                            <div class="col-xl-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4">
+                                        <h5 class="mb-0"><i class="fas fa-user-plus me-2 text-primary"></i>Nouveau
+                                            compte</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="addUserForm">
+                                            <div class="mb-3">
+                                                <label for="newRole"
+                                                    class="form-label small fw-bold text-muted">RÔLE</label>
+                                                <select class="form-select bg-light border-0" id="newRole" required>
+                                                    <option value="livreur">🚚 Livreur</option>
+                                                    <option value="producteur">🌱 Producteur</option>
+                                                    <option value="gestionnaire">📊 Gestionnaire</option>
+                                                    <option value="agent">🌾 Agent de terrain</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newUsername"
+                                                    class="form-label small fw-bold text-muted">PSEUDO</label>
+                                                <input type="text" class="form-control bg-light border-0"
+                                                    id="newUsername" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newEmail"
+                                                    class="form-label small fw-bold text-muted">EMAIL</label>
+                                                <input type="email" class="form-control bg-light border-0" id="newEmail"
+                                                    required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label small fw-bold text-muted">MOT
+                                                    DE PASSE</label>
+                                                <input type="password" class="form-control bg-light border-0"
+                                                    id="newPassword" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100" id="addUserBtn">Créer
+                                                utilisateur</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Liste Users -->
+                            <div class="col-xl-8">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 d-flex justify-content-between">
+                                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Utilisateurs approuvés</h5>
+                                        <span class="badge bg-success" id="usersBadge">0</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="usersList" class="table-responsive">
+                                            <div class="text-center text-muted">Chargement...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: PRODUITS -->
+                    <div class="tab-pane fade" id="tab-products" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                            <h4 class="mb-0">Catalogue des Produits</h4>
+                            <div class="d-flex gap-2">
+                                <div class="input-group shadow-sm" style="max-width: 300px;">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" id="productSearch" class="form-control border-start-0"
+                                        placeholder="Filtrer les produits..." onkeyup="filterProducts()">
+                                </div>
+                                <button class="btn btn-primary shadow-sm" onclick="showAddProductForm()"
+                                    data-bs-toggle="collapse" data-bs-target="#addProductCollapse">
+                                    <i class="fas fa-plus me-2"></i>Nouveau Produit
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire (Collapsible) -->
+                        <div class="collapse" id="addProductCollapse">
+                            <div class="card card-body mb-4 shadow-sm border-0 bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0 fw-bold" id="productFormTitle">Détails du Produit</h6>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="cancelEdit()"
+                                        id="cancelEditBtn">Annuler</button>
+                                </div>
+                                <form id="productForm">
+                                    <input type="hidden" id="productId">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">NOM DU
+                                                    PRODUIT</label>
+                                                <input type="text" class="form-control" id="productName" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">PRIX
+                                                    (FCFA/KG)</label>
+                                                <input type="number" class="form-control" id="productPrice" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">STOCK INITIAL
+                                                    (KG)</label>
+                                                <input type="number" class="form-control" id="productStock" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">DESCRIPTION</label>
+                                                <textarea class="form-control" id="productDescription"
+                                                    rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">IMAGE DU
+                                                    PRODUIT</label>
+                                                <input type="file" class="form-control" id="productImage"
+                                                    accept="image/*">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-end">
+                                            <button type="submit" class="btn btn-success px-4" id="submitProductBtn">
+                                                <i class="fas fa-save me-2"></i>Enregistrer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="productsList" class="row g-4">
+                            <div class="col-12 text-center text-muted py-5">
+                                <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                <p>Chargement du catalogue...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: COMMANDES -->
+                    <div class="tab-pane fade" id="tab-orders" role="tabpanel">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div
+                                class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0 text-success"><i class="fas fa-tasks me-2"></i>Assignation des
+                                    Commandes
+                                </h5>
+                                <span class="badge bg-warning text-dark rounded-pill" id="pendingOrdersBadge">0</span>
+                            </div>
+                            <div class="card-body">
+                                <div id="pendingOrdersValidation">
+                                    <div class="text-center py-5 text-muted">Connexion serveur...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script.js?v=3"></script>
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Set admin username
+        const username = sessionStorage.getItem('username');
+        if (username) {
+            document.getElementById('adminUsername').textContent = username;
+        }
+
+        // Cancel edit mode
+        function cancelEdit() {
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('productFormTitle').innerHTML = '<i class="fas fa-plus-circle me-2 text-success"></i>Ajouter un produit';
+            document.getElementById('cancelEditBtn').classList.add('d-none');
+            document.getElementById('productName').classList.remove('is-invalid');
+        }
+
+        // Update Page Title on Tab Switch
+        const tabEls = document.querySelectorAll('button[data-bs-toggle="pill"]');
+        tabEls.forEach(tabEl => {
+            tabEl.addEventListener('shown.bs.tab', function (event) {
+                // Get the text of the active tab (without badge count if possible)
+                // Use a mapping or just split
+                let text = event.target.innerText.split('\n')[0];
+                document.getElementById('pageTitle').textContent = text;
+
+                // Trigger AI features if on dashboard
+                if (text.includes("Tableau de bord")) {
+                    loadDemandForecast();
+                }
+            });
+        });
+
+        // Load Forecast immediately if Dashboard is active on load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDemandForecast();
+        });
+    </script>
+</body>
+
+</html>

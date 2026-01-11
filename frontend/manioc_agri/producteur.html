@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producteur - ManiocAgri</title>
+    <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="#">ManiocAgri - Producteur</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <h2>Gestion des Produits</h2>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Ajouter/Modifier un produit</h5>
+            </div>
+            <div class="card-body">
+                <form id="productForm">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="productName" class="form-label">Nom du produit</label>
+                            <input type="text" class="form-control" id="productName" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="productPrice" class="form-label">Prix (FCFA/kg)</label>
+                            <input type="number" class="form-control" id="productPrice" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="productStock" class="form-label">Stock (kg)</label>
+                            <input type="number" class="form-control" id="productStock" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="productImage" class="form-label">Image</label>
+                            <input type="text" class="form-control" id="productImage" placeholder="Nom du fichier image">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-success w-100">Sauvegarder</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Liste des produits</h5>
+            </div>
+            <div class="card-body">
+                <div id="productsList" class="row">
+                    <!-- Liste dynamique des produits -->
+                </div>
+            </div>
+        </div>
+    </div>
+<footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livreur - ManiocAgri</title>
+    <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="#">ManiocAgri - Livreur</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <h2>Gestion des Livraisons</h2>
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Commandes à livrer</h5>
+                <button class="btn btn-primary btn-sm rounded-pill px-3" onclick="optimizeDeliveries()">
+                    <i class="fas fa-route me-2"></i>Optimiser l'itinéraire
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="pendingOrders">
+                    <!-- Liste des commandes en attente -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Confirmer une livraison</h5>
+            </div>
+            <div class="card-body">
+                <form id="deliveryForm">
+                    <div class="mb-3">
+                        <label for="orderId" class="form-label">Numéro de commande</label>
+                        <input type="text" class="form-control" id="orderId" placeholder="Ex: CMD-1234567890123"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Nouveau statut</label>
+                        <select class="form-select" id="status" required>
+                            <option value="En transit">En transit</option>
+                            <option value="Livré">Livré</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="departureDate" class="form-label">Date de départ</label>
+                        <input type="date" class="form-control" id="departureDate">
+                    </div>
+                    <button type="submit" class="btn btn-success">Mettre à jour</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script.js"></script>
+</body>
+
+</html>

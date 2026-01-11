@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+psycopg2-binary
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+python-dotenv
+alembic
+pandas
+scikit-learn
+google-generativeai
+fastapi-mail
+jinja2

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord Prévisions - ManiocAgri</title>
+    <link href="bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .dashboard-header {
+        background: linear-gradient(135deg, #20c997, #17a2b8);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+    }
+    .kpi-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .kpi-card:hover {
+        transform: translateY(-5px);
+    }
+    .kpi-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #20c997;
+    }
+    .chart-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .data-table {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+    }
+</style>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-chart-line"></i> Tableau de Bord Prévisions</h1>
+                    <p class="mb-0">Analyse et prévisions des produits ManiocAgri</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <!-- KPIs -->
+        <div class="row mb-4" id="kpiRow">
+            <!-- KPIs dynamiques -->
+        </div>
+
+        <!-- Graphiques -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="chart-container">
+                    <h4><i class="fas fa-chart-bar"></i> Évolution des Stocks</h4>
+                    <canvas id="stockChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="chart-container">
+                    <h4><i class="fas fa-pie-chart"></i> Répartition par Produit</h4>
+                    <canvas id="productChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="chart-container">
+                    <h4><i class="fas fa-trending-up"></i> Prévisions de Récolte</h4>
+                    <canvas id="forecastChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="chart-container">
+                    <h4><i class="fas fa-seedling"></i> État des Champs</h4>
+                    <canvas id="fieldChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table des données -->
+        <div class="row">
+            <div class="col-12">
+                <div class="data-table">
+                    <h4><i class="fas fa-table"></i> Détails des Produits</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Prix/kg (FCFA)</th>
+                                    <th>Stock Actuel (kg)</th>
+                                    <th>Récolte Précédente (kg)</th>
+                                    <th>Stock Probable (kg)</th>
+                                    <th>État des Champs</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Données dynamiques -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialiser la date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('fr-FR');
+
+        // Charger le tableau de bord
+        function loadDashboard() {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const fieldData = JSON.parse(localStorage.getItem('fieldData') || '[]');
+
+            // Produits par défaut
+            const defaultProducts = [
+                { name: 'Farine de Manioc humide', price: 850, stock: 100 },
+                { name: 'Farine de Manioc séché', price: 800, stock: 150 },
+                { name: 'Gari', price: 550, stock: 200 },
+                { name: 'Tapioca', price: 1100, stock: 80 },
+                { name: 'Attiéké', price: 1500, stock: 120 },
+                { name: 'Tubercules', price: 400, stock: 200 }
+            ];
+
+            const allProducts = products.length > 0 ? products : defaultProducts;
+
+            // Calculer les KPIs
+            const totalProducts = allProducts.length;
+            const totalStock = allProducts.reduce((sum, p) => sum + (p.stock || 0), 0);
+            const avgPrice = Math.round(allProducts.reduce((sum, p) => sum + (p.price || 0), 0) / totalProducts);
+            const totalFields = fieldData.length;
+
+            document.getElementById('kpiRow').innerHTML = `
+                <div class="col-md-3">
+                    <div class="kpi-card">
+                        <i class="fas fa-boxes fa-2x text-success mb-2"></i>
+                        <div class="kpi-value">${totalProducts}</div>
+                        <div>Produits</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="kpi-card">
+                        <i class="fas fa-warehouse fa-2x text-primary mb-2"></i>
+                        <div class="kpi-value">${totalStock}</div>
+                        <div>Stock Total (kg)</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="kpi-card">
+                        <i class="fas fa-dollar-sign fa-2x text-warning mb-2"></i>
+                        <div class="kpi-value">${avgPrice}</div>
+                        <div>Prix Moyen (FCFA/kg)</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="kpi-card">
+                        <i class="fas fa-map-marked-alt fa-2x text-info mb-2"></i>
+                        <div class="kpi-value">${totalFields}</div>
+                        <div>Champs Monitorés</div>
+                    </div>
+                </div>
+            `;
+
+            // Remplir la table
+            const tableBody = document.getElementById('productsTableBody');
+            tableBody.innerHTML = allProducts.map(product => `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.price}</td>
+                    <td>${product.stock || 0}</td>
+                    <td>${getPastHarvest(product.name)}</td>
+                    <td>${getProbableStock(product.name, fieldData)}</td>
+                    <td>${getFieldStatus(fieldData)}</td>
+                </tr>
+            `).join('');
+
+            // Créer les graphiques
+            createStockChart(allProducts);
+            createProductChart(allProducts);
+            createForecastChart(allProducts, fieldData);
+            createFieldChart(fieldData);
+        }
+
+        function getPastHarvest(productName) {
+            const pastHarvests = {
+                'Farine de Manioc humide': 500,
+                'Farine de Manioc séché': 600,
+                'Gari': 700,
+                'Tapioca': 300,
+                'Attiéké': 400
+            };
+            return pastHarvests[productName] || 0;
+        }
+
+        function getProbableStock(productName, fieldData) {
+            const totalExpected = fieldData.reduce((sum, data) => sum + parseInt(data.expectedHarvest || 0), 0);
+            return Math.floor(totalExpected / 5); // Diviser par nombre de produits
+        }
+
+        function getFieldStatus(fieldData) {
+            if (fieldData.length === 0) return 'N/A';
+            const latest = fieldData[fieldData.length - 1];
+            return `${latest.season} - ${latest.soilType}`;
+        }
+
+        function createStockChart(products) {
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: products.map(p => p.name.split(' ')[0]), // Nom court
+                    datasets: [{
+                        label: 'Stock Actuel',
+                        data: products.map(p => p.stock || 0),
+                        borderColor: '#20c997',
+                        backgroundColor: 'rgba(32, 201, 151, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Récolte Précédente',
+                        data: products.map(p => getPastHarvest(p.name)),
+                        borderColor: '#ffc107',
+                        backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+        }
+
+        function createProductChart(products) {
+            const ctx = document.getElementById('productChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: products.map(p => p.name.split(' ')[0]),
+                    datasets: [{
+                        data: products.map(p => p.stock || 0),
+                        backgroundColor: ['#20c997', '#17a2b8', '#ffc107', '#dc3545', '#6f42c1']
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+
+        function createForecastChart(products, fieldData) {
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+            const probableStocks = products.map(p => getProbableStock(p.name, fieldData));
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: products.map(p => p.name.split(' ')[0]),
+                    datasets: [{
+                        label: 'Stock Probable',
+                        data: probableStocks,
+                        backgroundColor: '#17a2b8'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function createFieldChart(fieldData) {
+            const ctx = document.getElementById('fieldChart').getContext('2d');
+            const seasons = fieldData.reduce((acc, data) => {
+                acc[data.season] = (acc[data.season] || 0) + 1;
+                return acc;
+            }, {});
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(seasons),
+                    datasets: [{
+                        label: 'Nombre de champs',
+                        data: Object.values(seasons),
+                        backgroundColor: 'rgba(32, 201, 151, 0.2)',
+                        borderColor: '#20c997'
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+
+        // Charger au démarrage
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>

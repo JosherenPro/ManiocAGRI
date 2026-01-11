@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue - ManiocAgri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">ManiocAgri</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm px-4" href="index.html">Retour à l'accueil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="hero d-flex align-items-center" style="padding: 60px 0; clip-path: none; min-height: auto;">
+        <div class="container text-center text-lg-start">
+            <h1 class="display-4 fw-extrabold mb-2">Notre <span class="text-warning">Catalogue</span></h1>
+            <p class="lead opacity-90 mb-0">Sélectionnez vos produits d'excellence et faites-vous livrer chez vous.</p>
+        </div>
+    </section>
+
+    <!-- Catalogue -->
+    <section id="catalogue" class="py-5">
+        <div class="container py-4">
+            <div class="row g-4">
+                <!-- Produits -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm p-4 mb-4">
+                        <h2 class="fw-bold mb-4 h4 text-primary-dark">Produits Disponibles en ce moment</h2>
+                        <div id="products-container" class="row g-4">
+                            <!-- Spinner initial -->
+                            <div class="text-center py-5" id="loading-spinner">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Chargement...</span>
+                                </div>
+                                <p class="mt-3 text-muted">Récupération des stocks frais...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Résumé de commande -->
+                <div class="col-lg-4">
+                    <div class="order-summary border-0 shadow-lg">
+                        <h4 class="fw-bold mb-4 text-primary-dark d-flex align-items-center">
+                            <span class="me-2">🛒</span> Résumé de commande
+                        </h4>
+
+                        <div id="order-items" class="mb-4">
+                            <div class="text-center py-4 bg-light rounded-3 mb-3">
+                                <p class="text-muted mb-0 small">Votre panier est vide</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="fw-bold text-muted">Montant Total</span>
+                            <span class="total-price" id="total-price">0 FCFA</span>
+                        </div>
+
+                        <hr class="opacity-25 mb-4">
+
+                        <h5 class="fw-bold mb-3 h6 uppercase tracking-wider text-muted">DÉTAILS DE LIVRAISON</h5>
+                        <form id="orderForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label small fw-bold">Code Client / Username</label>
+                                <input type="text" class="form-control form-control-sm py-2" id="username"
+                                    placeholder="Entrez votre identifiant" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nom" class="form-label small fw-bold">Nom complet</label>
+                                <input type="text" class="form-control form-control-sm py-2" id="nom" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telephone" class="form-label small fw-bold">Numéro de téléphone</label>
+                                <input type="tel" class="form-control form-control-sm py-2" id="telephone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="localisation" class="form-label small fw-bold">Lieu exact de
+                                    livraison</label>
+                                <textarea class="form-control form-control-sm" id="localisation" rows="2"
+                                    placeholder="Ex: Quartier, Rue, Maison..." required></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="dateLivraison" class="form-label small fw-bold">Date souhaitée</label>
+                                <input type="date" class="form-control form-control-sm py-2" id="dateLivraison"
+                                    required>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 py-3 mb-3 fw-bold shadow-sm"
+                                id="orderBtn" disabled>
+                                CONFIRMER LA COMMANDE
+                            </button>
+
+                            <div class="d-grid gap-2">
+                                <a href="manioc_agri/authentification.html?redirect=manioc_agri/client.html"
+                                    class="btn btn-outline-primary btn-sm py-2">Mon Espace Personnel</a>
+                                <a href="index.html#contact"
+                                    class="btn btn-link btn-sm text-muted text-decoration-none">Besoin d'aide ?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container text-center">
+            <p class="mb-0 opacity-75">&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
