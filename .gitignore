@@ -1,0 +1,57 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Python (Backend)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Frontend / Node
+node_modules/
+.npm/
+.cache/
+.vite/
+frontend/dist/
+
+# Project Specific
+backend/server.log
+if backend/openapi.json
+test_users.txt
