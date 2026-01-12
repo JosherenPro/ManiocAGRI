@@ -593,6 +593,8 @@ function initProductForm() {
         const price = document.getElementById('productPrice').value;
         const stock = document.getElementById('productStock').value;
         const description = document.getElementById('productDescription').value;
+        const imageUrlInput = document.getElementById('productImageUrl');
+        const imageUrl = imageUrlInput ? imageUrlInput.value : '';
         const submitBtn = document.getElementById('saveProductBtn');
         const nameInput = document.getElementById('productName');
         const nameError = document.getElementById('productNameError');
@@ -605,7 +607,8 @@ function initProductForm() {
             name: name,
             price: parseFloat(price),
             stock_quantity: parseInt(stock),
-            description: description
+            description: description,
+            image_url: imageUrl
         };
 
         setButtonLoading(submitBtn, true);
@@ -670,6 +673,11 @@ window.editProduct = function (id) {
     document.getElementById('productPrice').value = product.price;
     document.getElementById('productStock').value = product.stock_quantity;
     document.getElementById('productDescription').value = product.description || '';
+
+    const imageUrlInput = document.getElementById('productImageUrl');
+    if (imageUrlInput) {
+        imageUrlInput.value = product.image_url || '';
+    }
     // Note: Can't set file input value programmatically for security reasons
 
     const title = document.getElementById('productFormTitle');
@@ -761,7 +769,7 @@ function renderProducts(products) {
         <div class="col-md-4 col-lg-3 mb-4">
             <div class="admin-product-card h-100 shadow-sm border-0 rounded-4 overflow-hidden bg-white hover-shadow transition">
                 <div class="position-relative">
-                    <img src="${product.image_url ? '/' + product.image_url : '/static/images/default-product.jpg'}" 
+                    <img src="${product.image_url ? '/' + product.image_url : '/images/products/manioc2.jpg'}" 
                         class="card-img-top" alt="${product.name}" style="height: 180px; object-fit: cover; border-bottom: 1px solid #f0f0f0;">
                     <span class="position-absolute top-0 end-0 m-2 badge bg-success shadow-sm">${product.price.toLocaleString()} FCFA/kg</span>
                 </div>
@@ -804,7 +812,7 @@ function renderCatalogue(products) {
             <div class="col-md-4 col-lg-3">
                 <div class="card h-100 product-card border-0 shadow-sm overflow-hidden" onclick="window.location.href='produit-details.html?id=${product.id}'">
                     <div class="position-relative">
-                        <img src="${product.image_url ? '/' + product.image_url : '/static/images/default-product.jpg'}" 
+                        <img src="${product.image_url ? '/' + product.image_url : '/images/products/manioc2.jpg'}" 
                              class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                         <span class="position-absolute top-0 end-0 m-2 badge bg-success shadow-sm">${product.price.toLocaleString()} FCFA/kg</span>
                     </div>
@@ -837,6 +845,8 @@ function showAddProductForm() {
     if (!form) return;
     form.reset();
     document.getElementById('productId').value = '';
+    const imageUrlInput = document.getElementById('productImageUrl');
+    if (imageUrlInput) imageUrlInput.value = '';
     document.getElementById('productFormTitle').textContent = 'Nouveau Produit';
 
     const title = document.getElementById('productFormTitle');
@@ -846,7 +856,65 @@ function showAddProductForm() {
     if (cancelBtn) cancelBtn.classList.add('d-none');
 }
 
-// ... existing helper functions (changeQuantity, updateOrderSummary, initOrderForm) ...
+function addToCart(productId) {
+    cart[productId] = (cart[productId] || 0) + 1;
+    updateOrderSummary();
+    showToast('Produit ajouté au panier !', 'success', 2000);
+}
+
+async function loadProductDetails() {
+    const container = document.getElementById('product-details-container');
+    if (!container) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    if (!productId) {
+        container.innerHTML = '<div class="col-12 text-center py-5"><h3>Produit non trouvé</h3><a href="catalogue.html" class="btn btn-success mt-3">Retour au catalogue</a></div>';
+        return;
+    }
+
+    try {
+        const product = await apiCall(`/products/${productId}`, 'GET');
+
+        container.innerHTML = `
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="product-image-wrapper rounded-4 overflow-hidden shadow-sm">
+                    <img src="${product.image_url ? '/' + product.image_url : '/images/products/manioc2.jpg'}" 
+                         class="img-fluid w-100" alt="${product.name}" style="min-height: 400px; object-fit: cover;">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ps-lg-4">
+                    <span class="badge bg-success-subtle text-success border border-success mb-3 px-3 py-2 rounded-pill">Produit Local</span>
+                    <h1 class="display-5 fw-bold text-dark mb-3">${product.name}</h1>
+                    <h3 class="text-success fw-bold mb-4">${product.price.toLocaleString()} FCFA <small class="text-muted fs-6">/ kg</small></h3>
+                    
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-2">Description</h5>
+                        <p class="text-muted lead mb-0">${product.description || 'Description non disponible pour ce produit.'}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-warehouse text-success me-2"></i>
+                            <span class="fw-bold">Stock disponible:</span>
+                            <span class="ms-2 ${product.stock_quantity < 10 ? 'text-danger' : 'text-success'}">${product.stock_quantity} kg</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex mt-5">
+                        <button class="btn btn-success btn-lg px-5 py-3 rounded-pill shadow-sm flex-fill" onclick="addToCart(${product.id})">
+                            <i class="fas fa-shopping-basket me-2"></i>AJOUTER AU PANIER
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+    } catch (err) {
+        console.error("Erreur chargement détails produit:", err);
+        container.innerHTML = '<div class="col-12 text-center py-5"><h3 class="text-danger">Erreur lors du chargement</h3><p>' + err.message + '</p></div>';
+    }
+}
 
 // ==========================================
 // Gestion Commandes & Livraison
@@ -1400,6 +1468,10 @@ function init() {
 
     if (path.includes('catalogue.html')) {
         loadProducts();
+    }
+
+    if (path.includes('produit-details.html')) {
+        loadProductDetails();
     }
 
     // Client

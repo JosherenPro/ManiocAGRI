@@ -51,22 +51,24 @@ def seed_db():
         # 2. Créer les Produits
         prod1 = db_users["producteur1"]
         products_data = [
-            ("Farine de Manioc Séché", "Qualité supérieure, parfaite pour le fufu.", 500, 100),
-            ("Farine de Manioc Humide", "Idéal pour les préparations traditionnelles.", 450, 50),
-            ("Gari", "Gari croustillant et bien fermenté.", 600, 200),
-            ("Tapioca", "Grains fins de tapioca pour vos desserts.", 800, 30),
-            ("Attiéké", "Attiéké frais prêt à consommer.", 700, 40),
+            ("Farine de Manioc Séché", "Qualité supérieure, parfaite pour le fufu.", 500, 100, "images/products/farine_manic_séché.jpeg"),
+            ("Farine de Manioc Humide", "Idéal pour les préparations traditionnelles.", 450, 50, "images/products/farine_manioc_humide.jpeg"),
+            ("Gari", "Gari croustillant et bien fermenté.", 600, 200, "images/products/gari.jpg"),
+            ("Tapioca", "Grains fins de tapioca pour vos desserts.", 800, 30, "images/products/tapioca.jpeg"),
+            ("Attiéké", "Attiéké frais prêt à consommer.", 700, 40, "images/products/atieke.jpg"),
         ]
         
         db_products = []
-        for name, desc, price, qty in products_data:
+        for name, desc, price, qty, img in products_data:
             existing = session.exec(select(Product).where(Product.name == name)).first()
             if not existing:
-                p = Product(name=name, description=desc, price=price, stock_quantity=qty, producer_id=prod1.id)
+                p = Product(name=name, description=desc, price=price, stock_quantity=qty, image_url=img, producer_id=prod1.id)
                 session.add(p)
                 print(f"Produit créé: {name}")
             else:
                 p = existing
+                p.image_url = img
+                session.add(p)
             db_products.append(p)
         
         session.commit()

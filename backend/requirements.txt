@@ -12,3 +12,4 @@ scikit-learn
 google-genai
 fastapi-mail
 jinja2
+httpx
