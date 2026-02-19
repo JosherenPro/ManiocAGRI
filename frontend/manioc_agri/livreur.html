@@ -4,78 +4,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livreur - ManiocAgri</title>
+    <title>Espace Livreur - ManiocAgri</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .delivery-card {
+            border-left: 5px solid var(--primary-500);
+            transition: all 0.3s ease;
+        }
+
+        .delivery-card:hover {
+            transform: scale(1.015);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .bg-delivery-gradient {
+            background: linear-gradient(135deg, var(--primary-700), var(--primary-900));
+            color: white;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#">ManiocAgri - Livreur</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand fw-bold" href="#">ManiocAgri <span
+                    class="badge bg-warning text-dark ms-2">Livreur</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">Accueil Site</a></li>
+                    <li class="nav-item"><span class="nav-link text-white-50">|</span></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="logoutBtn">Déconnexion</a>
+                        <a class="btn btn-outline-light btn-sm px-4 rounded-pill" href="#" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container py-5">
-        <h2>Gestion des Livraisons</h2>
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Commandes à livrer</h5>
-                <button class="btn btn-primary btn-sm rounded-pill px-3" onclick="optimizeDeliveries()">
-                    <i class="fas fa-route me-2"></i>Optimiser l'itinéraire
-                </button>
-            </div>
-            <div class="card-body">
-                <div id="pendingOrders">
-                    <!-- Liste des commandes en attente -->
+    <!-- Header Stats -->
+    <header class="bg-delivery-gradient py-5 mb-4 position-relative overflow-hidden">
+        <div class="container position-relative z-index-1">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="display-5 fw-bold mb-2">Bonjour, <span id="livreurName">Livreur</span> !</h1>
+                    <p class="lead opacity-75">Gérez vos livraisons avec efficacité.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4">
+                            <div class="glass-panel p-3 text-center h-100">
+                                <div class="stat-value h2 mb-1 text-white" id="countPending">0</div>
+                                <div class="stat-label small fw-bold text-uppercase opacity-75">À livrer</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="glass-panel p-3 text-center h-100">
+                                <div class="stat-value h2 mb-1 text-white" id="countInTransit">0</div>
+                                <div class="stat-label small fw-bold text-uppercase opacity-75">En cours</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="glass-panel p-3 text-center h-100">
+                                <div class="stat-value h2 mb-1 text-warning" id="countToday">0</div>
+                                <div class="stat-label small fw-bold text-uppercase opacity-75">Total Aujourd'hui</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </header>
 
-        <div class="card">
-            <div class="card-header">
-                <h5>Confirmer une livraison</h5>
+    <main class="container mb-5">
+        <div class="row g-4">
+            <!-- Left Column: Actions -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4 rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4"><i class="fas fa-tools me-2 text-primary"></i>Tableau de Bord</h5>
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-primary py-3 fw-bold shadow-sm rounded-3"
+                                onclick="optimizeDeliveries()">
+                                <i class="fas fa-route me-2"></i>Optimiser l'itinéraire
+                            </button>
+                            <button class="btn btn-outline-success py-3 fw-bold rounded-3"
+                                onclick="refreshDeliveries()">
+                                <i class="fas fa-sync-alt me-2"></i>Actualiser la liste
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm overflow-hidden rounded-4">
+                    <div class="card-header bg-white border-0 py-3">
+                        <h6 class="mb-0 fw-bold"><i class="fas fa-map-marker-alt me-2 text-danger"></i>Suivi en Temps
+                            Réel</h6>
+                    </div>
+                    <div class="bg-secondary-subtle d-flex align-items-center justify-content-center"
+                        style="height: 250px;">
+                        <div class="text-center text-muted p-4">
+                            <i class="fas fa-map-marked-alt fa-3x mb-3 opacity-25"></i>
+                            <p class="small mb-0">Carte interactive du Togo en attente de synchronisation GPS</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <form id="deliveryForm">
-                    <div class="mb-3">
-                        <label for="orderId" class="form-label">Numéro de commande</label>
-                        <input type="text" class="form-control" id="orderId" placeholder="Ex: CMD-1234567890123"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Nouveau statut</label>
-                        <select class="form-select" id="status" required>
-                            <option value="En transit">En transit</option>
-                            <option value="Livré">Livré</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="departureDate" class="form-label">Date de départ</label>
-                        <input type="date" class="form-control" id="departureDate">
-                    </div>
-                    <button type="submit" class="btn btn-success">Mettre à jour</button>
-                </form>
+
+            <!-- Right Column: Delivery List -->
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Feuille de Route</h4>
+                </div>
+
+                <div id="deliveriesContainer" class="list-group gap-3">
+                    <!-- Delivery cards will be injected by script.js -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyDeliveries"
+                    class="d-none text-center py-5 bg-white rounded-4 shadow-sm border-dashed border-2">
+                    <i class="fas fa-check-circle fa-4x text-success opacity-25 mb-3"></i>
+                    <h5 class="fw-bold">Mission accomplie !</h5>
+                    <p class="text-muted">Aucune livraison en attente pour le moment.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Update Status Modal -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Action de Livraison</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form id="statusForm">
+                        <input type="hidden" id="activeOrderId">
+                        <div class="mb-4 text-center">
+                            <h6 class="text-muted small text-uppercase fw-bold mb-3">Mise à jour du statut</h6>
+                            <div class="d-flex justify-content-center gap-3">
+                                <input type="radio" class="btn-check" name="deliveryStatus" id="statusTransit"
+                                    value="En transit" checked>
+                                <label
+                                    class="btn btn-outline-warning p-3 rounded-4 d-flex flex-column align-items-center gap-2 flex-grow-1"
+                                    for="statusTransit">
+                                    <i class="fas fa-truck fa-2x"></i>
+                                    <span>Partir en livraison</span>
+                                </label>
+                                <input type="radio" class="btn-check" name="deliveryStatus" id="statusDelivered"
+                                    value="Livré">
+                                <label
+                                    class="btn btn-outline-success p-3 rounded-4 d-flex flex-column align-items-center gap-2 flex-grow-1"
+                                    for="statusDelivered">
+                                    <i class="fas fa-check-double fa-2x"></i>
+                                    <span>Confirmer Livraison</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Note de livraison</label>
+                            <textarea class="form-control" id="deliveryNote" rows="2"
+                                placeholder="Ex: Client très satisfait, payé en espèces..."></textarea>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success py-3 fw-bold rounded-pill">Valider
+                                l'opération</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <footer class="bg-dark text-white py-4">
+
+    <footer class="bg-dark text-white py-5 mt-5">
         <div class="container text-center">
-            <p>&copy; 2026 ManiocAgri. Tous droits réservés.</p>
+            <p class="mb-0 text-white-50">&copy; 2026 ManiocAgri. Excellence Agricole & Produits Dérivés.</p>
         </div>
     </footer>
+
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Role check
+            if (sessionStorage.getItem('userRole') !== 'livreur') {
+                window.location.href = 'authentification.html';
+                return;
+            }
+
+            // UI Initialization
+            const username = sessionStorage.getItem('username') || 'Livreur';
+            const nameEl = document.getElementById('livreurName');
+            if (nameEl) nameEl.textContent = username;
+
+            // Load data from centralized script.js
+            refreshLivreurDeliveries();
+
+            // Status form handling
+            const form = document.getElementById('statusForm');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const orderId = document.getElementById('activeOrderId').value;
+                    const status = document.querySelector('input[name="deliveryStatus"]:checked').value;
+                    const note = document.getElementById('deliveryNote').value;
+
+                    const btn = e.target.querySelector('button[type="submit"]');
+                    setButtonLoading(btn, true);
+
+                    try {
+                        await apiCall(`/orders/${orderId}/status`, 'PATCH', {
+                            status: status,
+                            notes: note
+                        });
+
+                        const modalEl = document.getElementById('statusModal');
+                        const modal = bootstrap.Modal.getInstance(modalEl);
+                        if (modal) modal.hide();
+
+                        showToast('Mise à jour réussie !', 'success');
+                        refreshLivreurDeliveries();
+                    } catch (err) {
+                        showToast(err.message, 'error');
+                    } finally {
+                        setButtonLoading(btn, false);
+                    }
+                });
+            }
+
+            // Logout
+            const logout = document.getElementById('logoutBtn');
+            if (logout) {
+                logout.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    sessionStorage.clear();
+                    window.location.href = 'authentification.html';
+                });
+            }
+        });
+
+        // Global bridges for HTML buttons
+        function optimizeDeliveries() { if (typeof optimizeLivreurRoute === 'function') optimizeLivreurRoute(); }
+        function refreshDeliveries() { if (typeof refreshLivreurDeliveries === 'function') refreshLivreurDeliveries(); }
+        function openStatusModal(id, status) { if (typeof openLivreurStatusModal === 'function') openLivreurStatusModal(id, status); }
+    </script>
 </body>
 
 </html>

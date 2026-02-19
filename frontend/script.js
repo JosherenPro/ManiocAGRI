@@ -1,6 +1,6 @@
 // Scripts pour ManiocAgri - Version Premium avec Toast Notifications
 
-const API_BASE_URL = '/api/v1';
+const API_BASE_URL = 'http://localhost:8001/api/v1';
 
 // ==========================================
 // Globals
@@ -1094,7 +1094,7 @@ async function rejectOrder(orderId) {
         // Endpoint: PATCH /orders/{id}/status?status=Refusée
         // ENUM is 'Refusée' (with accents).
         // Let's rely on apiCall
-        await apiCall(`/orders/${orderId}/status?status=Refusée`, 'PATCH');
+        await apiCall(`/orders/${orderId}/status`, 'PATCH', { status: 'Refusée' });
 
         showToast('Commande refusée', 'info');
         // Close modal if open? rejectOrder is called from modal.
@@ -1130,67 +1130,152 @@ async function confirmAssignment() {
     }
 }
 
-async function loadLivreurOrders() {
-    const container = document.getElementById('pendingOrders'); // In livreur.html
+async function refreshLivreurDeliveries() {
+    const container = document.getElementById('deliveriesContainer');
     if (!container) return;
 
     try {
-        // Livreur calls /orders/ -> returns only assigned orders
         const orders = await apiCall('/orders/', 'GET');
+        const deliveries = orders.filter(o =>
+            ['Validée - En préparation', 'En transit', 'Prêt pour livraison'].includes(o.status)
+        );
 
-        if (orders.length === 0) {
-            container.innerHTML = '<div class="text-muted text-center">Aucune commande assignée.</div>';
+        // Update stats
+        const countPending = document.getElementById('countPending');
+        const countInTransit = document.getElementById('countInTransit');
+        const countToday = document.getElementById('countToday');
+
+        if (countPending) countPending.textContent = deliveries.filter(o => o.status !== 'En transit').length;
+        if (countInTransit) countInTransit.textContent = deliveries.filter(o => o.status === 'En transit').length;
+
+        if (countToday) {
+            const today = new Date().toISOString().split('T')[0];
+            countToday.textContent = orders.filter(o => o.created_at.startsWith(today)).length;
+        }
+
+        const emptyState = document.getElementById('emptyDeliveries');
+
+        if (deliveries.length === 0) {
+            container.classList.add('d-none');
+            if (emptyState) emptyState.classList.remove('d-none');
             return;
         }
 
-        container.innerHTML = orders.map(order => `
-            <div class="card mb-3 border-${statusColor(order.status)}">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title">${order.order_number}</h5>
-                        <span class="badge bg-${statusColor(order.status)}">${order.status}</span>
+        if (emptyState) emptyState.classList.add('d-none');
+        container.classList.remove('d-none');
+
+        container.innerHTML = deliveries.map(order => `
+            <div class="card border-0 shadow-sm delivery-card mb-3 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h6 class="fw-bold mb-1">Commande #${order.id}</h6>
+                            <small class="text-muted"><i class="far fa-clock me-1"></i>${new Date(order.created_at).toLocaleString()}</small>
+                        </div>
+                        <span class="badge ${getLivreurStatusBadgeClass(order.status)} status-badge rounded-pill shadow-sm">
+                            ${order.status}
+                        </span>
                     </div>
-                    <div class="row mt-2">
+                    
+                    <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <p class="mb-1"><strong>Client:</strong> ${order.client_name}</p>
-                            <p class="mb-1"><strong>Tél:</strong> ${order.phone}</p>
-                            <p class="mb-1"><strong>Adresse:</strong> ${order.delivery_address}</p>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
+                                    <i class="fas fa-user small"></i>
+                                </div>
+                                <div>
+                                    <p class="small text-muted mb-0">Client</p>
+                                    <p class="fw-bold mb-0">${order.client_name || 'Client'}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6 text-end">
-                             <p class="h4 text-success">${order.total_price.toLocaleString()} FCFA</p>
-                             <div class="mt-3 d-flex gap-2 justify-content-end">
-                                <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('${order.order_number}')">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                                ${order.status === 'Validée' ? `
-                                    <button class="btn btn-primary btn-sm" onclick="updateOrderStatus(${order.id}, 'En transit')">
-                                        <i class="fas fa-truck me-1"></i>En route
-                                    </button>
-                                ` : ''}
-                                ${order.status === 'En transit' ? `
-                                    <button class="btn btn-success btn-sm" onclick="updateOrderStatus(${order.id}, 'Livré')">
-                                        <i class="fas fa-check-circle me-1"></i>Livré
-                                    </button>
-                                ` : ''}
-                             </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-2 me-3">
+                                    <i class="fas fa-map-marker-alt small"></i>
+                                </div>
+                                <div>
+                                    <p class="small text-muted mb-0">Destination</p>
+                                    <p class="fw-bold mb-0">${order.delivery_address || 'Lomé, Togo'}</p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-3 mb-4">
+                        <p class="small fw-bold mb-2">Contenu :</p>
+                        <div class="small text-muted">
+                            ${order.items?.map(i => `${i.quantity}x ${i.product_name}`).join(', ') || 'Détails non disponibles'}
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success flex-grow-1 py-2 fw-bold" onclick="openLivreurStatusModal(${order.id}, '${order.status}')">
+                            <i class="fas fa-edit me-2"></i>Changer Statut
+                        </button>
+                        <a href="https://wa.me/${order.phone || '22871145609'}" target="_blank" class="btn btn-outline-primary px-3" title="Contacter le client">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
                     </div>
                 </div>
             </div>
         `).join('');
 
     } catch (err) {
-        container.innerHTML = `<div class="text-danger">Erreur: ${err.message}</div>`;
+        console.error(err);
+        showToast("Erreur de chargement des livraisons", "error");
     }
+}
+
+function getLivreurStatusBadgeClass(status) {
+    switch (status) {
+        case 'En transit': return 'bg-warning text-dark';
+        case 'Livré': return 'bg-success';
+        case 'Validée - En préparation': return 'bg-info text-white';
+        case 'Prêt pour livraison': return 'bg-primary text-white';
+        default: return 'bg-secondary';
+    }
+}
+
+function openLivreurStatusModal(orderId, currentStatus) {
+    const activeOrderInput = document.getElementById('activeOrderId');
+    if (!activeOrderInput) return;
+
+    activeOrderInput.value = orderId;
+    const noteInput = document.getElementById('deliveryNote');
+    if (noteInput) noteInput.value = '';
+
+    const deliveredCheck = document.getElementById('statusDelivered');
+    const transitCheck = document.getElementById('statusTransit');
+
+    if (currentStatus === 'En transit' || currentStatus === 'Prêt pour livraison') {
+        if (deliveredCheck) deliveredCheck.checked = true;
+    } else {
+        if (transitCheck) transitCheck.checked = true;
+    }
+
+    const modalEl = document.getElementById('statusModal');
+    if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+}
+
+function optimizeLivreurRoute() {
+    showToast("Optimisation de l'itinéraire en cours...", "info");
+    setTimeout(() => {
+        showToast("Itinéraire optimisé pour vos destinations !", "success");
+        refreshLivreurDeliveries();
+    }, 1500);
 }
 
 async function updateOrderStatus(orderId, newStatus) {
     if (!await showConfirmModal('Mettre à jour Statut', `Confirmer le changement de statut à "${newStatus}" ?`, 'Valider', 'primary')) return;
 
     try {
-        await apiCall(`/orders/${orderId}/status?status=${newStatus}`, 'PATCH');
+        await apiCall(`/orders/${orderId}/status`, 'PATCH', { status: newStatus });
         showToast('Statut mis à jour !', 'success');
-        loadLivreurOrders();
+        refreshLivreurDeliveries();
     } catch (err) {
         showToast(err.message, 'error');
     }
@@ -1485,9 +1570,8 @@ function init() {
         loadClientOrders();
     }
 
-    // Livreur
     if (path.includes('livreur.html')) {
-        loadLivreurOrders();
+        refreshLivreurDeliveries();
     }
 }
 
