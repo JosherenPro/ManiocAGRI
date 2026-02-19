@@ -5,7 +5,7 @@ from core.db import get_session
 from api import deps
 from models.user import User
 from models.order import Order
-from core.ai_service import chat_with_gemini, DemandPredictor
+from core.ai_service import chat_with_ai, DemandPredictor
 
 router = APIRouter()
 
@@ -20,10 +20,10 @@ async def chat_endpoint(
     current_user: User = Depends(deps.get_current_user)
 ) -> Any:
     """
-    Interagir avec le chatbot Gemini.
+    Interagir avec l'assistant Cerebras AI.
     """
     try:
-        response = await chat_with_gemini(request.prompt)
+        response = await chat_with_ai(request.prompt)
         return {"response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

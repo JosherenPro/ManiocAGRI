@@ -9,7 +9,7 @@ python-dotenv
 alembic
 pandas
 scikit-learn
-google-genai
+cerebras_cloud_sdk
 fastapi-mail
 jinja2
 httpx

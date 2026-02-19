@@ -1,41 +1,39 @@
-from google import genai
+from cerebras.cloud.sdk import Cerebras
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from sklearn.linear_model import LinearRegression
 from core.config import settings
 
-# Configure Gemini
+# Configure Cerebras
 client = None
-if settings.GEMINI_API_KEY:
-    client = genai.Client(api_key=settings.GEMINI_API_KEY)
+if settings.CEREBRAS_API_KEY:
+    client = Cerebras(api_key=settings.CEREBRAS_API_KEY)
 
-async def chat_with_gemini(prompt: str, history: list = None):
+async def chat_with_ai(prompt: str, history: list = None):
     if not client:
-        return "L'IA est actuellement désactivée (Clé API manquante)."
+        return "L'IA est actuellement désactivée (Clé API Cerebras manquante)."
     
     try:
-        # gemini-2.0-flash is the current free-tier model
-        # Using the new SDK pattern
-        
         # System Instruction Context
-        context = "Tu es l'assistant intelligent de ManiocAgri, une plateforme agricole au Togo. Tu aides les utilisateurs (producteurs, clients, admins) sur des sujets comme le prix du manioc, les livraisons, et l'utilisation de la plateforme. Réponds de manière concise et professionnelle en français."
+        system_prompt = "Tu es l'assistant intelligent de ManiocAgri, une plateforme agricole au Togo. Tu aides les utilisateurs (producteurs, clients, admins) sur des sujets comme le prix du manioc, les livraisons, et l'utilisation de la plateforme. Réponds de manière concise et professionnelle en français."
         
-        full_prompt = f"{context}\n\nUtilisateur: {prompt}"
-        
-        response = client.models.generate_content(
-            model='gemini-2.0-flash-lite-preview-02-05',
-            contents=full_prompt
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt},
+            ],
+            model="llama3.1-70b", # Modèle haute performance par défaut pour Cerebras
         )
         
-        if response.text:
-            return response.text
+        if response.choices and len(response.choices) > 0:
+            return response.choices[0].message.content
         else:
-            return "Désolé, je n'ai pas pu générer de réponse. Le contenu a peut-être été filtré."
+            return "Désolé, je n'ai pas pu générer de réponse."
             
     except Exception as e:
         error_msg = str(e).lower()
-        print(f"Gemini API Error: {str(e)}")
+        print(f"Cerebras API Error: {str(e)}")
         
         # Handle common errors with user-friendly messages
         if "429" in str(e) or "quota" in error_msg or "rate" in error_msg:

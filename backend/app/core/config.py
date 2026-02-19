@@ -14,8 +14,8 @@ class Settings:
 
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./manioc_agri.db")
 
-    # AI & Gemini
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    # AI & Cerebras
+    CEREBRAS_API_KEY: str = os.getenv("CEREBRAS_API_KEY", "")
 
     # Email Settings
     MAIL_USERNAME: str = os.getenv("MAIL_USERNAME", "")
