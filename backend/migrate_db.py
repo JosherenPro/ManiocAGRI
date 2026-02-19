@@ -11,12 +11,18 @@ def migrate():
             print(f"Current columns in 'order' table: {columns}")
             
             if 'delivery_notes' not in columns:
-                print("Adding 'delivery_notes' column...")
+                print("Adding 'delivery_notes' column to 'order'...")
                 conn.execute(text("ALTER TABLE \"order\" ADD COLUMN delivery_notes VARCHAR"))
-                conn.commit()
-                print("Column 'delivery_notes' added successfully.")
-            else:
-                print("Column 'delivery_notes' already exists.")
+            
+            # Check orderitem
+            res = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name='orderitem'"))
+            item_columns = [row[0] for row in res]
+            if 'product_name' not in item_columns:
+                print("Adding 'product_name' column to 'orderitem'...")
+                conn.execute(text("ALTER TABLE \"orderitem\" ADD COLUMN product_name VARCHAR DEFAULT 'Produit'"))
+                
+            conn.commit()
+            print("Migration completed successfully.")
     except Exception as e:
         print(f"Error during migration: {e}")
         sys.exit(1)

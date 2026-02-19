@@ -12,6 +12,7 @@ class OrderStatus(str, Enum):
 
 class OrderItemBase(SQLModel):
     product_id: int = Field(foreign_key="product.id")
+    product_name: str = "Produit"
     quantity: int
     unit_price: int
 

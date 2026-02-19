@@ -25,7 +25,23 @@ def create_test_order():
         session.add(order)
         session.commit()
         session.refresh(order)
-        print(f"Test order created: {order.order_number} assigned to {livreur.username}")
+        
+        # Add items
+        from app.models.order import OrderItem
+        from app.models.product import Product
+        products = session.exec(select(Product).limit(2)).all()
+        for p in products:
+            item = OrderItem(
+                order_id=order.id,
+                product_id=p.id,
+                product_name=p.name,
+                quantity=2,
+                unit_price=p.price
+            )
+            session.add(item)
+        
+        session.commit()
+        print(f"Test order created: {order.order_number} with {len(products)} items assigned to {livreur.username}")
 
 if __name__ == "__main__":
     create_test_order()
