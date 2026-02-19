@@ -30,6 +30,7 @@ class OrderBase(SQLModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     client_id: Optional[int] = Field(default=None, foreign_key="user.id")
     livreur_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    delivery_notes: Optional[str] = Field(default=None)
 
 class Order(OrderBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -45,3 +46,8 @@ class OrderRead(OrderBase):
 class OrderUpdate(SQLModel):
     status: Optional[OrderStatus] = None
     delivery_address: Optional[str] = None
+    delivery_notes: Optional[str] = None
+
+class OrderStatusUpdate(SQLModel):
+    status: OrderStatus
+    notes: Optional[str] = None

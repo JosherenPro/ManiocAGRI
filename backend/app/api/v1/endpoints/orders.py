@@ -5,7 +5,7 @@ from api import deps
 from api.deps import get_current_admin_or_gestionnaire
 from core.db import get_session
 from models.user import User
-from models.order import Order, OrderCreate, OrderRead, OrderUpdate, OrderItem, OrderStatus
+from models.order import Order, OrderCreate, OrderRead, OrderUpdate, OrderItem, OrderStatus, OrderStatusUpdate
 
 router = APIRouter()
 
@@ -106,7 +106,7 @@ def update_order_status(
     *,
     session: Session = Depends(get_session),
     id: int,
-    status: OrderStatus,
+    order_update: OrderStatusUpdate,
     current_user: User = Depends(deps.get_current_user),
 ) -> Any:
     """
@@ -123,7 +123,10 @@ def update_order_status(
     if current_user.role == "livreur" and order.livreur_id != current_user.id:
         raise HTTPException(status_code=403, detail="Vous ne pouvez modifier que vos commandes assignées")
     
-    order.status = status
+    order.status = order_update.status
+    if order_update.notes:
+        order.delivery_notes = order_update.notes
+        
     session.add(order)
     session.commit()
     session.refresh(order)
