@@ -74,14 +74,22 @@ def read_orders(
     - Drivers see assigned orders.
     - Clients see their own.
     """
+    print(f"DEBUG: read_orders called by user {current_user.id} with role {current_user.role}")
     statement = select(Order)
     if current_user.role == "client":
         statement = statement.where(Order.client_id == current_user.id)
     elif current_user.role == "livreur":
         statement = statement.where(Order.livreur_id == current_user.id)
     
-    orders = session.exec(statement.offset(skip).limit(limit)).all()
-    return orders
+    try:
+        orders = session.exec(statement.offset(skip).limit(limit)).all()
+        print(f"DEBUG: Found {len(orders)} orders")
+        return orders
+    except Exception as e:
+        print(f"DEBUG: Error in read_orders: {e}")
+        import traceback
+        traceback.print_exc()
+        raise e
 
 @router.get("/pending", response_model=List[OrderRead])
 def read_pending_orders(
