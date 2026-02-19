@@ -697,7 +697,7 @@ footer::before {
     position: fixed;
     bottom: 25px;
     right: 25px;
-    z-index: 10000;
+    z-index: 999999;
     width: 60px;
     height: 60px;
     border-radius: 50%;

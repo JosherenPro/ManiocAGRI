@@ -1670,6 +1670,6 @@ async function optimizeDeliveries() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    initWhatsAppButton(); // Charger le bouton en priorité
     try { init(); } catch (e) { console.error('init() error:', e); }
-    initWhatsAppButton();
 });
