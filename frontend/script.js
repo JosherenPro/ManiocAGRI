@@ -819,9 +819,12 @@ function renderCatalogue(products) {
                     <div class="card-body p-3">
                         <h6 class="card-title fw-bold mb-1">${product.name}</h6>
                         <small class="text-muted d-block mb-3 text-truncate">${product.description || 'Produit local de qualité 🌿'}</small>
-                        <div class="d-flex justify-content-between align-items-center mt-auto">
-                            <button class="btn btn-success btn-sm w-100 rounded-pill shadow-sm" onclick="event.stopPropagation(); addToCart(${product.id})">
-                                <i class="fas fa-shopping-basket me-2"></i>Acheter
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="btn btn-success btn-sm flex-fill rounded-pill shadow-sm" onclick="event.stopPropagation(); addToCart(${product.id})">
+                                <i class="fas fa-shopping-basket me-1"></i>Acheter
+                            </button>
+                            <button class="btn btn-outline-success btn-sm rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 0;" onclick="event.stopPropagation(); whatsappOrder('${product.name}', ${product.price})" title="Commander via WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
                             </button>
                         </div>
                     </div>
@@ -906,6 +909,9 @@ async function loadProductDetails() {
                     <div class="d-grid gap-2 d-md-flex mt-5">
                         <button class="btn btn-success btn-lg px-5 py-3 rounded-pill shadow-sm flex-fill" onclick="addToCart(${product.id})">
                             <i class="fas fa-shopping-basket me-2"></i>AJOUTER AU PANIER
+                        </button>
+                        <button class="btn btn-outline-success btn-lg px-4 py-3 rounded-pill shadow-sm" onclick="whatsappOrder('${product.name}', ${product.price})">
+                            <i class="fab fa-whatsapp me-2"></i>COMMANDER VIA WHATSAPP
                         </button>
                     </div>
                 </div>
@@ -1704,6 +1710,13 @@ function initContactForm() {
             window.open(whatsappUrl, '_blank');
         }, 1000);
     });
+}
+
+
+function whatsappOrder(productName, price) {
+    const phoneNumber = '22871145609';
+    const message = encodeURIComponent(`Bonjour ManiocAgri ! Je souhaite commander le produit suivant :\n\n- *${productName}*\n- *Prix:* ${price.toLocaleString()} FCFA/kg\n\nMerci de me donner la marche à suivre.`);
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
 }
 
 
