@@ -1669,7 +1669,46 @@ async function optimizeDeliveries() {
 }
 
 
+// ==========================================
+// Contact Form to WhatsApp
+// ==========================================
+
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = this.querySelector('input[type="text"]').value.trim();
+        const email = this.querySelector('input[type="email"]').value.trim();
+        const message = this.querySelector('textarea').value.trim();
+
+        if (!name || !message) {
+            showToast('Veuillez remplir au moins votre nom et votre message.', 'warning');
+            return;
+        }
+
+        const phoneNumber = '22871145609';
+        const fullMessage = encodeURIComponent(
+            `*Nouveau message de contact*\n\n` +
+            `*Nom:* ${name}\n` +
+            `*Email:* ${email || 'Non renseigné'}\n\n` +
+            `*Message:* ${message}`
+        );
+
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${fullMessage}`;
+
+        showToast('Redirection vers WhatsApp...', 'info');
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+        }, 1000);
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     initWhatsAppButton(); // Charger le bouton en priorité
+    initContactForm();    // Service d'envoi WhatsApp
     try { init(); } catch (e) { console.error('init() error:', e); }
 });
