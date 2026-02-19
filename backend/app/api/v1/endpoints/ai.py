@@ -20,7 +20,21 @@ async def chat_endpoint(
     current_user: User = Depends(deps.get_current_user)
 ) -> Any:
     """
-    Interagir avec l'assistant Cerebras AI.
+    Interagir avec l'assistant Cerebras AI (authentifié).
+    """
+    try:
+        response = await chat_with_ai(request.prompt)
+        return {"response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/chat-public")
+async def chat_public_endpoint(
+    request: ChatRequest,
+) -> Any:
+    """
+    Chat public avec l'assistant IA - accessible sans authentification.
+    Utilisé depuis la page d'accueil pour les visiteurs.
     """
     try:
         response = await chat_with_ai(request.prompt)

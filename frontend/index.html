@@ -340,6 +340,63 @@
         </div>
     </footer>
 
+
+    <!-- ============================================
+         Bouton WhatsApp Flottant
+         ============================================ -->
+    <a id="whatsapp-btn"
+        href="https://wa.me/22871145609?text=Bonjour%20%21%20Je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20produits."
+        target="_blank" rel="noopener noreferrer" title="Discuter sur WhatsApp">
+        <svg viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M16 2C8.28 2 2 8.28 2 16c0 2.42.65 4.72 1.78 6.72L2 30l7.5-1.75A13.93 13.93 0 0 0 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm7.6 19.6c-.32.9-1.86 1.72-2.56 1.8-.66.08-1.28.32-4.36-1.02-3.66-1.58-6.02-5.36-6.2-5.6-.18-.26-1.46-1.96-1.46-3.74 0-1.78.92-2.66 1.26-3.02.32-.36.7-.44 1.04-.44h.72c.26 0 .54.02.78.56.26.58.9 2.24.98 2.4.08.18.14.38.02.6-.1.24-.16.38-.32.58-.18.2-.36.46-.52.62-.16.18-.34.36-.16.72.18.34.8 1.32 1.72 2.14 1.18 1.06 2.18 1.38 2.54 1.54.36.16.56.14.78-.08.22-.22.92-.96 1.16-1.3.22-.32.46-.28.76-.16.32.12 2 .94 2.34 1.12.36.18.6.26.7.42.08.14.08.82-.24 1.72z" />
+        </svg>
+    </a>
+
+    <!-- ============================================
+         Chat IA Flotant - Bouton et Panneau
+         ============================================ -->
+
+    <!-- Panneau de chat (caché par défaut) -->
+    <div id="chat-panel" class="hidden" role="dialog" aria-label="Assistant IA ManiocAgri">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🌿</div>
+            <div class="chat-info">
+                <h6>Assistant ManiocAgri</h6>
+                <small><span class="status-dot"></span>En ligne • IA Cerebras</small>
+            </div>
+            <button class="chat-close-btn" id="chat-close-btn" aria-label="Fermer le chat">&times;</button>
+        </div>
+        <!-- Zone de messages -->
+        <div id="chat-messages">
+            <!-- Message de bienvenue -->
+            <div class="msg-bubble bot">
+                👋 Bonjour ! Je suis l'assistant de ManiocAgri. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <!-- Input -->
+        <div class="chat-input-zone">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." autocomplete="off" maxlength="500">
+            <button class="chat-send-btn" id="chat-send-btn" aria-label="Envoyer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bouton Chat Flottant -->
+    <button id="chat-fab" aria-label="Ouvrir le chat IA">
+        <span class="chat-badge"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+
     <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>

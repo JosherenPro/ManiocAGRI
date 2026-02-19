@@ -1578,7 +1578,10 @@ function initOrderChart(orders) {
 // ==========================================
 
 function initWhatsAppButton() {
-    const phoneNumber = '22871145609'; // Numéro avec indicatif Togo (+228)
+    // Si le bouton existe déjà dans le HTML statique, ne pas en créer un second
+    if (document.getElementById('whatsapp-btn')) return;
+
+    const phoneNumber = '22871145609';
     const message = encodeURIComponent('Bonjour ! Je souhaite avoir plus d\'informations sur ManiocAgri.');
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
@@ -1589,7 +1592,6 @@ function initWhatsAppButton() {
     link.rel = 'noopener noreferrer';
     link.setAttribute('aria-label', 'Contacter via WhatsApp');
     link.title = 'Contactez-nous sur WhatsApp';
-    // SVG officiel WhatsApp
     link.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30" fill="white">
             <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222
@@ -1609,7 +1611,6 @@ function initWhatsAppButton() {
                 -1.3-2.5-5-3.9-10.5-6.6z"/>
         </svg>
     `;
-
     document.body.appendChild(link);
 }
 
@@ -1723,5 +1724,128 @@ function whatsappOrder(productName, price) {
 document.addEventListener('DOMContentLoaded', () => {
     initWhatsAppButton(); // Charger le bouton en priorité
     initContactForm();    // Service d'envoi WhatsApp
+    initChatWidget();     // Widget de chat IA
     try { init(); } catch (e) { console.error('init() error:', e); }
 });
+
+// ==========================================
+// Widget Chat IA Flottant
+// ==========================================
+
+function initChatWidget() {
+    const fab = document.getElementById('chat-fab');
+    const panel = document.getElementById('chat-panel');
+    const closeBtn = document.getElementById('chat-close-btn');
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('chat-send-btn');
+    const messages = document.getElementById('chat-messages');
+
+    if (!fab || !panel) return; // Widget non présent sur cette page
+
+    let isChatOpen = false;
+
+    // Toggle du panneau
+    function toggleChat() {
+        isChatOpen = !isChatOpen;
+        if (isChatOpen) {
+            panel.classList.remove('hidden');
+            // Re-trigger animation
+            panel.style.animation = 'none';
+            panel.offsetHeight; // Force reflow
+            panel.style.animation = '';
+            // Supprimer le badge de notification
+            const badge = fab.querySelector('.chat-badge');
+            if (badge) badge.style.display = 'none';
+            // Focus sur l'input
+            setTimeout(() => input && input.focus(), 300);
+        } else {
+            panel.classList.add('hidden');
+        }
+    }
+
+    fab.addEventListener('click', toggleChat);
+    if (closeBtn) closeBtn.addEventListener('click', toggleChat);
+
+    // Envoi via touche Entrée
+    if (input) {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+
+    // Envoi via bouton
+    if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+
+    // Ajouter une bulle de message
+    function appendMessage(text, type) {
+        const bubble = document.createElement('div');
+        bubble.className = `msg-bubble ${type}`;
+        bubble.textContent = text;
+        messages.appendChild(bubble);
+        messages.scrollTop = messages.scrollHeight;
+        return bubble;
+    }
+
+    // Afficher l'indicateur de frappe
+    function showTyping() {
+        const indicator = document.createElement('div');
+        indicator.className = 'typing-indicator';
+        indicator.id = 'typing-indicator';
+        indicator.innerHTML = `
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        `;
+        messages.appendChild(indicator);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideTyping() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    }
+
+    // Envoyer un message à l'API
+    async function sendMessage() {
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+
+        // Afficher le message utilisateur
+        appendMessage(text, 'user');
+        input.value = '';
+        input.disabled = true;
+        if (sendBtn) sendBtn.disabled = true;
+
+        // Afficher l'animation de frappe
+        showTyping();
+
+        try {
+            const response = await fetch('/api/v1/ai/chat-public', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: text })
+            });
+
+            hideTyping();
+
+            if (!response.ok) {
+                throw new Error('Erreur réseau');
+            }
+
+            const data = await response.json();
+            appendMessage(data.response || 'Désolé, je n\'ai pas pu répondre.', 'bot');
+        } catch (err) {
+            hideTyping();
+            appendMessage('⚠️ Service temporairement indisponible. Contactez-nous sur WhatsApp !', 'bot');
+            console.error('Chat error:', err);
+        } finally {
+            input.disabled = false;
+            if (sendBtn) sendBtn.disabled = false;
+            input.focus();
+        }
+    }
+}
