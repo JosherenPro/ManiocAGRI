@@ -1568,86 +1568,28 @@ function initOrderChart(orders) {
 }
 
 // ==========================================
-// AI Features: Chat & Forecast
+// WhatsApp Contact Button
 // ==========================================
 
-async function initAIChat() {
-    // Create Chatbot Wrapper
-    const wrapper = document.createElement('div');
-    wrapper.id = 'ai-chat-wrapper';
+function initWhatsAppButton() {
+    const phoneNumber = '22871145609'; // Numéro avec indicatif Togo (+228)
+    const message = encodeURIComponent('Bonjour ! Je souhaite avoir plus d\'informations sur ManiocAgri.');
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
-    // Create Button
-    const chatBtn = document.createElement('button');
-    chatBtn.id = 'chat-toggle-btn';
-    chatBtn.className = 'shadow-lg';
-    chatBtn.innerHTML = '<i class="fas fa-robot"></i>';
-    // Append button properly
-    wrapper.appendChild(chatBtn);
-
-    // Create Chat Window
-    const chatWindow = document.createElement('div');
-    chatWindow.id = 'ai-chat-window';
-    chatWindow.className = 'glass-panel';
-    chatWindow.innerHTML = `
-        <div class="chat-header">
-            <span class="fw-bold"><i class="fas fa-leaf me-2"></i>Assistant ManiocAgri</span>
-            <button class="btn btn-sm text-white" onclick="toggleChat()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="chat-body" id="chat-messages">
-            <div class="chat-bubble bot">Bonjour ! Je suis l'IA ManiocAgri. Comment puis-je vous aider aujourd'hui ?</div>
-        </div>
-        <div class="typing-indicator" id="chat-typing">L'assistant réfléchit...</div>
-        <div class="chat-footer">
-            <input type="text" id="chat-input" class="form-control" placeholder="Posez votre question...">
-            <button class="btn btn-success" id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
+    const link = document.createElement('a');
+    link.id = 'whatsapp-btn';
+    link.href = whatsappUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', 'Contacter via WhatsApp');
+    link.title = 'Contactez-nous sur WhatsApp';
+    link.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="white">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 2.823.736 5.47 2.027 7.773L0 32l8.489-2.003A15.929 15.929 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.788-1.861l-.486-.289-5.04 1.188 1.258-4.908-.318-.503A13.268 13.268 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.274-9.938c-.398-.199-2.353-1.161-2.718-1.293-.365-.133-.63-.199-.896.199-.265.398-1.028 1.293-1.26 1.559-.232.265-.464.298-.863.1-.398-.199-1.681-.619-3.203-1.977-1.184-1.056-1.983-2.36-2.215-2.759-.232-.398-.025-.613.174-.811.179-.178.398-.464.597-.696.199-.232.265-.398.398-.664.133-.265.066-.497-.033-.696-.1-.199-.896-2.16-1.228-2.957-.324-.776-.652-.671-.896-.683l-.763-.013c-.265 0-.696.1-.1061.497-.365.398-1.393 1.361-1.393 3.32s1.426 3.852 1.625 4.117c.199.265 2.808 4.289 6.805 6.015.951.411 1.693.656 2.272.84.955.303 1.824.26 2.511.157.766-.113 2.353-.962 2.685-1.89.332-.928.332-1.724.232-1.89-.1-.166-.365-.265-.763-.464z"/>
+        </svg>
     `;
-    wrapper.appendChild(chatWindow);
 
-    document.body.appendChild(wrapper);
-
-    const toggleBtn = document.getElementById('chat-toggle-btn');
-    const chatInput = document.getElementById('chat-input');
-    const sendBtn = document.getElementById('send-chat-btn');
-
-    toggleBtn.addEventListener('click', toggleChat);
-
-    sendBtn.addEventListener('click', sendChatMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendChatMessage();
-    });
-}
-
-function toggleChat() {
-    const window = document.getElementById('ai-chat-window');
-    window.classList.toggle('active');
-}
-
-async function sendChatMessage() {
-    const input = document.getElementById('chat-input');
-    const messages = document.getElementById('chat-messages');
-    const typing = document.getElementById('chat-typing');
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    // Add user message
-    messages.innerHTML += `<div class="chat-bubble user">${text}</div>`;
-    input.value = '';
-    messages.scrollTop = messages.scrollHeight;
-
-    // Show typing
-    typing.style.display = 'block';
-
-    try {
-        const data = await apiCall('/ai/chat', 'POST', { prompt: text });
-        typing.style.display = 'none';
-        messages.innerHTML += `<div class="chat-bubble bot">${data.response}</div>`;
-        messages.scrollTop = messages.scrollHeight;
-    } catch (err) {
-        typing.style.display = 'none';
-        messages.innerHTML += `<div class="chat-bubble bot" style="background: #fff3cd; color: #856404;">😔 Désolé, je ne peux pas répondre pour le moment. Veuillez réessayer dans quelques instants.</div>`;
-    }
+    document.body.appendChild(link);
 }
 
 async function loadDemandForecast() {
@@ -1714,5 +1656,5 @@ async function optimizeDeliveries() {
 
 document.addEventListener('DOMContentLoaded', () => {
     init();
-    initAIChat();
+    initWhatsAppButton();
 });
