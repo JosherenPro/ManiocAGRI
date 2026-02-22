@@ -1,6 +1,6 @@
 import logging
 from typing import Any, List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlmodel import Session, select
 from api import deps
 from core.db import get_session
@@ -8,36 +8,41 @@ from models.user import User
 from models.product import Product, ProductCreate, ProductRead, ProductUpdate
 import os, uuid, shutil
 import httpx
+from services.supabase_storage_service import supabase_storage
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-# Directory for storing product images
-_current_file = os.path.abspath(__file__)
-_project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(_current_file))))))
-UPLOAD_DIR = os.path.join(_project_root, "frontend", "images", "products")
+# Local upload directory (kept for fallback or temporary use if needed, but primary is Supabase)
+UPLOAD_DIR = "/tmp/manioc_agri_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 async def download_image_from_url(url: str) -> str:
+    if not url:
+        return ""
+    # Skip if already a hosted Supabase URL
+    if "supabase.co" in url:
+        return url
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(url, timeout=10.0)
             response.raise_for_status()
-            content_type = response.headers.get("content-type", "")
-            ext_map = {"image/jpeg": "jpg", "image/png": "png", "image/gif": "gif", "image/webp": "webp"}
-            ext = next((v for k, v in ext_map.items() if k in content_type), None)
-            if not ext:
-                ext = url.split(".")[-1].split("?")[0]
-                if ext not in ["jpg", "jpeg", "png", "gif", "webp"]:
-                    ext = "jpg"
-            filename = f"{uuid.uuid4().hex}.{ext}"
-            with open(os.path.join(UPLOAD_DIR, filename), "wb") as f:
-                f.write(response.content)
-            return f"images/products/{filename}"
+            content_type = response.headers.get("content-type", "image/jpeg")
+            
+            # Upload to Supabase instead of saving locally
+            filename = url.split("/")[-1].split("?")[0]
+            if not filename:
+                filename = "image.jpg"
+                
+            public_url = await supabase_storage.upload_image(response.content, filename, content_type)
+            if not public_url:
+                raise Exception("Failed to upload to Supabase")
+            return public_url
     except Exception as e:
-        logger.error("Failed to download image from %s: %s", url, e)
-        raise HTTPException(status_code=400, detail=f"Impossible de télécharger l'image: {e}")
+        logger.error("Failed to download or upload image from %s: %s", url, e)
+        # Fallback to original URL if remote download fails, or raise if it must be hosted
+        return url
 
 
 @router.get("/search", response_model=List[ProductRead])
@@ -133,13 +138,8 @@ async def update_product(
 
     product_data = product_in.dict(exclude_unset=True)
     if "image_url" in product_data and product_data["image_url"] and product_data["image_url"].startswith(("http://", "https://")):
-        if product.image_url and not product.image_url.startswith(("http://", "https://")):
-            old_path = os.path.join(UPLOAD_DIR, product.image_url.split("/")[-1])
-            if os.path.exists(old_path):
-                try:
-                    os.remove(old_path)
-                except Exception:
-                    pass
+        if product.image_url and "supabase.co" in product.image_url:
+            supabase_storage.delete_image(product.image_url)
         product_data["image_url"] = await download_image_from_url(product_data["image_url"])
 
     for key, value in product_data.items():
@@ -178,11 +178,10 @@ async def upload_product_image(
     *,
     session: Session = Depends(get_session),
     id: int,
-    file: Any = None,
+    file: UploadFile = File(...),
     current_user: User = Depends(deps.get_current_user),
 ) -> Any:
     """Upload an image for a product. Admin, producteur, gestionnaire."""
-    from fastapi import UploadFile, File
     if current_user.role not in ["admin", "gestionnaire", "producteur"]:
         raise HTTPException(status_code=403, detail="Permissions insuffisantes")
     product = session.get(Product, id)
@@ -195,18 +194,21 @@ async def upload_product_image(
     if ext not in allowed:
         raise HTTPException(status_code=400, detail=f"Extensions acceptées: {', '.join(allowed)}")
     filename = f"{uuid.uuid4().hex}.{ext}"
-    if product.image_url:
-        old_path = os.path.join(UPLOAD_DIR, product.image_url.split("/")[-1])
-        if os.path.exists(old_path):
-            os.remove(old_path)
     try:
-        with open(os.path.join(UPLOAD_DIR, filename), "wb") as buf:
-            shutil.copyfileobj(file.file, buf)
+        content = await file.read()
+        public_url = await supabase_storage.upload_image(content, file.filename, file.content_type)
+        if not public_url:
+            raise Exception("Supabase upload failed")
+            
+        if product.image_url and "supabase.co" in product.image_url:
+            supabase_storage.delete_image(product.image_url)
+            
+        product.image_url = public_url
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur d'enregistrement: {e}")
+        raise HTTPException(status_code=500, detail=f"Erreur d'enregistrement sur Supabase: {e}")
     finally:
-        file.file.close()
-    product.image_url = f"images/products/{filename}"
+        await file.close()
+    
     session.add(product)
     session.commit()
     session.refresh(product)

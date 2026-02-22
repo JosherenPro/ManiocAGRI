@@ -18,6 +18,36 @@ def read_user_me(current_user: User = Depends(deps.get_current_user)) -> Any:
     return current_user
 
 
+@router.patch("/me", response_model=UserRead)
+def update_user_me(
+    *,
+    session: Session = Depends(get_session),
+    user_in: UserUpdate,
+    current_user: User = Depends(deps.get_current_user),
+) -> Any:
+    """Update current user profile."""
+    user_data = user_in.dict(exclude_unset=True)
+    
+    # Restrict users from upgrading their own permissions or status
+    protected_fields = ["role", "is_active", "is_approved"]
+    for field in protected_fields:
+        if field in user_data:
+            del user_data[field]
+            
+    if "password" in user_data and user_data["password"]:
+        user_data["hashed_password"] = get_password_hash(user_data.pop("password"))
+    elif "password" in user_data:
+        del user_data["password"]
+        
+    for key, value in user_data.items():
+        setattr(current_user, key, value)
+        
+    session.add(current_user)
+    session.commit()
+    session.refresh(current_user)
+    return current_user
+
+
 @router.get("/", response_model=List[UserRead])
 def read_users(
     session: Session = Depends(get_session),

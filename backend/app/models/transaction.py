@@ -15,6 +15,8 @@ class TransactionPaymentMethod(str, Enum):
     MOBILE_YASS = "Mobile Yass"
     VISA = "Visa"
     MOOV_MONEY = "Moov Money"
+    FLOOZ = "FLOOZ"
+    TMONEY = "TMONEY"
     CASH = "Espèces"
 
 

@@ -71,9 +71,15 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
     </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+
     <div class="container-fluid p-0">
         <div class="row g-0">
             <!-- SIDEBAR -->
@@ -117,7 +123,7 @@
             <!-- MAIN CONTENT -->
             <main class="col">
                 <!-- Header Mobile -->
-                <nav class="navbar navbar-expand-lg d-lg-none bg-success navbar-dark p-3">
+                <nav class="navbar navbar-expand-lg d-lg-none fixed-top navbar-solid navbar-dark p-3">
                     <div class="container-fluid">
                         <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#sidebarMenu">
@@ -131,7 +137,7 @@
                     </div>
                 </nav>
 
-                <div class="main-content">
+                <div class="main-content" style="margin-top: 60px;">
                     <header class="d-flex justify-content-between align-items-center mb-5 d-none d-lg-flex">
                         <div>
                             <h2 class="fw-bold mb-1" id="pageTitle">Tableau de Bord</h2>
@@ -296,7 +302,51 @@
     <!-- Modals (Copied from Admin if needed, or rely on script.js injected modals) -->
 
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js"></script>
+    
+    <!-- ============================================
+         Chat IA Flotant - Bouton et Panneau
+         ============================================ -->
+
+    <!-- Panneau de chat (caché par défaut) -->
+    <div id="chat-panel" class="hidden" role="dialog" aria-label="Assistant IA ManiocAgri">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🌿</div>
+            <div class="chat-info">
+                <h6>Assistant ManiocAgri</h6>
+                <small><span class="status-dot"></span>En ligne • IA</small>
+            </div>
+            <button class="chat-close-btn" id="chat-close-btn" aria-label="Fermer le chat">&times;</button>
+        </div>
+        <!-- Zone de messages -->
+        <div id="chat-messages">
+            <!-- Message de bienvenue -->
+            <div class="msg-bubble bot">
+                👋 Bonjour ! Je suis l'assistant AI de ManiocAgri. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <!-- Input -->
+        <div class="chat-input-zone">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." autocomplete="off" maxlength="500">
+            <button class="chat-send-btn" id="chat-send-btn" aria-label="Envoyer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bouton Chat Flottant -->
+    <button id="chat-fab" aria-label="Ouvrir le chat IA">
+        <span class="chat-badge"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+<script src="../script.js"></script>
     <script>
         // Update Title and Date
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('fr-FR', {
@@ -309,6 +359,25 @@
                 const title = event.target.textContent.trim();
                 document.getElementById('pageTitle').textContent = title;
             });
+        });
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+            // Hide preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => preloader.remove(), 600);
+                }, 500); // Small artificial delay for premium feel
+            }
         });
     </script>
 </body>

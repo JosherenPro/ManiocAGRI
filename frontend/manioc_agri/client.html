@@ -8,10 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../style.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-solid">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">ManiocAgri <span class="text-warning">Client</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -30,7 +36,7 @@
         </div>
     </nav>
 
-    <div class="container py-5">
+    <div class="container py-5" style="margin-top: 70px;">
         <div class="row mb-5">
             <div class="col-12">
                 <h2 class="fw-extrabold text-primary-dark mb-4">Mon Tableau de Bord</h2>
@@ -107,7 +113,8 @@
                             </div>
                         </div>
                         <div class="d-grid gap-2">
-                            <button class="btn btn-outline-success btn-sm">Modifier mes infos</button>
+                            <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#updateProfileModal">Modifier mes infos</button>
                         </div>
                     </div>
                 </div>
@@ -120,6 +127,43 @@
                         <a href="../index.html#contact"
                             class="btn btn-light btn-sm w-100 fw-bold text-success">Contacter le Support</a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Profile Update -->
+    <div class="modal fade" id="updateProfileModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-success text-white border-0 py-3">
+                    <h5 class="modal-title fw-bold">Modifier Mon Profil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="updateProfileForm">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Prénom</label>
+                            <input type="text" class="form-control bg-light border-0" id="profileFirstName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Nom</label>
+                            <input type="text" class="form-control bg-light border-0" id="profileLastName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Téléphone</label>
+                            <input type="tel" class="form-control bg-light border-0" id="profilePhone">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted small fw-bold">Nouveau Mot de passe (optionnel)</label>
+                            <input type="password" class="form-control bg-light border-0" id="profilePassword"
+                                placeholder="Laissez vide pour conserver l'actuel">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success py-2 fw-bold"
+                                id="saveProfileBtn">Enregistrer</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -147,7 +191,70 @@
     </footer>
 
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js"></script>
+    
+    <!-- ============================================
+         Chat IA Flotant - Bouton et Panneau
+         ============================================ -->
+
+    <!-- Panneau de chat (caché par défaut) -->
+    <div id="chat-panel" class="hidden" role="dialog" aria-label="Assistant IA ManiocAgri">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🌿</div>
+            <div class="chat-info">
+                <h6>Assistant ManiocAgri</h6>
+                <small><span class="status-dot"></span>En ligne • IA</small>
+            </div>
+            <button class="chat-close-btn" id="chat-close-btn" aria-label="Fermer le chat">&times;</button>
+        </div>
+        <!-- Zone de messages -->
+        <div id="chat-messages">
+            <!-- Message de bienvenue -->
+            <div class="msg-bubble bot">
+                👋 Bonjour ! Je suis l'assistant AI de ManiocAgri. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <!-- Input -->
+        <div class="chat-input-zone">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." autocomplete="off" maxlength="500">
+            <button class="chat-send-btn" id="chat-send-btn" aria-label="Envoyer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bouton Chat Flottant -->
+    <button id="chat-fab" aria-label="Ouvrir le chat IA">
+        <span class="chat-badge"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+<script src="../script.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+            // Hide preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => preloader.remove(), 600);
+                }, 500); // Small artificial delay for premium feel
+            }
+        });
+    </script>
 </body>
 
 </html>

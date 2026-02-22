@@ -301,6 +301,14 @@ function animateValue(id, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
+function getImageUrl(url) {
+    if (!url) return '/images/products/manioc2.jpg';
+    // If it's a full URL (Supabase or other hosted), return it directly
+    if (url.startsWith('http')) return url;
+    // Otherwise it's a local path, add leading slash if missing
+    return url.startsWith('/') ? url : '/' + url;
+}
+
 // ===============================
 // Global Functions & Utils
 // ==========================================
@@ -521,25 +529,36 @@ function initProductForm() {
     productForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const id = document.getElementById('productId').value;
-        const name = document.getElementById('productName').value;
-        const price = document.getElementById('productPrice').value;
-        const stock = document.getElementById('productStock').value;
-        const description = document.getElementById('productDescription').value;
+        const productIdEl = document.getElementById('productId');
+        const id = productIdEl ? productIdEl.value : null;
+
+        const productNameEl = document.getElementById('productName');
+        const name = productNameEl ? productNameEl.value : '';
+
+        const priceEl = document.getElementById('productPrice');
+        const price = priceEl ? priceEl.value : '0';
+
+        const stockEl = document.getElementById('productStock');
+        const stock = stockEl ? stockEl.value : '0';
+
+        const descriptionEl = document.getElementById('productDescription');
+        const description = descriptionEl ? descriptionEl.value : '';
+
         const imageUrlInput = document.getElementById('productImageUrl');
         const imageUrl = imageUrlInput ? imageUrlInput.value : '';
+
         const submitBtn = document.getElementById('saveProductBtn');
         const nameInput = document.getElementById('productName');
         const nameError = document.getElementById('productNameError');
 
         // Clear previous errors
-        nameInput.classList.remove('is-invalid');
+        if (nameInput) nameInput.classList.remove('is-invalid');
         if (nameError) nameError.textContent = '';
 
         const data = {
             name: name,
-            price: parseFloat(price),
-            stock_quantity: parseInt(stock),
+            price: Math.round(parseFloat(price) || 0),
+            stock_quantity: Math.round(parseFloat(stock) || 0),
             description: description,
             image_url: imageUrl
         };
@@ -601,11 +620,20 @@ window.editProduct = function (id) {
     const product = currentProducts.find(p => p.id === id);
     if (!product) return;
 
-    document.getElementById('productId').value = product.id;
-    document.getElementById('productName').value = product.name;
-    document.getElementById('productPrice').value = product.price;
-    document.getElementById('productStock').value = product.stock_quantity;
-    document.getElementById('productDescription').value = product.description || '';
+    const productIdEl = document.getElementById('productId');
+    if (productIdEl) productIdEl.value = product.id;
+
+    const productNameEl = document.getElementById('productName');
+    if (productNameEl) productNameEl.value = product.name;
+
+    const productPriceEl = document.getElementById('productPrice');
+    if (productPriceEl) productPriceEl.value = product.price;
+
+    const productStockEl = document.getElementById('productStock');
+    if (productStockEl) productStockEl.value = product.stock_quantity;
+
+    const productDescriptionEl = document.getElementById('productDescription');
+    if (productDescriptionEl) productDescriptionEl.value = product.description || '';
 
     const imageUrlInput = document.getElementById('productImageUrl');
     if (imageUrlInput) {
@@ -628,14 +656,17 @@ window.editProduct = function (id) {
 
 window.cancelEdit = function () {
     document.getElementById('productForm').reset();
-    document.getElementById('productId').value = '';
+    const productIdEl = document.getElementById('productId');
+    if (productIdEl) productIdEl.value = '';
+
     const title = document.getElementById('productFormTitle');
     if (title) title.innerHTML = '<i class="fas fa-plus-circle me-2 text-success"></i>Ajouter un produit';
 
     const cancelBtn = document.getElementById('cancelEditBtn');
     if (cancelBtn) cancelBtn.classList.add('d-none');
 
-    document.getElementById('productName').classList.remove('is-invalid');
+    const productNameEl = document.getElementById('productName');
+    if (productNameEl) productNameEl.classList.remove('is-invalid');
 };
 
 window.deleteProduct = async function (id) {
@@ -702,7 +733,7 @@ function renderProducts(products) {
         <div class="col-md-4 col-lg-3 mb-4">
             <div class="admin-product-card h-100 shadow-sm border-0 rounded-4 overflow-hidden bg-white hover-shadow transition">
                 <div class="position-relative">
-                    <img src="${product.image_url ? '/' + product.image_url : '/images/products/manioc2.jpg'}" 
+                    <img src="${getImageUrl(product.image_url)}" 
                         class="card-img-top" alt="${product.name}" style="height: 180px; object-fit: cover; border-bottom: 1px solid #f0f0f0;">
                     <span class="position-absolute top-0 end-0 m-2 badge bg-success shadow-sm">${product.price.toLocaleString()} FCFA/kg</span>
                 </div>
@@ -742,10 +773,10 @@ function renderCatalogue(products) {
     row.className = 'row g-4';
     products.forEach(product => {
         row.innerHTML += `
-            <div class="col-md-4 col-lg-3">
+            <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 product-card border-0 shadow-sm overflow-hidden" onclick="window.location.href='produit-details.html?id=${product.id}'">
                     <div class="position-relative">
-                        <img src="${product.image_url ? '/' + product.image_url : '/images/products/manioc2.jpg'}" 
+                        <img src="${getImageUrl(product.image_url)}" 
                              class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                         <span class="position-absolute top-0 end-0 m-2 badge bg-success shadow-sm">${product.price.toLocaleString()} FCFA/kg</span>
                     </div>
@@ -816,7 +847,7 @@ async function loadProductDetails() {
         container.innerHTML = `
             <div class="col-lg-6 mb-4 mb-lg-0">
                 <div class="product-image-wrapper rounded-4 overflow-hidden shadow-sm">
-                    <img src="${product.image_url ? '/' + product.image_url : '/images/products/manioc2.jpg'}" 
+                    <img src="${getImageUrl(product.image_url)}" 
                          class="img-fluid w-100" alt="${product.name}" style="min-height: 400px; object-fit: cover;">
                 </div>
             </div>
@@ -1295,11 +1326,21 @@ function updateOrderBtnState() {
 function initOrderForm() {
     const orderForm = document.getElementById('orderForm');
     if (orderForm) {
-        // Pré-remplir le username si connecté
-        const storedUsername = sessionStorage.getItem('username');
-        const usernameInput = document.getElementById('username');
-        if (storedUsername && usernameInput) {
-            usernameInput.value = storedUsername;
+        // Pré-remplir les informations du client si connecté
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            apiCall('/users/me', 'GET')
+                .then(user => {
+                    const nomInput = document.getElementById('nom');
+                    const telInput = document.getElementById('telephone');
+                    if (nomInput && (!nomInput.value || nomInput.value === '')) {
+                        nomInput.value = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+                    }
+                    if (telInput && (!telInput.value || telInput.value === '')) {
+                        telInput.value = user.phone || '';
+                    }
+                })
+                .catch(err => console.error("Erreur pré-remplissage formulaire commande:", err));
         }
 
         // payment selection listener
@@ -1349,10 +1390,13 @@ function initOrderForm() {
                 }
             });
 
-            const paymentMethod = document.getElementById('paymentMethod').value;
-            // paid is determined by whether payment method is selected
+            const paymentMethodSelect = document.getElementById('paymentMethod');
+            const paymentMethod = paymentMethodSelect ? paymentMethodSelect.value : null;
 
-            const isPaid = paymentMethod ? true : false; // consider paid when a method is chosen
+            // Paid is false for mobile payments until webhook confirmation
+            const isMobilePayment = (paymentMethod === 'FLOOZ' || paymentMethod === 'TMONEY');
+            const isPaid = (paymentMethod && !isMobilePayment);
+
             const orderData = {
                 order_number: 'CMD-' + Date.now(),
                 client_name: document.getElementById('nom').value,
@@ -1366,10 +1410,35 @@ function initOrderForm() {
 
             try {
                 const result = await apiCall('/orders/', 'POST', orderData);
-                showToast(`Commande ${result.order_number} enregistrée!`, 'success');
+
+                if (isMobilePayment) {
+                    showToast(`Commande ${result.order_number} créée. Initiation du paiement...`, 'info');
+                    try {
+                        const payRes = await apiCall('/payments/initiate', 'POST', {
+                            order_id: result.id,
+                            phone_number: orderData.phone,
+                            network: paymentMethod
+                        });
+
+                        if (payRes.status === 'success') {
+                            await showSuccessModal('Paiement Initié',
+                                `Merci ! Un message de confirmation USSD a été envoyé au ${orderData.phone}. <br><br>
+                                 <b>Veuillez valider la transaction sur votre téléphone</b> pour confirmer votre commande. <br>
+                                 Votre numéro de commande est : <strong>${result.order_number}</strong>`);
+                        }
+                    } catch (payErr) {
+                        console.error("PayGate Error:", payErr);
+                        showToast(`Erreur d'initiation du paiement : ${payErr.message}`, 'error');
+                        // L'ordre est quand même créé, on peut suggérer un autre moyen
+                    }
+                } else {
+                    showToast(`Commande ${result.order_number} enregistrée !`, 'success');
+                    await showSuccessModal('Commande Confirmée', `Votre commande ${result.order_number} a été bien enregistrée. Nous vous contacterons sous peu.`);
+                }
+
                 orderForm.reset();
                 cart = {};
-                loadProducts(); // Refresh
+                if (typeof loadProducts === 'function') loadProducts();
                 updateOrderSummary();
             } catch (err) {
                 showToast(err.message, 'error');
@@ -1381,8 +1450,68 @@ function initOrderForm() {
 }
 
 // ==========================================
-// Commandes (Client)
+// Commandes et Profil (Client)
 // ==========================================
+
+async function initClientProfile() {
+    const form = document.getElementById('updateProfileForm');
+    if (!form) return;
+
+    // Load initial data for modal
+    try {
+        const user = await apiCall('/users/me', 'GET');
+        if (user) {
+            const fname = document.getElementById('profileFirstName');
+            const lname = document.getElementById('profileLastName');
+            const phone = document.getElementById('profilePhone');
+
+            if (fname) fname.value = user.first_name || '';
+            if (lname) lname.value = user.last_name || '';
+            if (phone) phone.value = user.phone || '';
+        }
+    } catch (err) {
+        console.error("Erreur chargement profil client:", err);
+    }
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const btn = document.getElementById('saveProfileBtn');
+        setButtonLoading(btn, true);
+
+        const data = {
+            first_name: document.getElementById('profileFirstName').value,
+            last_name: document.getElementById('profileLastName').value,
+            phone: document.getElementById('profilePhone').value
+        };
+
+        const password = document.getElementById('profilePassword').value;
+        if (password) {
+            data.password = password;
+        }
+
+        try {
+            const updatedUser = await apiCall('/users/me', 'PATCH', data);
+            showToast('Profil mis à jour avec succès', 'success');
+
+            // Update UI
+            const nameDisplay = document.getElementById('clientNameDisplay');
+            if (nameDisplay) {
+                nameDisplay.textContent = `${updatedUser.first_name || ''} ${updatedUser.last_name || ''}`;
+            }
+
+            // Close modal
+            const modalEl = document.getElementById('updateProfileModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+
+            document.getElementById('profilePassword').value = '';
+        } catch (err) {
+            showToast(err.message, 'error');
+        } finally {
+            setButtonLoading(btn, false);
+        }
+    });
+}
 
 async function loadClientOrders() {
     const ordersList = document.getElementById('ordersList');
@@ -1550,6 +1679,7 @@ function init() {
     // Client
     if (path.includes('client.html')) {
         loadClientOrders();
+        initClientProfile();
     }
 
     if (path.includes('livreur.html')) {

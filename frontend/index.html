@@ -8,11 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">ManiocAgri</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -37,13 +44,16 @@
     <!-- Hero Section -->
     <section id="accueil" class="hero d-flex align-items-center">
         <div class="container text-center py-5">
-            <h1 class="display-3 fw-extrabold mb-3">Bienvenue sur <span class="text-warning">ManiocAgri</span></h1>
-            <p class="lead mb-5 opacity-90 mx-auto" style="max-width: 800px;">Découvrez l'excellence de la ferme
+            <h1 class="display-3 fw-extrabold mb-3" data-aos="fade-up" data-aos-duration="1000">Bienvenue sur <span
+                    class="text-warning">ManiocAgri</span></h1>
+            <p class="lead mb-5 opacity-90 mx-auto" style="max-width: 800px;" data-aos="fade-up" data-aos-delay="200"
+                data-aos-duration="1000">Découvrez l'excellence de la ferme
                 MOKPOKPO. Des produits dérivés du manioc d'une qualité exceptionnelle, cultivés avec passion au cœur de
                 nos terroirs.</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="catalogue.html" class="btn btn-warning btn-lg px-5 fw-bold">Découvrir le Catalogue</a>
-                <a href="#apropos" class="btn btn-outline-light btn-lg px-5">En savoir plus</a>
+            <div class="d-flex justify-content-center gap-3" data-aos="zoom-in" data-aos-delay="400">
+                <a href="catalogue.html" class="btn btn-warning btn-lg px-5 fw-bold hover-lift">Découvrir le
+                    Catalogue</a>
+                <a href="#apropos" class="btn btn-outline-light btn-lg px-5 hover-lift">En savoir plus</a>
             </div>
         </div>
     </section>
@@ -86,10 +96,12 @@
     <!-- Produits -->
     <section id="produits" class="py-5 bg-white bg-opacity-50">
         <div class="container py-5">
-            <div class="text-center mb-5 reveal">
-                <h6 class="text-success fw-bold text-uppercase mb-2">Notre Gamme</h6>
-                <h2 class="fw-bold">Nos Produits Signature</h2>
-                <div class="bg-success mx-auto mt-3" style="width: 60px; height: 4px; border-radius: 2px;"></div>
+            <div class="row text-center mb-5" data-aos="fade-up">
+                <h2 class="display-5 fw-bold text-primary-dark">L'Excellence Agricole</h2>
+                <div class="divider"></div>
+                <p class="lead text-muted mx-auto" style="max-width: 700px;">Notre engagement : vous fournir les
+                    meilleurs
+                    produits transformés de manioc du Togo, de la terre à votre table.</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3 reveal delay-100">
@@ -261,6 +273,8 @@
         </div>
     </section>
 
+
+
     <!-- Contact -->
     <section id="contact" class="py-5">
         <div class="container py-5">
@@ -332,59 +346,95 @@
     <!-- Guide Client -->
     <section id="guide" class="py-5 bg-white bg-opacity-50">
         <div class="container py-5">
-            <div class="text-center mb-5 reveal">
+
+
+            <div class="text-center mt-5 reveal">
                 <h6 class="text-success fw-bold text-uppercase mb-2">Guide Client</h6>
                 <h2 class="fw-bold">Comment Utiliser ManiocAgri</h2>
                 <div class="bg-success mx-auto mt-3" style="width: 60px; height: 4px; border-radius: 2px;"></div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8 reveal delay-100">
-                    <p class="mb-4 opacity-90">Bienvenue dans l'application ManiocAGRI ! Ce guide vous aidera à utiliser
-                        la plateforme facilement.</p>
-                    <h4 class="fw-bold mb-3">🎯 Objectif</h4>
-                    <p>Permettre au client (producteur, acheteur, ou autre utilisateur) de se familiariser rapidement
-                        avec les fonctionnalités principales de ManiocAGRI.</p>
-                    <h4 class="fw-bold mb-3">🔐 Connexion et authentification</h4>
-                    <ol>
-                        <li>En haut à droite de l'interface, cliquez sur le bouton de connexion.</li>
-                        <li>Sur la page de connexion (<code>connexion</code>), entrez vos identifiants (email et mot de
-                            passe). Si vous n'avez pas encore de compte, cliquez sur "S'inscrire".</li>
-                        <li>Cliquez sur <strong>Se connecter</strong>.</li>
-                        <li>En cas d’oubli, utilisez l’option de réinitialisation de mot de passe si elle est
-                            disponible, ou contactez le support.</li>
-                    </ol>
-                    <h4 class="fw-bold mb-3">🛒 Consultation du catalogue</h4>
-                    <ul>
-                        <li>Rendez-vous sur <code>catalogue</code> pour voir la liste des produits disponibles.</li>
-                        <li>Vous pouvez filtrer ou rechercher des produits selon vos besoins (si ces options sont
-                            implémentées).</li>
-                        <li>Cliquez sur un produit pour afficher ses détails sur la page
-                            <code>produit-details.html</code>.</li>
-                    </ul>
-                    <h4 class="fw-bold mb-3">📝 Passer une commande</h4>
-                    <ol>
-                        <li>Sur la page de détails d’un produit, sélectionnez la quantité souhaitée.</li>
-                        <li>Cliquez sur <strong>Ajouter au panier</strong> (ou équivalent).</li>
-                        <li>Accédez à votre panier et vérifiez les articles.</li>
-                        <li>Finalisez la commande en suivant les instructions (choix du mode de livraison, paiement,
-                            etc.).</li>
-                    </ol>
-                    <h4 class="fw-bold mb-3">📋 Suivi de commande</h4>
-                    <p>Vous pouvez consulter le statut de vos commandes dans l’interface utilisateur </p>
-                    <p>Pour toute question sur un suivi, assurez-vous d’avoir le numéro de commande sous la main.</p>
-                    <h4 class="fw-bold mb-3">👥 Gestion de votre profil</h4>
-                    <p>Accédez à votre espace utilisateur pour mettre à jour vos informations (nom, adresse, mot de
-                        passe, etc.).</p>
-                    <p>Si vous rencontrez des problèmes de connexion ou de paramètres, contactez le service client.</p>
-                    <h4 class="fw-bold mb-3">📞 Support et assistance</h4>
-                    <p>Pour toute aide supplémentaire, envoyez un e-mail à l’adresse de support ou appelez le numéro
-                        indiqué sur la page d’accueil ou dans la documentation fournie par votre fournisseur.</p>
-                    <p>Conservez vos identifiants et vos informations de commande en cas de besoin de support.</p>
-                    <p class="mt-4">Ce guide couvre les étapes de base pour utiliser la plateforme. Si de nouvelles
-                        fonctionnalités sont ajoutées, référez-vous à la documentation mise à jour ou contactez votre
-                        gestionnaire.</p>
-                    <p class="fw-bold">Bonne utilisation et merci d’avoir choisi ManiocAGRI&nbsp;! 🌱</p>
+            <div class="row g-4">
+                <!-- Étape 1 -->
+                <div class="col-md-6 col-lg-3 reveal delay-100">
+                    <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="fas fa-user-plus fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">1. Inscription</h5>
+                        <p class="text-muted small mb-0">Créez votre compte en quelques secondes via Google pour accéder
+                            à votre espace personnalisé.</p>
+                    </div>
                 </div>
+                <!-- Étape 2 -->
+                <div class="col-md-6 col-lg-3 reveal delay-200">
+                    <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="fas fa-search fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">2. Choix Produits</h5>
+                        <p class="text-muted small mb-0">Explorez notre catalogue de produits frais et dérivés du manioc
+                            d'excellence régionale.</p>
+                    </div>
+                </div>
+                <!-- Étape 3 -->
+                <div class="col-md-6 col-lg-3 reveal delay-300">
+                    <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="fas fa-mobile-alt fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">3. Paiement Mobile</h5>
+                        <p class="text-muted small mb-0">Commandez et payez instantanément via Flooz ou T-Money en toute
+                            sécurité.</p>
+                    </div>
+                </div>
+                <!-- Étape 4 -->
+                <div class="col-md-6 col-lg-3 reveal delay-400">
+                    <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
+                        <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="fas fa-truck fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">4. Livraison Rapide</h5>
+                        <p class="text-muted small mb-0">Suivez votre commande jusqu'à votre porte et recevez vos
+                            produits frais.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-4 text-center">
+                        <div class="feature-icon bg-success text-white mb-3 shadow-none">🌿</div>
+                        <h4 class="h5 fw-bold mb-3">Qualité Supérieure</h4>
+                        <p class="text-muted mb-0">Un manioc sélectionné et transformé selon les normes d'hygiène les
+                            plus strictes.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-4 text-center">
+                        <div class="feature-icon bg-warning text-white mb-3 shadow-none">⚡</div>
+                        <h4 class="h5 fw-bold mb-3">Production Locale</h4>
+                        <p class="text-muted mb-0">Une ferme engagée à MOKPOKPO, soutenant l'économie locale et
+                            durable.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-4 text-center">
+                        <div class="feature-icon bg-info text-white mb-3 shadow-none">🚚</div>
+                        <h4 class="h5 fw-bold mb-3">Livraison Rapide</h4>
+                        <p class="text-muted mb-0">Un réseau de livreurs fiables pour vous servir rapidement partout au
+                            Togo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5 reveal">
+                <a href="catalogue.html" class="btn btn-success px-5 py-3 rounded-pill fw-bold shadow">
+                    Commencer mes achats maintenant
+                </a>
             </div>
         </div>
     </section>
@@ -461,6 +511,25 @@
 
     <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+            // Hide preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => preloader.remove(), 600);
+                }, 500); // Small artificial delay for premium feel
+            }
+        });
+    </script>
 </body>
 
 </html>

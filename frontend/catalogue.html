@@ -8,11 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">ManiocAgri</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -29,7 +36,7 @@
     </nav>
 
     <!-- Header -->
-    <section class="hero d-flex align-items-center" style="padding: 60px 0; clip-path: none; min-height: auto;">
+    <section class="hero d-flex align-items-center">
         <div class="container text-center text-lg-start">
             <h1 class="display-4 fw-extrabold mb-2">Notre <span class="text-warning">Catalogue</span></h1>
             <p class="lead opacity-90 mb-0">Sélectionnez vos produits d'excellence et faites-vous livrer chez vous.</p>
@@ -108,9 +115,10 @@
                                 <label for="paymentMethod" class="form-label small fw-bold">Mode de paiement</label>
                                 <select id="paymentMethod" class="form-select form-select-sm">
                                     <option value="">-- Sélectionnez --</option>
-                                    <option value="Mixx by Yas">Mobile Yass</option>
-                                    <option value="Visa">Visa</option>
-                                    <option value="Moov Money">Moov Money</option>
+                                    <option value="FLOOZ">Payer par FLOOZ (Mobile)</option>
+                                    <option value="TMONEY">Payer par T-Money (Mobile)</option>
+                                    <option value="Visa">Carte Visa</option>
+                                    <option value="CASH">Espèces à la livraison</option>
                                 </select>
                             </div>
 
@@ -140,7 +148,70 @@
     </footer>
 
     <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    
+    <!-- ============================================
+         Chat IA Flotant - Bouton et Panneau
+         ============================================ -->
+
+    <!-- Panneau de chat (caché par défaut) -->
+    <div id="chat-panel" class="hidden" role="dialog" aria-label="Assistant IA ManiocAgri">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🌿</div>
+            <div class="chat-info">
+                <h6>Assistant ManiocAgri</h6>
+                <small><span class="status-dot"></span>En ligne • IA</small>
+            </div>
+            <button class="chat-close-btn" id="chat-close-btn" aria-label="Fermer le chat">&times;</button>
+        </div>
+        <!-- Zone de messages -->
+        <div id="chat-messages">
+            <!-- Message de bienvenue -->
+            <div class="msg-bubble bot">
+                👋 Bonjour ! Je suis l'assistant AI de ManiocAgri. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <!-- Input -->
+        <div class="chat-input-zone">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." autocomplete="off" maxlength="500">
+            <button class="chat-send-btn" id="chat-send-btn" aria-label="Envoyer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bouton Chat Flottant -->
+    <button id="chat-fab" aria-label="Ouvrir le chat IA">
+        <span class="chat-badge"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+<script src="script.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+            // Hide preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => preloader.remove(), 600);
+                }, 500); // Small artificial delay for premium feel
+            }
+        });
+    </script>
 </body>
 
 </html>

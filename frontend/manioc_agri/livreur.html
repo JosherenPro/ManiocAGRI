@@ -39,11 +39,17 @@
             border-radius: 1rem;
         }
     </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-solid">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">ManiocAgri <span
                     class="badge bg-warning text-dark ms-2">Livreur</span></a>
@@ -65,7 +71,7 @@
     </nav>
 
     <!-- Header Stats -->
-    <header class="bg-delivery-gradient py-5 mb-4 position-relative overflow-hidden">
+    <header class="bg-delivery-gradient py-5 mb-4 position-relative overflow-hidden" style="margin-top: 70px;">
         <div class="container position-relative z-index-1">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
@@ -208,7 +214,51 @@
     </footer>
 
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js"></script>
+    
+    <!-- ============================================
+         Chat IA Flotant - Bouton et Panneau
+         ============================================ -->
+
+    <!-- Panneau de chat (caché par défaut) -->
+    <div id="chat-panel" class="hidden" role="dialog" aria-label="Assistant IA ManiocAgri">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🌿</div>
+            <div class="chat-info">
+                <h6>Assistant ManiocAgri</h6>
+                <small><span class="status-dot"></span>En ligne • IA</small>
+            </div>
+            <button class="chat-close-btn" id="chat-close-btn" aria-label="Fermer le chat">&times;</button>
+        </div>
+        <!-- Zone de messages -->
+        <div id="chat-messages">
+            <!-- Message de bienvenue -->
+            <div class="msg-bubble bot">
+                👋 Bonjour ! Je suis l'assistant AI de ManiocAgri. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <!-- Input -->
+        <div class="chat-input-zone">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." autocomplete="off" maxlength="500">
+            <button class="chat-send-btn" id="chat-send-btn" aria-label="Envoyer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bouton Chat Flottant -->
+    <button id="chat-fab" aria-label="Ouvrir le chat IA">
+        <span class="chat-badge"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+<script src="../script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Role check
@@ -272,6 +322,25 @@
         function optimizeDeliveries() { if (typeof optimizeLivreurRoute === 'function') optimizeLivreurRoute(); }
         function refreshDeliveries() { if (typeof refreshLivreurDeliveries === 'function') refreshLivreurDeliveries(); }
         function openStatusModal(id, status) { if (typeof openLivreurStatusModal === 'function') openLivreurStatusModal(id, status); }
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+            // Hide preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => preloader.remove(), 600);
+                }, 500); // Small artificial delay for premium feel
+            }
+        });
     </script>
 </body>
 

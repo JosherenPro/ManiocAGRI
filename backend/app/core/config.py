@@ -27,4 +27,16 @@ class Settings:
 
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
 
+    # PayGateGlobal
+    PAYGATE_API_KEY: str = os.getenv("PAYGATE_API_KEY", "")
+    PAYGATE_CALLBACK_URL: str = os.getenv("PAYGATE_CALLBACK_URL", "")
+    PAYGATE_PAY_URL: str = os.getenv("PAYGATE_PAY_URL", "https://paygateglobal.com/api/v1/pay")
+    PAYGATE_STATUS_URL: str = os.getenv("PAYGATE_STATUS_URL", "https://paygateglobal.com/api/v1/status")
+
+    # Supabase
+    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
+    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
+    SUPABASE_SERVICE_KEY: str = os.getenv("SUPABASE_SERVICE_KEY", "")
+    SUPABASE_BUCKET: str = os.getenv("SUPABASE_BUCKET", "produits-images")
+
 settings = Settings()

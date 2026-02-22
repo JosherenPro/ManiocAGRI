@@ -7,10 +7,16 @@
     <title>Producteur - ManiocAgri</title>
     <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../style.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-solid">
         <div class="container">
             <a class="navbar-brand" href="#">ManiocAgri - Producteur</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -26,39 +32,57 @@
         </div>
     </nav>
 
-    <div class="container py-5">
+    <div class="container py-5" style="margin-top: 70px;">
         <h2>Gestion des Produits</h2>
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5>Ajouter/Modifier un produit</h5>
+        <div class="card mb-4 border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 pt-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0" id="productFormTitle"><i
+                        class="fas fa-plus-circle me-2 text-success"></i>Ajouter un produit</h5>
+                <button class="btn btn-sm btn-outline-secondary d-none" id="cancelEditBtn"
+                    onclick="cancelEdit()">Annuler</button>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form id="productForm">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label for="productName" class="form-label">Nom du produit</label>
+                    <input type="hidden" id="productId">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="productName" class="form-label small fw-bold text-muted text-uppercase">Nom du
+                                produit</label>
                             <input type="text" class="form-control" id="productName" required>
+                            <div id="productNameError" class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="productPrice" class="form-label">Prix (FCFA/kg)</label>
+                        <div class="col-md-4">
+                            <label for="productPrice" class="form-label small fw-bold text-muted text-uppercase">Prix
+                                (FCFA/kg)</label>
                             <input type="number" class="form-control" id="productPrice" required>
                         </div>
-                        <div class="col-md-2">
-                            <label for="productStock" class="form-label">Stock (kg)</label>
+                        <div class="col-md-4">
+                            <label for="productStock" class="form-label small fw-bold text-muted text-uppercase">Stock
+                                (kg)</label>
                             <input type="number" class="form-control" id="productStock" required>
                         </div>
-                        <div class="col-md-3">
-                            <label for="productImage" class="form-label">Image (Upload)</label>
+                        <div class="col-12">
+                            <label for="productDescription"
+                                class="form-label small fw-bold text-muted text-uppercase">Description</label>
+                            <textarea class="form-control" id="productDescription" rows="2"
+                                placeholder="Description courte du produit..."></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productImage" class="form-label small fw-bold text-muted text-uppercase">Image
+                                (Upload)</label>
                             <input type="file" class="form-control" id="productImage" accept="image/*">
                         </div>
-                        <div class="col-md-3">
-                            <label for="productImageUrl" class="form-label">OU URL de l'image</label>
+                        <div class="col-md-6">
+                            <label for="productImageUrl" class="form-label small fw-bold text-muted text-uppercase">OU
+                                URL de l'image</label>
                             <input type="url" class="form-control" id="productImageUrl"
                                 placeholder="https://example.com/image.jpg">
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label">&nbsp;</label>
-                            <button type="submit" class="btn btn-success w-100">Sauvegarder</button>
+                        <div class="col-12 text-end mt-4">
+                            <button type="submit" class="btn btn-success px-5 py-2 rounded-pill shadow-sm"
+                                id="saveProductBtn">
+                                <i class="fas fa-save me-2"></i>Sauvegarder le produit
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -82,7 +106,70 @@
         </div>
     </footer>
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js"></script>
+    
+    <!-- ============================================
+         Chat IA Flotant - Bouton et Panneau
+         ============================================ -->
+
+    <!-- Panneau de chat (caché par défaut) -->
+    <div id="chat-panel" class="hidden" role="dialog" aria-label="Assistant IA ManiocAgri">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🌿</div>
+            <div class="chat-info">
+                <h6>Assistant ManiocAgri</h6>
+                <small><span class="status-dot"></span>En ligne • IA</small>
+            </div>
+            <button class="chat-close-btn" id="chat-close-btn" aria-label="Fermer le chat">&times;</button>
+        </div>
+        <!-- Zone de messages -->
+        <div id="chat-messages">
+            <!-- Message de bienvenue -->
+            <div class="msg-bubble bot">
+                👋 Bonjour ! Je suis l'assistant AI de ManiocAgri. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <!-- Input -->
+        <div class="chat-input-zone">
+            <input type="text" id="chat-input" placeholder="Posez votre question..." autocomplete="off" maxlength="500">
+            <button class="chat-send-btn" id="chat-send-btn" aria-label="Envoyer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bouton Chat Flottant -->
+    <button id="chat-fab" aria-label="Ouvrir le chat IA">
+        <span class="chat-badge"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+<script src="../script.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+            // Hide preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => preloader.remove(), 600);
+                }, 500); // Small artificial delay for premium feel
+            }
+        });
+    </script>
 </body>
 
 </html>
