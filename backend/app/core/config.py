@@ -25,5 +25,6 @@ class Settings:
     MAIL_SERVER: str = os.getenv("MAIL_SERVER", "smtp.gmail.com")
     MAIL_FROM_NAME: str = os.getenv("MAIL_FROM_NAME", "ManiocAgri")
 
+    GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
 
 settings = Settings()

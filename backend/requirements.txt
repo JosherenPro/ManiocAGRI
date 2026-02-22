@@ -13,3 +13,4 @@ cerebras_cloud_sdk
 fastapi-mail
 jinja2
 httpx
+google-auth

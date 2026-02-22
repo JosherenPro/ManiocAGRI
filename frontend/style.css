@@ -116,13 +116,23 @@ h6 {
    Navigation
    ===================================================== */
 .navbar {
+    background: transparent !important;
+    /* Starts transparent */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    padding: 1.2rem 0;
+    transition: all 0.4s ease;
+}
+
+.navbar.navbar-scrolled {
     background: rgba(6, 78, 59, 0.95) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
     padding: 0.75rem 0;
-    transition: all var(--transition-base);
 }
 
 .navbar-brand {
@@ -156,12 +166,48 @@ h6 {
 }
 
 /* =====================================================
+   UX & Reveal Animations
+   ===================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-100 {
+    transition-delay: 100ms;
+}
+
+.delay-200 {
+    transition-delay: 200ms;
+}
+
+.delay-300 {
+    transition-delay: 300ms;
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl) !important;
+}
+
+/* =====================================================
    Hero Section
    ===================================================== */
 .hero {
     background: var(--bg-dark);
     color: white;
-    padding: 120px 0;
+    padding: 160px 0 120px 0;
+    /* Extra top padding for transparent navbar */
     position: relative;
     overflow: hidden;
 }

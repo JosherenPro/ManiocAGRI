@@ -213,114 +213,47 @@ function showSuccessModal(title, message) {
 // Authentification et Inscription
 // ==========================================
 
-function initAuthForm() {
-    const authForm = document.getElementById('authForm');
-    if (authForm) {
-        authForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
+// ==========================================
+// Google Authentication
+// ==========================================
 
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const errorMessage = document.getElementById('errorMessage');
-            const submitBtn = authForm.querySelector('button[type="submit"]');
+async function handleGoogleCallback(response) {
+    const credential = response.credential;
+    if (!credential) {
+        showToast('Erreur lors de la connexion via Google.', 'error');
+        return;
+    }
 
-            errorMessage.style.display = 'none';
-            setButtonLoading(submitBtn, true);
+    try {
+        // Obtenir le rôle demandé (utile pour les nouveaux inscrits)
+        const requestedRoleEl = document.getElementById('requestedRole');
+        const role = requestedRoleEl ? requestedRoleEl.value : 'client';
 
-            const params = new URLSearchParams();
-            params.append('username', username);
-            params.append('password', password);
+        // Envoyer le token au backend avec le rôle souhaité
+        const data = await apiCall('/auth/google', 'POST', { token: credential, requested_role: role }, false);
 
-            try {
-                const data = await apiCall('/auth/login/access-token', 'POST', params, false);
-                sessionStorage.setItem('token', data.access_token);
 
-                // Récupérer les infos utilisateur
-                const user = await apiCall('/users/me', 'GET');
-                sessionStorage.setItem('userRole', user.role);
-                sessionStorage.setItem('username', user.username);
+        sessionStorage.setItem('token', data.access_token);
+        sessionStorage.setItem('userRole', data.user.role);
+        sessionStorage.setItem('username', data.user.username);
 
-                showToast('Connexion réussie! Redirection...', 'success');
-                setTimeout(() => {
-                    window.location.href = user.role + '.html';
-                }, 500);
-            } catch (err) {
-                errorMessage.textContent = err.message;
-                errorMessage.style.display = 'block';
-                setButtonLoading(submitBtn, false);
-            }
-        });
+        showToast('Connexion réussie! Redirection...', 'success');
+        setTimeout(() => {
+            window.location.href = data.user.role + '.html';
+        }, 500);
+
+    } catch (err) {
+        // En cas d'erreur API, afficher le message
+        const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.textContent = err.message || "Erreur d'authentification.";
+            errorMessage.style.display = 'block';
+            errorMessage.classList.remove('d-none');
+        }
+        showToast(err.message || 'Erreur d\'authentification', 'error');
     }
 }
 
-function initRegisterForm() {
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const role = document.getElementById('regRole').value;
-            const username = document.getElementById('regUsername').value.trim();
-            const firstName = document.getElementById('regPrenom').value.trim();
-            const lastName = document.getElementById('regNom').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
-            const submitBtn = registerForm.querySelector('button[type="submit"]');
-
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-
-            if (password !== confirmPassword) {
-                errorMessage.textContent = 'Les mots de passe ne correspondent pas.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            setButtonLoading(submitBtn, true);
-
-            try {
-                await apiCall('/auth/signup', 'POST', {
-                    username,
-                    email,
-                    password,
-                    role,
-                    first_name: firstName,
-                    last_name: lastName,
-                    phone
-                }, false);
-
-                // successMessage.textContent = 'Inscription réussie. ' + (role === 'client' ? 'Connectez-vous dès maintenant.' : 'Un administrateur doit approuver votre compte.');
-                // successMessage.style.display = 'block';
-                this.reset();
-                // showToast('Inscription réussie!', 'success');
-
-                const msg = role === 'client' ?
-                    'Votre compte a été créé avec succès ! Connectez-vous dès maintenant pour passer commande.' :
-                    'Votre inscription a été enregistrée. Un administrateur validera votre accès très prochainement.';
-
-                await showSuccessModal('Inscription Réussie 🚀', msg);
-
-                // Si client, rediriger vers l'onglet de connexion
-                if (role === 'client') {
-                    const loginTab = document.getElementById('login-tab');
-                    if (loginTab) {
-                        new bootstrap.Tab(loginTab).show();
-                    }
-                }
-            } catch (err) {
-                errorMessage.textContent = err.message;
-                errorMessage.style.display = 'block';
-                showToast(err.message, 'error');
-            } finally {
-                setButtonLoading(submitBtn, false);
-            }
-        });
-    }
-}
 
 // ===============================
 // New: Order Statistics
@@ -953,10 +886,10 @@ async function loadPendingOrders() {
                 </thead>
                 <tbody>
                     ${orders.map(order => {
-                        const paymentHtml = order.paid ?
-                            `<span class="badge bg-success">Payé${order.payment_method ? ' ('+order.payment_method+')' : ''}</span>` :
-                            `<span class="badge bg-warning text-dark">Non payé</span>`;
-                        return `
+            const paymentHtml = order.paid ?
+                `<span class="badge bg-success">Payé${order.payment_method ? ' (' + order.payment_method + ')' : ''}</span>` :
+                `<span class="badge bg-warning text-dark">Non payé</span>`;
+            return `
                         <tr>
                             <td><strong>${order.order_number}</strong></td>
                             <td>${order.client_name}</td>
@@ -1568,11 +1501,10 @@ function initLogout() {
 // ==========================================
 
 function init() {
-    initAuthForm();
-    initRegisterForm();
-    initOrderForm();
-    initLogout();
-    initAddUserForm();
+    // initAuthForm() and initRegisterForm() removed because we use Google Auth via handleGoogleCallback
+    if (typeof initOrderForm === 'function') initOrderForm();
+    if (typeof initLogout === 'function') initLogout();
+    if (typeof initAddUserForm === 'function') initAddUserForm();
 
     // Initialisation du date picker s'il existe
     const dateLivraison = document.getElementById('dateLivraison');
@@ -1983,3 +1915,42 @@ function initChatWidget() {
         }
     }
 }
+
+// ==========================================
+// UX Enhancements: Scroll Animations & Navbar
+// ==========================================
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Dynamic Navbar
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+        // Trigger once on load
+        if (window.scrollY > 50) navbar.classList.add('navbar-scrolled');
+    }
+
+    // 2. Reveal Animations on Scroll
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Optional: animate only once
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach((el) => {
+        observer.observe(el);
+    });
+});

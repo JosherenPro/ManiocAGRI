@@ -5,151 +5,392 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentification - ManiocAgri</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="../bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../style.css" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .split-auth-container {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .auth-image-side {
+            background-image: linear-gradient(rgba(6, 78, 59, 0.75), rgba(6, 95, 70, 0.85)), url('https://images.unsplash.com/photo-1595856453084-5264b971a7ee?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .auth-image-side::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+            pointer-events: none;
+        }
+
+        .auth-form-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        @media (max-width: 991.98px) {
+            .auth-image-side {
+                display: none;
+                /* Hide image on mobile for a cleaner form focus */
+            }
+
+            .auth-form-side {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .auth-form-side {
+                padding: 1.5rem 1rem;
+            }
+
+            .brand-logo {
+                font-size: 2rem;
+            }
+
+            .auth-card {
+                max-width: 100%;
+            }
+        }
+
+        .brand-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-600);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .floating-form-control {
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            padding: 0.8rem 1rem;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .floating-form-control:focus {
+            background-color: #ffffff;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.15);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .quote-container {
+            animation: fadeIn 1.2s ease-out 0.5s both;
+            z-index: 1;
+        }
+
+        .role-selector-wrap {
+            background: #ffffff;
+            border: 1px solid #ebebeb;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .role-selector-wrap:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .google-btn-wrapper {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Modern Role Selector */
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 380px) {
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .role-card.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        .role-card {
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .role-card:hover {
+            background: #ffffff;
+            border-color: #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .role-card.active {
+            background: rgba(16, 185, 129, 0.08);
+            /* Light green based on primary-500 */
+            border-color: var(--primary-500);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+
+        .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+            color: var(--primary-600);
+            transition: transform 0.2s ease;
+        }
+
+        .role-card:hover .role-icon {
+            transform: scale(1.1);
+        }
+
+        .role-card.active .role-icon {
+            color: var(--primary-500);
+        }
+
+        .role-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+        }
+
+        .role-card.active .role-name {
+            color: var(--primary-600);
+        }
+
+        .role-card.full-width {
+            grid-column: span 2;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient d-flex align-items-center" style="min-height: 100vh;">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-8">
-                <div class="text-center mb-5">
-                    <a href="../index.html" class="text-decoration-none h2 fw-bold text-success">ManiocAgri</a>
-                    <p class="text-muted">La plateforme d'excellence pour la gestion de la ferme MOKPOKPO</p>
+<body>
+    <div class="row g-0 split-auth-container">
+        <!-- Image Side -->
+        <div class="col-lg-6 auth-image-side d-none d-lg-flex">
+            <div class="quote-container">
+                <div class="mb-4">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                            stroke="white" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="white" stroke-opacity="0.9"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M9 9H9.01" stroke="white" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M15 9H15.01" stroke="white" stroke-opacity="0.9" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h1 class="display-5 fw-bold mb-4">L'Agriculture de Demain,<br>Aujourd'hui.</h1>
+                <p class="fs-5 text-white-50 mx-auto" style="max-width: 400px;">
+                    Rejoignez la plateforme d'excellence pour la gestion de la ferme MOKPOKPO. Connectez-vous pour
+                    accéder à votre espace dédié.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="col-lg-6 auth-form-side">
+            <div class="auth-card">
+                <div class="text-center text-lg-start mb-5 d-lg-none">
+                    <a href="../index.html" class="brand-logo" style="margin-bottom: 0;">ManiocAgri</a>
                 </div>
 
-                <div class="card border-0 shadow-lg p-3 rounded-4 bg-white bg-opacity-75"
-                    style="backdrop-filter: blur(10px);">
-                    <div class="card-body p-4">
-                        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill" id="authTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active rounded-pill fw-bold" id="login-tab" data-bs-toggle="tab"
-                                    data-bs-target="#login" type="button" role="tab">S'identifier</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link rounded-pill fw-bold" id="register-tab" data-bs-toggle="tab"
-                                    data-bs-target="#register" type="button" role="tab">Créer un compte</button>
-                            </li>
-                        </ul>
+                <div class="d-none d-lg-block mb-5">
+                    <a href="../index.html" class="brand-logo">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="color: var(--primary-600);">
+                            <path d="M11 20A7 7 0 0 1 4 13V6a2 2 0 0 1 2-2h7a7 7 0 0 1 7 7v7a2 2 0 0 1-2 2h-7z"></path>
+                            <line x1="14" y1="14" x2="10" y2="10"></line>
+                        </svg>
+                        ManiocAgri
+                    </a>
+                </div>
 
-                        <div class="tab-content" id="authTabsContent">
-                            <!-- Onglet Connexion -->
-                            <div class="tab-pane fade show active" id="login" role="tabpanel">
-                                <form id="authForm">
-                                    <div class="mb-3">
-                                        <label for="role" class="form-label small fw-bold text-muted">VOTRE RÔLE</label>
-                                        <select class="form-select bg-light border-0 py-2" id="role" required>
-                                            <option value="">Choisissez votre accès...</option>
-                                            <option value="admin">Administrateur</option>
-                                            <option value="livreur">Livreur</option>
-                                            <option value="producteur">Producteur</option>
-                                            <option value="gestionnaire">Gestionnaire</option>
-                                            <option value="agent">Agent de terrain</option>
-                                            <option value="client">Client</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label small fw-bold text-muted">NOM
-                                            D'UTILISATEUR</label>
-                                        <input type="text" class="form-control bg-light border-0 py-2" id="username"
-                                            placeholder="votre_pseudo" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="password" class="form-label small fw-bold text-muted">MOT DE
-                                            PASSE</label>
-                                        <input type="password" class="form-control bg-light border-0 py-2" id="password"
-                                            placeholder="••••••••" required>
-                                    </div>
-                                    <button type="submit"
-                                        class="btn btn-success w-100 py-3 fw-bold rounded-3 shadow-sm">SE
-                                        CONNECTER</button>
-                                </form>
-                            </div>
+                <div class="mb-4">
+                    <h2 class="fw-bold text-dark mb-2">Bon retour !</h2>
+                    <p class="text-muted">Veuillez vous authentifier de manière sécurisée avec votre compte Google.</p>
+                </div>
 
-                            <!-- Onglet Inscription -->
-                            <div class="tab-pane fade" id="register" role="tabpanel">
-                                <form id="registerForm">
-                                    <div class="mb-3">
-                                        <label for="regRole" class="form-label small fw-bold text-muted">RÔLE
-                                            SOUHAITÉ</label>
-                                        <select class="form-select bg-light border-0 py-2" id="regRole" required>
-                                            <option value="">Sélectionnez votre rôle</option>
-                                            <option value="livreur">Livreur</option>
-                                            <option value="producteur">Producteur</option>
-                                            <option value="gestionnaire">Gestionnaire</option>
-                                            <option value="agent">Agent de terrain</option>
-                                            <option value="client">Client</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="regUsername"
-                                            class="form-label small fw-bold text-muted">PSEUDO</label>
-                                        <input type="text" class="form-control bg-light border-0 py-2" id="regUsername"
-                                            required>
-                                    </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-6">
-                                            <label for="regPrenom"
-                                                class="form-label small fw-bold text-muted">PRÉNOM</label>
-                                            <input type="text" class="form-control bg-light border-0 py-2"
-                                                id="regPrenom" required>
-                                        </div>
-                                        <div class="col-6">
-                                            <label for="regNom" class="form-label small fw-bold text-muted">NOM</label>
-                                            <input type="text" class="form-control bg-light border-0 py-2" id="regNom"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="regPhone"
-                                            class="form-label small fw-bold text-muted">TÉLÉPHONE</label>
-                                        <input type="tel" class="form-control bg-light border-0 py-2" id="regPhone"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="regEmail" class="form-label small fw-bold text-muted">EMAIL
-                                            PROFESSIONNEL</label>
-                                        <input type="email" class="form-control bg-light border-0 py-2" id="regEmail"
-                                            placeholder="nom@exemple.com" required>
-                                    </div>
-                                    <div class="row g-2 mb-4">
-                                        <div class="col-6">
-                                            <label for="regPassword"
-                                                class="form-label small fw-bold text-muted">PASSWORD</label>
-                                            <input type="password" class="form-control bg-light border-0 py-2"
-                                                id="regPassword" required>
-                                        </div>
-                                        <div class="col-6">
-                                            <label for="regConfirmPassword"
-                                                class="form-label small fw-bold text-muted">CONFIRM</label>
-                                            <input type="password" class="form-control bg-light border-0 py-2"
-                                                id="regConfirmPassword" required>
-                                        </div>
-                                    </div>
-                                    <button type="submit"
-                                        class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm border-0">CRÉER
-                                        MON COMPTE</button>
-                                </form>
-                            </div>
+                <div class="role-selector-wrap">
+                    <label class="form-label small fw-bold mb-3 text-center d-block"
+                        style="color: var(--primary-600);">SÉLECTIONNEZ VOTRE
+                        PROFIL</label>
+
+                    <input type="hidden" id="requestedRole" value="client">
+
+                    <div class="role-grid">
+                        <div class="role-card active" data-role="client" onclick="selectRole(this)">
+                            <div class="role-icon"><i class="fas fa-shopping-bag"></i></div>
+                            <div class="role-name">Client</div>
                         </div>
-
-                        <div id="errorMessage" class="mt-4 alert alert-danger border-0 small py-2 d-none" role="alert">
+                        <div class="role-card" data-role="producteur" onclick="selectRole(this)">
+                            <div class="role-icon"><i class="fas fa-seedling"></i></div>
+                            <div class="role-name">Producteur</div>
                         </div>
-                        <div id="successMessage" class="mt-4 alert alert-success border-0 small py-2 d-none"
-                            role="alert"></div>
+                        <div class="role-card" data-role="livreur" onclick="selectRole(this)">
+                            <div class="role-icon"><i class="fas fa-truck"></i></div>
+                            <div class="role-name">Livreur</div>
+                        </div>
+                        <div class="role-card" data-role="agent" onclick="selectRole(this)">
+                            <div class="role-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="role-name">Agent Terrain</div>
+                        </div>
+                        <div class="role-card full-width" data-role="gestionnaire" onclick="selectRole(this)"
+                            style="padding: 0.8rem;">
+                            <div class="role-icon"><i class="fas fa-briefcase"></i></div>
+                            <div class="role-name">Gestionnaire</div>
+                        </div>
+                    </div>
+
+                    <div class="form-text small text-muted mt-3 text-center">
+                        <i class="fas fa-info-circle me-1"></i> Approbation requise (sauf client).
                     </div>
                 </div>
 
-                <div class="text-center mt-4">
-                    <a href="../index.html" class="text-muted text-decoration-none small">← Retour au site principal</a>
+                <div class="position-relative my-4">
+                    <hr class="text-muted opacity-25">
+                    <span
+                        class="position-absolute top-50 start-50 translate-middle px-3 bg-white text-muted small fw-medium">Continuer
+                        avec Google</span>
+                </div>
+
+                <!-- Google Sign-In Button Container -->
+                <div id="g_id_onload"
+                    data-client_id="138948265780-4o66b5e3qupkanlsta6fjihlbaqbgo1q.apps.googleusercontent.com"
+                    data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCallback"
+                    data-auto_prompt="false">
+                </div>
+                <div class="google-btn-wrapper">
+                    <!-- Adjusted data-width slightly to prevent overflow on very small devices -->
+                    <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline"
+                        data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="280">
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="mt-4 alert alert-danger border-0 rounded-3 small py-3 d-none shadow-sm"
+                    style="background-color: #fff5f5; color: #e53e3e;" role="alert">
+                </div>
+
+                <div class="text-center mt-5">
+                    <a href="../index.html" class="text-muted text-decoration-none small hover-success transition">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Retour au site principal
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js?v=2"></script>
+    <script src="../script.js?v=4"></script>
+    <script>
+        function selectRole(element) {
+            // Remove active class from all cards
+            document.querySelectorAll('.role-card').forEach(card => card.classList.remove('active'));
+            // Add active class to clicked card
+            element.classList.add('active');
+            // Update hidden input value
+            document.getElementById('requestedRole').value = element.getAttribute('data-role');
+        }
+    </script>
 </body>
 
 </html>
