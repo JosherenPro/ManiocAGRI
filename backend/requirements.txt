@@ -14,3 +14,4 @@ fastapi-mail
 jinja2
 httpx
 google-auth
+supabase
