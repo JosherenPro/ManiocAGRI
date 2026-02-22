@@ -131,6 +131,11 @@ def update_order_status(
     order.status = order_update.status
     if order_update.notes:
         order.delivery_notes = order_update.notes
+    # allow paid and payment_method changes via this endpoint if provided
+    if hasattr(order_update, 'paid') and order_update.paid is not None:
+        order.paid = order_update.paid
+    if hasattr(order_update, 'payment_method') and order_update.payment_method is not None:
+        order.payment_method = order_update.payment_method
         
     session.add(order)
     session.commit()
@@ -169,6 +174,30 @@ def assign_order_to_livreur(
     if order.status == OrderStatus.PENDING:
         order.status = OrderStatus.VALIDATED
     
+    session.add(order)
+    session.commit()
+    session.refresh(order)
+    return order
+
+
+@router.patch("/{id}/payment", response_model=OrderRead)
+def update_payment_status(
+    *,
+    session: Session = Depends(get_session),
+    id: int,
+    paid: bool,
+    payment_method: Optional[PaymentMethod] = None,
+    current_user: User = Depends(deps.get_current_admin_or_gestionnaire),
+) -> Any:
+    """
+    Mark an order as paid or update its payment method. Admin/Gestionnaire only.
+    """
+    order = session.get(Order, id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Commande non trouvée")
+    order.paid = paid
+    if payment_method is not None:
+        order.payment_method = payment_method
     session.add(order)
     session.commit()
     session.refresh(order)

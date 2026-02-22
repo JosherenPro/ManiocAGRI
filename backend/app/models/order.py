@@ -10,6 +10,12 @@ class OrderStatus(str, Enum):
     DELIVERED = "Livré"
     REJECTED = "Refusée"
 
+class PaymentMethod(str, Enum):
+    MOBILE_YASS = "Mobile Yass"
+    VISA = "Visa"
+    MOOV_MONEY = "Moov Money"
+    # Future methods can be added here
+
 class OrderItemBase(SQLModel):
     product_id: int = Field(foreign_key="product.id")
     product_name: str = "Produit"
@@ -28,6 +34,9 @@ class OrderBase(SQLModel):
     delivery_address: str
     status: OrderStatus = Field(default=OrderStatus.PENDING)
     total_price: int = Field(default=0)
+    # payment information
+    payment_method: Optional[PaymentMethod] = Field(default=None)
+    paid: bool = Field(default=False)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     client_id: Optional[int] = Field(default=None, foreign_key="user.id")
     livreur_id: Optional[int] = Field(default=None, foreign_key="user.id")
@@ -48,6 +57,8 @@ class OrderUpdate(SQLModel):
     status: Optional[OrderStatus] = None
     delivery_address: Optional[str] = None
     delivery_notes: Optional[str] = None
+    paid: Optional[bool] = None
+    payment_method: Optional[PaymentMethod] = None
 
 class OrderStatusUpdate(SQLModel):
     status: OrderStatus

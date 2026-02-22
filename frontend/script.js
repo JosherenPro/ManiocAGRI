@@ -946,16 +946,22 @@ async function loadPendingOrders() {
                         <th>Commande</th>
                         <th>Client</th>
                         <th>Adresse</th>
+                        <th>Paiement</th>
                         <th>Total</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${orders.map(order => `
+                    ${orders.map(order => {
+                        const paymentHtml = order.paid ?
+                            `<span class="badge bg-success">Payé${order.payment_method ? ' ('+order.payment_method+')' : ''}</span>` :
+                            `<span class="badge bg-warning text-dark">Non payé</span>`;
+                        return `
                         <tr>
                             <td><strong>${order.order_number}</strong></td>
                             <td>${order.client_name}</td>
                             <td>${order.delivery_address}</td>
+                            <td>${paymentHtml}</td>
                             <td>${order.total_price.toLocaleString()} FCFA</td>
                             <td>
                                 <button class="btn btn-sm btn-primary" onclick="openAssignModal(${order.id})">
@@ -963,7 +969,7 @@ async function loadPendingOrders() {
                                 </button>
                             </td>
                         </tr>
-                    `).join('')}
+                    `}).join('')}
                 </tbody>
             </table>
         </div>`;
@@ -997,6 +1003,11 @@ async function openAssignModal(orderId) {
     });
     itemsHtml += '</ul>';
 
+    // payment info html
+    const paymentInfoHtml = order.paid ?
+        `<p><strong>Paiement:</strong> <span class="badge bg-success">Payé</span> ${order.payment_method || ''}</p>` :
+        `<p><strong>Paiement:</strong> <span class="badge bg-warning text-dark">Non payé</span></p>`;
+
     modalEl.innerHTML = `
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -1011,6 +1022,7 @@ async function openAssignModal(orderId) {
                             <p><strong>Nom:</strong> ${order.client_name}<br>
                             <strong>Téléphone:</strong> ${order.phone || 'N/A'}<br>
                             <strong>Adresse:</strong> ${order.delivery_address}</p>
+                            ${paymentInfoHtml}
                         </div>
                         <div class="col-md-6 text-end">
                             <h6>Total Commande</h6>
@@ -1329,13 +1341,22 @@ function updateOrderSummary() {
 
     if (!hasItems) {
         orderItems.innerHTML = '<p class="text-muted text-center">Aucun produit sélectionné</p>';
-        orderBtn.disabled = true;
     } else {
         orderItems.innerHTML = itemsHtml;
-        orderBtn.disabled = false;
     }
 
     totalPriceElement.textContent = total.toLocaleString() + ' FCFA';
+
+    updateOrderBtnState();
+}
+
+function updateOrderBtnState() {
+    const orderBtn = document.getElementById('orderBtn');
+    if (!orderBtn) return;
+    const hasItems = Object.keys(cart).some(pid => cart[pid] > 0);
+    const pm = document.getElementById('paymentMethod');
+    const pmVal = pm ? pm.value : '';
+    orderBtn.disabled = !(hasItems && pmVal);
 }
 
 function initOrderForm() {
@@ -1346,6 +1367,26 @@ function initOrderForm() {
         const usernameInput = document.getElementById('username');
         if (storedUsername && usernameInput) {
             usernameInput.value = storedUsername;
+        }
+
+        // payment selection listener
+        const pmSelect = document.getElementById('paymentMethod');
+        const paymentInfo = document.createElement('div');
+        paymentInfo.id = 'paymentInfo';
+        paymentInfo.className = 'mb-3 text-success fw-bold';
+        paymentInfo.style.display = 'none';
+        if (pmSelect && pmSelect.parentNode) {
+            pmSelect.parentNode.insertBefore(paymentInfo, pmSelect.nextSibling);
+            pmSelect.addEventListener('change', () => {
+                const total = parseInt(document.getElementById('total-price').textContent.replace(/[^0-9]/g, ''));
+                if (pmSelect.value) {
+                    paymentInfo.textContent = `Montant total : ${total.toLocaleString()} FCFA`;
+                    paymentInfo.style.display = 'block';
+                } else {
+                    paymentInfo.style.display = 'none';
+                }
+                updateOrderBtnState();
+            });
         }
 
         orderForm.addEventListener('submit', async function (e) {
@@ -1375,12 +1416,18 @@ function initOrderForm() {
                 }
             });
 
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            // paid is determined by whether payment method is selected
+
+            const isPaid = paymentMethod ? true : false; // consider paid when a method is chosen
             const orderData = {
                 order_number: 'CMD-' + Date.now(),
                 client_name: document.getElementById('nom').value,
                 phone: document.getElementById('telephone').value,
                 delivery_address: document.getElementById('localisation').value,
                 total_price: parseInt(document.getElementById('total-price').textContent.replace(/[^0-9]/g, '')),
+                payment_method: paymentMethod || null,
+                paid: isPaid,
                 items: items
             };
 
@@ -1419,15 +1466,18 @@ async function loadClientOrders() {
         const orders = await apiCall('/orders/', 'GET');
 
         if (orders.length === 0) {
-            ordersList.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Vous n\'avez pas encore de commandes.</td></tr>';
+            ordersList.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">Vous n\'avez pas encore de commandes.</td></tr>';
         } else {
-            ordersList.innerHTML = orders.map(order => `
+            ordersList.innerHTML = orders.map(order => {
+                const paymentBadge = order.paid ? `<span class="badge bg-success">Payé</span>` : `<span class="badge bg-warning text-dark">Non payé</span>`;
+                return `
                 <tr>
                     <td>
                         <span class="fw-bold text-dark">${order.order_number}</span>
                     </td>
                     <td>${new Date(order.created_at).toLocaleDateString('fr-FR')}</td>
                     <td>${order.delivery_address || 'Lomé'}</td>
+                    <td>${paymentBadge}</td>
                     <td>
                         <span class="badge bg-${statusColor(order.status)}">${order.status}</span>
                     </td>
@@ -1437,7 +1487,7 @@ async function loadClientOrders() {
                         </button>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
         }
 
         // Update stats counters

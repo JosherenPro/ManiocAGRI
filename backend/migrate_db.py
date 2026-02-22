@@ -13,6 +13,13 @@ def migrate():
             if 'delivery_notes' not in columns:
                 print("Adding 'delivery_notes' column to 'order'...")
                 conn.execute(text("ALTER TABLE \"order\" ADD COLUMN delivery_notes VARCHAR"))
+            # add payment columns
+            if 'payment_method' not in columns:
+                print("Adding 'payment_method' column to 'order'...")
+                conn.execute(text("ALTER TABLE \"order\" ADD COLUMN payment_method VARCHAR"))
+            if 'paid' not in columns:
+                print("Adding 'paid' column to 'order'...")
+                conn.execute(text("ALTER TABLE \"order\" ADD COLUMN paid BOOLEAN DEFAULT FALSE"))
             
             # Check orderitem
             res = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name='orderitem'"))
