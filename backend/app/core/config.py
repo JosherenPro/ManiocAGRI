@@ -3,6 +3,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def _build_db_url() -> str:
+    """
+    Retourne simplement la DATABASE_URL définie dans le `.env`
+    qui contient déjà les bons identifiants et le port 5432 compatible SQLAlchemy.
+    """
+    raw_url = os.getenv("DATABASE_URL", "")
+    return raw_url or "sqlite:///./manioc_agri.db"
+
 class Settings:
     PROJECT_NAME: str = "ManiocAgri"
     VERSION: str = "1.0.0"
@@ -12,7 +20,7 @@ class Settings:
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./manioc_agri.db")
+    DATABASE_URL: str = _build_db_url()
 
     # AI & Cerebras
     CEREBRAS_API_KEY: str = os.getenv("CEREBRAS_API_KEY", "")
