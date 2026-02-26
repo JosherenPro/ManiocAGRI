@@ -485,38 +485,8 @@ window.deleteUser = async function (userId) {
 
 // ==========================================
 // Init Add User Form
-// ==========================================
+// Removed initAddUserForm as per user request
 
-function initAddUserForm() {
-    const addUserForm = document.getElementById('addUserForm');
-    if (!addUserForm) return;
-
-    addUserForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const submitBtn = document.getElementById('addUserBtn');
-        setButtonLoading(submitBtn, true);
-
-        const userData = {
-            username: document.getElementById('newUsername').value,
-            email: document.getElementById('newEmail').value,
-            password: document.getElementById('newPassword').value,
-            role: document.getElementById('newRole').value,
-            is_approved: true
-        };
-
-        try {
-            await apiCall('/users/', 'POST', userData);
-            showToast('Utilisateur créé avec succès!', 'success');
-            addUserForm.reset();
-            loadUsers();
-            loadPendingRegistrations();
-        } catch (err) {
-            showToast(err.message, 'error');
-        } finally {
-            setButtonLoading(submitBtn, false);
-        }
-    });
-}
 
 // ==========================================
 // Produits (CRUD Admin & Producteur)
@@ -1682,7 +1652,6 @@ function init() {
 
     if (typeof initOrderForm === 'function') initOrderForm();
     if (typeof initLogout === 'function') initLogout();
-    if (typeof initAddUserForm === 'function') initAddUserForm();
 
     // Initialisation du date picker s'il existe
     const dateLivraison = document.getElementById('dateLivraison');
