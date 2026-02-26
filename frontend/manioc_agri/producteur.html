@@ -33,69 +33,177 @@
     </nav>
 
     <div class="container py-5" style="margin-top: 70px;">
-        <h2>Gestion des Produits</h2>
-        <div class="card mb-4 border-0 shadow-sm rounded-4">
-            <div class="card-header bg-white border-0 pt-4 d-flex justify-content-between align-items-center">
-                <h5 class="fw-bold mb-0" id="productFormTitle"><i
-                        class="fas fa-plus-circle me-2 text-success"></i>Ajouter un produit</h5>
-                <button class="btn btn-sm btn-outline-secondary d-none" id="cancelEditBtn"
-                    onclick="cancelEdit()">Annuler</button>
-            </div>
-            <div class="card-body p-4">
-                <form id="productForm">
-                    <input type="hidden" id="productId">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="productName" class="form-label small fw-bold text-muted text-uppercase">Nom du
-                                produit</label>
-                            <input type="text" class="form-control" id="productName" required>
-                            <div id="productNameError" class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="productPrice" class="form-label small fw-bold text-muted text-uppercase">Prix
-                                (FCFA/kg)</label>
-                            <input type="number" class="form-control" id="productPrice" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="productStock" class="form-label small fw-bold text-muted text-uppercase">Stock
-                                (kg)</label>
-                            <input type="number" class="form-control" id="productStock" required>
-                        </div>
-                        <div class="col-12">
-                            <label for="productDescription"
-                                class="form-label small fw-bold text-muted text-uppercase">Description</label>
-                            <textarea class="form-control" id="productDescription" rows="2"
-                                placeholder="Description courte du produit..."></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="productImage" class="form-label small fw-bold text-muted text-uppercase">Image
-                                (Upload)</label>
-                            <input type="file" class="form-control" id="productImage" accept="image/*">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="productImageUrl" class="form-label small fw-bold text-muted text-uppercase">OU
-                                URL de l'image</label>
-                            <input type="url" class="form-control" id="productImageUrl"
-                                placeholder="https://example.com/image.jpg">
-                        </div>
-                        <div class="col-12 text-end mt-4">
-                            <button type="submit" class="btn btn-success px-5 py-2 rounded-pill shadow-sm"
-                                id="saveProductBtn">
-                                <i class="fas fa-save me-2"></i>Sauvegarder le produit
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0">Espace Producteur</h2>
+            <ul class="nav nav-pills" id="dashboardTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="products-tab" data-bs-toggle="tab"
+                        data-bs-target="#products-pane" type="button" role="tab" aria-selected="true">Produits</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="agriculture-tab" data-bs-toggle="tab"
+                        data-bs-target="#agriculture-pane" type="button" role="tab" aria-selected="false">Gestion
+                        Agricole</button>
+                </li>
+            </ul>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <h5>Liste des produits</h5>
+        <div class="tab-content" id="dashboardTabContent">
+            <!-- Onglet Produits -->
+            <div class="tab-pane fade show active" id="products-pane" role="tabpanel" aria-labelledby="products-tab">
+                <div class="card mb-4 border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 pt-4 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0" id="productFormTitle"><i
+                                class="fas fa-plus-circle me-2 text-success"></i>Ajouter un produit</h5>
+                        <button class="btn btn-sm btn-outline-secondary d-none" id="cancelEditBtn"
+                            onclick="cancelEdit()">Annuler</button>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="productForm">
+                            <input type="hidden" id="productId">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="productName"
+                                        class="form-label small fw-bold text-muted text-uppercase">Nom du
+                                        produit</label>
+                                    <input type="text" class="form-control" id="productName" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productPrice"
+                                        class="form-label small fw-bold text-muted text-uppercase">Prix
+                                        (FCFA/kg)</label>
+                                    <input type="number" class="form-control" id="productPrice" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productStock"
+                                        class="form-label small fw-bold text-muted text-uppercase">Stock (kg)</label>
+                                    <input type="number" class="form-control" id="productStock" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="productDescription"
+                                        class="form-label small fw-bold text-muted text-uppercase">Description</label>
+                                    <textarea class="form-control" id="productDescription" rows="2"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="productImage"
+                                        class="form-label small fw-bold text-muted text-uppercase">Image
+                                        (Upload)</label>
+                                    <input type="file" class="form-control" id="productImage" accept="image/*">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="productImageUrl"
+                                        class="form-label small fw-bold text-muted text-uppercase">OU URL de
+                                        l'image</label>
+                                    <input type="url" class="form-control" id="productImageUrl"
+                                        placeholder="https://example.com/image.jpg">
+                                </div>
+                                <div class="col-12 text-end mt-4">
+                                    <button type="submit" class="btn btn-success px-5 py-2 rounded-pill shadow-sm"
+                                        id="saveProductBtn">
+                                        <i class="fas fa-save me-2"></i>Sauvegarder le produit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h5 class="fw-bold mb-0">Mes Produits en Vente</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div id="productsList" class="row">
+                            <!-- Liste dynamique des produits -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div id="productsList" class="row">
-                    <!-- Liste dynamique des produits -->
+
+            <!-- Onglet Gestion Agricole -->
+            <div class="tab-pane fade" id="agriculture-pane" role="tabpanel" aria-labelledby="agriculture-tab">
+                <div class="row g-4">
+                    <!-- Formulaire de Champ -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-white border-0 pt-4">
+                                <h5 class="fw-bold mb-0"><i class="fas fa-map-marked-alt me-2 text-success"></i>Nouveau
+                                    Champ</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <form id="fieldForm">
+                                    <div class="mb-3">
+                                        <label for="fieldName" class="form-label small fw-bold text-muted">Nom du
+                                            champ</label>
+                                        <input type="text" class="form-control" id="fieldName"
+                                            placeholder="Ex: Champ Nord" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fieldLocationName" class="form-label small fw-bold text-muted">Ville
+                                            / Localisation</label>
+                                        <input type="text" class="form-control" id="fieldLocationName"
+                                            placeholder="Ex: Pagouda" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fieldArea" class="form-label small fw-bold text-muted">Superficie
+                                            (ha)</label>
+                                        <input type="number" class="form-control" id="fieldArea" step="0.1" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100 rounded-pill">Enregistrer le
+                                        champ</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire de Culture -->
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-header bg-white border-0 pt-4">
+                                <h5 class="fw-bold mb-0"><i class="fas fa-seedling me-2 text-success"></i>Nouvelle
+                                    Culture</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <form id="cropForm">
+                                    <div class="mb-3">
+                                        <label for="cropFieldId"
+                                            class="form-label small fw-bold text-muted">Champ</label>
+                                        <select class="form-select" id="cropFieldId" required>
+                                            <option value="">Sélectionnez un champ...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cropType" class="form-label small fw-bold text-muted">Type de
+                                            culture</label>
+                                        <input type="text" class="form-control" id="cropType" placeholder="Ex: Manioc"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cropArea" class="form-label small fw-bold text-muted">Superficie
+                                            occupée (ha)</label>
+                                        <input type="number" class="form-control" id="cropArea" step="0.01"
+                                            placeholder="Ex: 2.5" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cropPlantingDate" class="form-label small fw-bold text-muted">Date
+                                            de plantation</label>
+                                        <input type="date" class="form-control" id="cropPlantingDate" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100 rounded-pill">Démarrer une
+                                        culture</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liste des Champs et Météo -->
+                    <div class="col-lg-7">
+                        <div id="fieldsListContainer">
+                            <!-- Les champs s'afficheront ici avec leur météo -->
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-success" role="status"></div>
+                                <p class="mt-3 text-muted">Chargement de vos parcelles...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,7 +214,7 @@
         </div>
     </footer>
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- ============================================
          Chat IA Flotant - Bouton et Panneau
          ============================================ -->
@@ -150,11 +258,11 @@
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
     </button>
-<script src="../script.js"></script>
+    <script src="../script.js?v=5"></script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             AOS.init({
                 duration: 800,
                 once: true,

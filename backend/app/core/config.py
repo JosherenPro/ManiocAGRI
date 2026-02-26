@@ -46,5 +46,6 @@ class Settings:
     SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
     SUPABASE_SERVICE_KEY: str = os.getenv("SUPABASE_SERVICE_KEY", "")
     SUPABASE_BUCKET: str = os.getenv("SUPABASE_BUCKET", "produits-images")
+    OPENWEATHER_API_KEY: str = os.getenv("OPENWEATHER_API_KEY", "")
 
 settings = Settings()

@@ -33,56 +33,91 @@
     </nav>
 
     <div class="container py-5" style="margin-top: 70px;">
-        <h2>Saisie des Données de Terrain</h2>
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5>Données du champ</h5>
-            </div>
-            <div class="card-body">
-                <form id="fieldForm">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="fieldLocation" class="form-label">Localisation du champ</label>
-                            <input type="text" class="form-control" id="fieldLocation" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="fieldSize" class="form-label">Taille du champ (hectares)</label>
-                            <input type="number" class="form-control" id="fieldSize" step="0.01" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="season" class="form-label">Saison</label>
-                            <select class="form-select" id="season" required>
-                                <option value="sèche">Saison sèche</option>
-                                <option value="pluvieuse">Saison pluvieuse</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label for="soilType" class="form-label">Type de sol</label>
-                            <input type="text" class="form-control" id="soilType" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="plantingDate" class="form-label">Date de plantation</label>
-                            <input type="date" class="form-control" id="plantingDate" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="expectedHarvest" class="form-label">Récolte attendue (kg)</label>
-                            <input type="number" class="form-control" id="expectedHarvest" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
-                </form>
-            </div>
-        </div>
+        <h2 class="fw-bold mb-4">Gestion des Données de Terrain (Agent)</h2>
 
-        <div class="card">
-            <div class="card-header">
-                <h5>Historique des données</h5>
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <!-- Nouveau Champ -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h5 class="fw-bold mb-0"><i class="fas fa-map-marked-alt me-2 text-success"></i>Nouveau Champ
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="fieldForm">
+                            <div class="mb-3">
+                                <label for="fieldName" class="form-label small fw-bold text-muted">Nom du champ</label>
+                                <input type="text" class="form-control" id="fieldName" placeholder="Ex: Champ Nord"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fieldLocationName" class="form-label small fw-bold text-muted">Ville /
+                                    Localisation</label>
+                                <input type="text" class="form-control" id="fieldLocationName" placeholder="Ex: Pagouda"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fieldArea" class="form-label small fw-bold text-muted">Superficie
+                                    (ha)</label>
+                                <input type="number" class="form-control" id="fieldArea" step="0.1" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 rounded-pill">Enregistrer le
+                                champ</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Nouvelle Culture -->
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h5 class="fw-bold mb-0"><i class="fas fa-seedling me-2 text-success"></i>Nouvelle Culture</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="cropForm">
+                            <div class="mb-3">
+                                <label for="cropFieldId" class="form-label small fw-bold text-muted">Champ</label>
+                                <select class="form-select" id="cropFieldId" required>
+                                    <option value="">Sélectionnez un champ...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cropType" class="form-label small fw-bold text-muted">Type de
+                                    culture</label>
+                                <input type="text" class="form-control" id="cropType" placeholder="Ex: Manioc" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cropArea" class="form-label small fw-bold text-muted">Superficie occupée
+                                    (ha)</label>
+                                <input type="number" class="form-control" id="cropArea" step="0.01"
+                                    placeholder="Ex: 2.5" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cropPlantingDate" class="form-label small fw-bold text-muted">Date de
+                                    plantation</label>
+                                <input type="date" class="form-control" id="cropPlantingDate" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 rounded-pill">Démarrer une
+                                culture</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div id="fieldDataList">
-                    <!-- Liste des données saisies -->
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 pt-4">
+                        <h5 class="fw-bold mb-0"><i class="fas fa-history me-2 text-success"></i>Récapitulatif des
+                            Parcelles</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div id="fieldsListContainer">
+                            <!-- Les champs s'afficheront ici -->
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-success" role="status"></div>
+                                <p class="mt-3 text-muted">Chargement des données...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,7 +128,7 @@
         </div>
     </footer>
     <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- ============================================
          Chat IA Flotant - Bouton et Panneau
          ============================================ -->
@@ -137,11 +172,11 @@
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
     </button>
-<script src="../script.js"></script>
+    <script src="../script.js?v=5"></script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             AOS.init({
                 duration: 800,
                 once: true,

@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from api.v1.endpoints import (
     auth, users, products, orders, field_data, dashboard, ai,
     categories, notifications, delivery_zones, reviews, transactions, harvests,
-    payments, webhooks
+    payments, webhooks, fields, crops, weather
 )
 
 api_router = APIRouter()
@@ -26,6 +26,9 @@ api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"]
 # Field & agriculture
 api_router.include_router(field_data.router, prefix="/field-data", tags=["field-data"])
 api_router.include_router(harvests.router, prefix="/harvests", tags=["harvests"])
+api_router.include_router(fields.router, prefix="/fields", tags=["fields"])
+api_router.include_router(crops.router, prefix="/crops", tags=["crops"])
+api_router.include_router(weather.router, prefix="/weather", tags=["weather"])
 
 # Platform
 api_router.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])

@@ -1629,8 +1629,57 @@ function initLogout() {
 // Initialisation Globale
 // ==========================================
 
+// ==========================================
+// Auth Guard – page-level security
+// ==========================================
+const PAGE_ROLES = {
+    'admin.html': ['admin'],
+    'gestionnaire.html': ['gestionnaire', 'admin'],
+    'producteur.html': ['producteur', 'admin'],
+    'agent_terrain.html': ['agent', 'admin'],
+    'client.html': ['client', 'admin'],
+    'livreur.html': ['livreur', 'admin'],
+};
+
+const ROLE_HOME = {
+    'admin': '/manioc_agri/admin.html',
+    'gestionnaire': '/manioc_agri/gestionnaire.html',
+    'producteur': '/manioc_agri/producteur.html',
+    'agent': '/manioc_agri/agent_terrain.html',
+    'client': '/manioc_agri/client.html',
+    'livreur': '/manioc_agri/livreur.html',
+};
+
+function checkAuth() {
+    const path = window.location.pathname;
+    const AUTH_PAGE = '/manioc_agri/authentification.html';
+
+    // Determine which page we are on
+    const currentPage = Object.keys(PAGE_ROLES).find(p => path.endsWith(p));
+    if (!currentPage) return; // Public pages (index, catalogue, etc.) – no check needed
+
+    const token = sessionStorage.getItem('token');
+    const userRole = sessionStorage.getItem('userRole');
+
+    // 1. Not logged in → redirect to login
+    if (!token || !userRole) {
+        sessionStorage.setItem('redirectAfterLogin', window.location.href);
+        window.location.replace(AUTH_PAGE);
+        return;
+    }
+
+    // 2. Wrong role → redirect to the user's own dashboard
+    const allowed = PAGE_ROLES[currentPage];
+    if (!allowed.includes(userRole)) {
+        const home = ROLE_HOME[userRole] || '/';
+        window.location.replace(home);
+    }
+}
+
 function init() {
-    // initAuthForm() and initRegisterForm() removed because we use Google Auth via handleGoogleCallback
+    // Security: enforce authentication and role-based access
+    checkAuth();
+
     if (typeof initOrderForm === 'function') initOrderForm();
     if (typeof initLogout === 'function') initLogout();
     if (typeof initAddUserForm === 'function') initAddUserForm();
@@ -1666,6 +1715,7 @@ function init() {
     if (path.includes('producteur.html')) {
         loadProducts();
         initProductForm();
+        initAgricultureManagement();
     }
 
     if (path.includes('catalogue.html')) {
@@ -1684,6 +1734,10 @@ function init() {
 
     if (path.includes('livreur.html')) {
         refreshLivreurDeliveries();
+    }
+
+    if (path.includes('agent_terrain.html')) {
+        initAgricultureManagement();
     }
 }
 
@@ -1767,6 +1821,174 @@ function initOrderChart(orders) {
             }
         }
     });
+}
+
+// ==========================================
+// Gestion Agricole (Champs & Cultures)
+// ==========================================
+
+function initAgricultureManagement() {
+    const fieldForm = document.getElementById('fieldForm');
+    const cropForm = document.getElementById('cropForm');
+
+    if (fieldForm) {
+        fieldForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('fieldName').value,
+                location_name: document.getElementById('fieldLocationName').value,
+                area_size_hectares: parseFloat(document.getElementById('fieldArea').value)
+            };
+            try {
+                await apiCall('/fields', 'POST', data);
+                showToast("Nouveau champ enregistré !", "success");
+                fieldForm.reset();
+                loadFields();
+            } catch (err) {
+                console.error("Erreur champ:", err);
+                showToast("Échec de l'enregistrement du champ.", "danger");
+            }
+        });
+    }
+
+    if (cropForm) {
+        cropForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                field_id: parseInt(document.getElementById('cropFieldId').value),
+                crop_type: document.getElementById('cropType').value,
+                area_occupied_hectares: parseFloat(document.getElementById('cropArea').value),
+                planting_date: document.getElementById('cropPlantingDate').value
+            };
+            try {
+                await apiCall('/crops', 'POST', data);
+                showToast("Culture démarrée !", "success");
+                cropForm.reset();
+                loadFields(); // Recharger pour voir les mises à jour
+            } catch (err) {
+                console.error("Erreur culture:", err);
+                showToast("Échec du démarrage de la culture.", "danger");
+            }
+        });
+    }
+
+    loadFields();
+}
+
+async function loadFields() {
+    const container = document.getElementById('fieldsListContainer');
+    const fieldSelect = document.getElementById('cropFieldId');
+    if (!container) return;
+
+    try {
+        const fields = await apiCall('/fields', 'GET');
+
+        // Update Select
+        if (fieldSelect) {
+            fieldSelect.innerHTML = '<option value="">Sélectionnez un champ...</option>';
+            fields.forEach(f => {
+                const opt = document.createElement('option');
+                opt.value = f.id;
+                opt.textContent = f.name;
+                fieldSelect.appendChild(opt);
+            });
+        }
+
+        if (fields.length === 0) {
+            container.innerHTML = `
+                <div class="card border-0 shadow-sm rounded-4 p-5 text-center">
+                    <div class="text-muted mb-3"><i class="fas fa-map-marked-alt fa-3x"></i></div>
+                    <h5>Aucun champ enregistré</h5>
+                    <p class="text-muted mb-0">Commencez par ajouter votre première parcelle de terre.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = '';
+        fields.forEach(f => {
+            const card = document.createElement('div');
+            card.className = "card border-0 shadow-sm rounded-4 mb-4 overflow-hidden reveal";
+            card.innerHTML = `
+                <div class="row g-0">
+                    <div class="col-md-8 p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-1">${f.name}</h5>
+                                <p class="text-muted small mb-0"><i class="fas fa-map-marker-alt me-1"></i>${f.location_name}</p>
+                            </div>
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">${f.area_size_hectares} ha</span>
+                        </div>
+                        <div id="crops-${f.id}">
+                            <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 bg-light border-start d-flex align-items-center justify-content-center p-3" id="weather-${f.id}">
+                        <div class="text-center">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                            <div class="small text-muted mt-2">Météo...</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+
+            // Load detail data for this field
+            loadFieldCrops(f.id);
+            loadFieldWeather(f.id);
+        });
+
+    } catch (err) {
+        console.error("Erreur chargement champs:", err);
+        container.innerHTML = '<div class="alert alert-danger">Erreur lors de la récupération des données.</div>';
+    }
+}
+
+async function loadFieldCrops(fieldId) {
+    const list = document.getElementById(`crops-${fieldId}`);
+    if (!list) return;
+
+    try {
+        const crops = await apiCall(`/crops/by-field/${fieldId}`, 'GET');
+        if (crops.length === 0) {
+            list.innerHTML = '<p class="small text-muted italic mb-0">Aucune culture active</p>';
+            return;
+        }
+
+        list.innerHTML = crops.map(c => `
+            <div class="d-flex align-items-center mb-2">
+                <div class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></div>
+                <div class="flex-grow-1 small">
+                    <span class="fw-bold text-dark">${c.crop_type}</span> 
+                    <span class="text-muted"> (${c.area_occupied_hectares} ha) - Planté le ${new Date(c.planting_date).toLocaleDateString()}</span>
+                </div>
+                <span class="badge ${c.status === 'harvested' ? 'bg-secondary' : 'bg-primary'} rounded-pill" style="font-size: 0.65rem;">${c.status}</span>
+            </div>
+        `).join('');
+
+    } catch (err) {
+        list.innerHTML = '<span class="text-danger small">Erreur cultures</span>';
+    }
+}
+
+async function loadFieldWeather(fieldId) {
+    const container = document.getElementById(`weather-${fieldId}`);
+    if (!container) return;
+
+    try {
+        const w = await apiCall(`/weather/${fieldId}`, 'GET');
+        container.innerHTML = `
+            <div class="text-center">
+                <img src="https://openweathermap.org/img/wn/${w.weather[0].icon}@2x.png" width="60" alt="météo">
+                <div class="h4 fw-bold mb-0">${Math.round(w.main.temp)}°C</div>
+                <div class="text-capitalize small text-muted">${w.weather[0].description}</div>
+                <div class="mt-2 small text-primary"><i class="fas fa-tint me-1"></i>${w.main.humidity}% Humidité</div>
+                ${w.mock ? '<div class="badge bg-warning-subtle text-warning mt-1" style="font-size: 0.6rem;">Demo</div>' : ''}
+            </div>
+        `;
+    } catch (err) {
+        container.innerHTML = '<div class="text-muted small">Météo indisponible</div>';
+    }
 }
 
 // ==========================================
