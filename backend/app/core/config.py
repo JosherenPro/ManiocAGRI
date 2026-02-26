@@ -15,6 +15,8 @@ class Settings:
     PROJECT_NAME: str = "ManiocAgri"
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
+    DISABLE_AUTH: bool = os.getenv("DISABLE_AUTH", "True").lower() == "true"
+    BYPASS_ROLE: str = os.getenv("BYPASS_ROLE", "admin")
     
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-for-dev-only")
     ALGORITHM: str = "HS256"

@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Optional
 from sqlmodel import Field, SQLModel
 
+
 class UserRole(str, Enum):
     ADMIN = "admin"
     LIVREUR = "livreur"
@@ -9,6 +10,7 @@ class UserRole(str, Enum):
     GESTIONNAIRE = "gestionnaire"
     AGENT = "agent"
     CLIENT = "client"
+
 
 class UserBase(SQLModel):
     username: str = Field(index=True, unique=True)
@@ -20,15 +22,19 @@ class UserBase(SQLModel):
     first_name: Optional[str] = None
     phone: Optional[str] = None
 
+
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     hashed_password: str
 
+
 class UserCreate(UserBase):
     password: str
 
+
 class UserRead(UserBase):
     id: int
+
 
 class UserUpdate(SQLModel):
     username: Optional[str] = None

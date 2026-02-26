@@ -335,10 +335,14 @@
                             <div class="role-icon"><i class="fas fa-mobile-alt"></i></div>
                             <div class="role-name">Agent Terrain</div>
                         </div>
-                        <div class="role-card full-width" data-role="gestionnaire" onclick="selectRole(this)"
-                            style="padding: 0.8rem;">
+                        <div class="role-card" data-role="gestionnaire" onclick="selectRole(this)">
                             <div class="role-icon"><i class="fas fa-briefcase"></i></div>
                             <div class="role-name">Gestionnaire</div>
+                        </div>
+                        <div class="role-card full-width" data-role="admin" onclick="selectRole(this)"
+                            style="padding: 0.8rem;">
+                            <div class="role-icon"><i class="fas fa-user-shield"></i></div>
+                            <div class="role-name">Administrateur</div>
                         </div>
                     </div>
 
@@ -365,6 +369,12 @@
                     <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline"
                         data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="280">
                     </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary rounded-pill px-4 py-2 shadow-sm w-100" onclick="directLogin()">
+                        <i class="fas fa-sign-in-alt me-2"></i>Connexion Directe
+                    </button>
                 </div>
 
                 <div id="errorMessage" class="mt-4 alert alert-danger border-0 rounded-3 small py-3 d-none shadow-sm"

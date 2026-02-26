@@ -6,36 +6,77 @@ from pydantic import ValidationError
 from sqlmodel import Session, select
 from core.config import settings
 from core.db import get_session
-from models.user import User
+from models.user import User, UserRole
 
 reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/auth/login/access-token"
+    tokenUrl=f"{settings.API_V1_STR}/auth/login/access-token",
+    auto_error=False
 )
 
 def get_current_user(
     session: Session = Depends(get_session), token: str = Depends(reusable_oauth2)
 ) -> User:
-    try:
-        payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+    if settings.DISABLE_AUTH:
+        # If a token is provided, try to authenticate normally first
+        if token:
+            try:
+                payload = jwt.decode(
+                    token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+                )
+                token_sub = payload.get("sub")
+                if token_sub:
+                    user = session.exec(select(User).where(User.id == int(token_sub))).first()
+                    if user:
+                        return user
+            except (JWTError, ValidationError):
+                pass # Fallback to bypass if token is invalid or missing sub
+
+        # Bypass logic: use the configured BYPASS_ROLE
+        bypass_role = settings.BYPASS_ROLE
+        
+        # Try to find an existing user with this role
+        user = session.exec(select(User).where(User.role == bypass_role)).first()
+        if user:
+            return user
+            
+        # If no user found in DB, return a temporary mock user
+        return User(
+            id=0,
+            username=f"mock_{bypass_role}",
+            email=f"{bypass_role}@example.com",
+            role=UserRole(bypass_role) if bypass_role in UserRole.__members__.values() else UserRole.ADMIN,
+            is_active=True,
+            is_approved=True,
+            hashed_password="mock"
         )
-        token_sub = payload.get("sub")
-        if not token_sub:
+    else:
+        # Original authentication logic
+        if not token:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Not authenticated",
+            )
+        try:
+            payload = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            )
+            token_sub = payload.get("sub")
+            if not token_sub:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Could not validate credentials",
+                )
+        except (JWTError, ValidationError):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Could not validate credentials",
             )
-    except (JWTError, ValidationError):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-        )
-    user = session.exec(select(User).where(User.id == int(token_sub))).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    if not user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return user
+        user = session.exec(select(User).where(User.id == int(token_sub))).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        if not user.is_active:
+            raise HTTPException(status_code=400, detail="Inactive user")
+        return user
 
 def get_current_active_admin(
     current_user: User = Depends(get_current_user),

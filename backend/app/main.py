@@ -35,14 +35,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # ── Global exception handler ────────────────────────────────────────────────
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    logger.error("Unhandled error on %s %s: %s", request.method, request.url, exc, exc_info=True)
+    logger.error(
+        "Unhandled error on %s %s: %s", request.method, request.url, exc, exc_info=True
+    )
     return JSONResponse(
         status_code=500,
         content={"detail": "Une erreur interne est survenue. Veuillez réessayer."},
     )
+
 
 # ── Startup ─────────────────────────────────────────────────────────────────
 @app.on_event("startup")
@@ -66,4 +70,5 @@ else:
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)

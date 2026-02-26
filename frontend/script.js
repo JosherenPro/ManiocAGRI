@@ -1,6 +1,6 @@
 // Scripts pour ManiocAgri - Version Premium avec Toast Notifications
 
-const API_BASE_URL = 'http://localhost:8001/api/v1';
+const API_BASE_URL = 'http://localhost:8000/api/v1';
 
 // ==========================================
 // Globals
@@ -238,8 +238,12 @@ async function handleGoogleCallback(response) {
         sessionStorage.setItem('username', data.user.username);
 
         showToast('Connexion réussie! Redirection...', 'success');
+
+        let targetFile = data.user.role + '.html';
+        if (data.user.role === 'agent') targetFile = 'agent_terrain.html';
+
         setTimeout(() => {
-            window.location.href = data.user.role + '.html';
+            window.location.href = targetFile;
         }, 500);
 
     } catch (err) {
@@ -263,6 +267,27 @@ async function handleGoogleCallback(response) {
         }
         showToast(displayMsg, 'error');
     }
+}
+
+function directLogin() {
+    const requestedRoleEl = document.getElementById('requestedRole');
+    const role = requestedRoleEl ? requestedRoleEl.value : 'admin';
+
+    // Set mock data for the frontend to use
+    // The backend DISABLE_AUTH=True will ignore this token but it's good to have something in sessionStorage
+    sessionStorage.setItem('token', 'bypass-active-token');
+    sessionStorage.setItem('userRole', role);
+    sessionStorage.setItem('username', 'Utilisateur ' + role.charAt(0).toUpperCase() + role.slice(1));
+
+    showToast('Accès direct activé ! Redirection...', 'success');
+
+    // Handle specific file mapping
+    let targetFile = role + '.html';
+    if (role === 'agent') targetFile = 'agent_terrain.html';
+
+    setTimeout(() => {
+        window.location.href = targetFile;
+    }, 500);
 }
 
 

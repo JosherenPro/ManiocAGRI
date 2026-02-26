@@ -86,97 +86,55 @@ class GoogleAuthRequest(SQLModel):
     token: str
     requested_role: str = "client"
 
-@router.post("/google")
-def google_auth(
-    request: GoogleAuthRequest,
-    session: Session = Depends(get_session)
-) -> Any:
-    """
-    Verify Google token and login/register the user
-    """
-    try:
-        # Validate the token with Google
-        # clock_skew allows for a small difference in time between the server and Google's servers
-        idinfo = id_token.verify_oauth2_token(
-            request.token, requests.Request(), settings.GOOGLE_CLIENT_ID, clock_skew=10
-        )
-
-        email = idinfo.get("email")
-        first_name = idinfo.get("given_name", "")
-        last_name = idinfo.get("family_name", "")
+## Endpoint Google désactivé temporairement
+# @router.post("/google")
+# def google_auth(
+#     request: GoogleAuthRequest,
+#     session: Session = Depends(get_session)
+# ) -> Any:
+#     """
+#     Verify Google token and login/register the user
+#     """
+#     try:
+#         # Validate the token with Google
+#         # clock_skew allows for a small difference in time between the server and Google's servers
+#         idinfo = id_token.verify_oauth2_token(
+#             request.token, requests.Request(), settings.GOOGLE_CLIENT_ID, clock_skew=10
+#         )
+#
+#         email = idinfo.get("email")
+#         first_name = idinfo.get("given_name", "")
+#         last_name = idinfo.get("family_name", "")
+#         
+#         if not email:
+#             raise HTTPException(status_code=400, detail="Email not provided by Google")
+#             
+#         # Check if user exists
+#         user = session.exec(select(User).where(User.email == email)).first()
+#         
+#         if not user:
+#             # Generate a random password since they login with Google
+#             random_password = secrets.token_urlsafe(32)
+#             
+#             # The username from email prefix (and ensure it's unique if needed)
+#             base_username = email.split('@')[0]
+#             username = base_username
+           # endpoint désactivé
+#        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+#       return {
+#            "access_token": create_access_token(
+#                user.id, expires_delta=access_token_expires
+#            ),
+#           "token_type": "bearer",
+#            "user": {
+#                "id": user.id,
+#               "email": user.email,
+#               "username": user.username,
+#                "role": user.role
+#           }
+#       }
         
-        if not email:
-            raise HTTPException(status_code=400, detail="Email not provided by Google")
-            
-        # Check if user exists
-        user = session.exec(select(User).where(User.email == email)).first()
-        
-        if not user:
-            # Generate a random password since they login with Google
-            random_password = secrets.token_urlsafe(32)
-            
-            # The username from email prefix (and ensure it's unique if needed)
-            base_username = email.split('@')[0]
-            username = base_username
-            counter = 1
-            while session.exec(select(User).where(User.username == username)).first():
-                username = f"{base_username}{counter}"
-                counter += 1
-                
-            # Determine role and approval
-            role = UserRole.CLIENT
-            is_approved = True
-            
-            # Auto-admin for the specified email
-            if email == "josherenprofessional@gmail.com":
-                role = UserRole.ADMIN
-                is_approved = True
-            else:
-                try:
-                    role = UserRole(request.requested_role)
-                except ValueError:
-                    role = UserRole.CLIENT
-                
-                # Only clients are auto-approved. Others need admin validation.
-                if role != UserRole.CLIENT:
-                    is_approved = False
-
-            user = User(
-                username=username,
-                email=email,
-                role=role,
-                last_name=last_name,
-                first_name=first_name,
-                hashed_password=get_password_hash(random_password),
-                is_active=True,
-                is_approved=is_approved
-            )
-            session.add(user)
-            session.commit()
-            session.refresh(user)
-            
-        elif not user.is_active:
-             raise HTTPException(status_code=400, detail="Compte inactif")
-             
-        elif not user.is_approved:
-             raise HTTPException(status_code=400, detail="Compte en attente d'approbation")
-
-        # Generate standard access token
-        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        return {
-            "access_token": create_access_token(
-                user.id, expires_delta=access_token_expires
-            ),
-            "token_type": "bearer",
-            "user": {
-                "id": user.id,
-                "email": user.email,
-                "username": user.username,
-                "role": user.role
-            }
-        }
-        
-    except ValueError as e:
+#    except ValueError as e:
         # Invalid token
-        raise HTTPException(status_code=401, detail=str(e))
+#        raise HTTPException(status_code=401, detail=str(e))
 
