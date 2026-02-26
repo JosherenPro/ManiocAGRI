@@ -243,14 +243,25 @@ async function handleGoogleCallback(response) {
         }, 500);
 
     } catch (err) {
+        console.error('Google Auth Error:', err);
+
         // En cas d'erreur API, afficher le message
         const errorMessage = document.getElementById('errorMessage');
+        let displayMsg = err.message || "Erreur d'authentification.";
+
+        // Personnalisation selon le message du backend
+        if (displayMsg.includes("approbation")) {
+            displayMsg = "⏳ Votre compte est en attente de validation par un administrateur.";
+        } else if (displayMsg.includes("inactif")) {
+            displayMsg = "🚫 Votre compte est inactif. Veuillez contacter le support.";
+        }
+
         if (errorMessage) {
-            errorMessage.textContent = err.message || "Erreur d'authentification.";
+            errorMessage.textContent = displayMsg;
             errorMessage.style.display = 'block';
             errorMessage.classList.remove('d-none');
         }
-        showToast(err.message || 'Erreur d\'authentification', 'error');
+        showToast(displayMsg, 'error');
     }
 }
 

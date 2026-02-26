@@ -96,8 +96,9 @@ def google_auth(
     """
     try:
         # Validate the token with Google
+        # clock_skew allows for a small difference in time between the server and Google's servers
         idinfo = id_token.verify_oauth2_token(
-            request.token, requests.Request(), settings.GOOGLE_CLIENT_ID
+            request.token, requests.Request(), settings.GOOGLE_CLIENT_ID, clock_skew=10
         )
 
         email = idinfo.get("email")
