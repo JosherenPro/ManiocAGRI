@@ -1,6 +1,6 @@
 // Scripts pour ManiocAgri - Version Premium avec Toast Notifications
 
-const API_BASE_URL = 'https://maniocagri.onrender.com/v1';
+const API_BASE_URL = 'https://maniocagri.onrender.com/api/v1';
 
 // ==========================================
 // Globals
@@ -266,33 +266,7 @@ async function handleGoogleCallback(response) {
 }
 
 
-// ===============================
-// New: Order Statistics
-// ===============================
-async function loadOrderStats() {
-    // Only run if stats elements exist
-    if (!document.getElementById('totalOrders')) return;
-
-    try {
-        const orders = await apiCall('/orders/', 'GET');
-
-        const stats = {
-            total: orders.length,
-            pending: orders.filter(o => ['En attente de validation', 'Validée - En préparation'].includes(o.status)).length,
-            delivered: orders.filter(o => o.status === 'Livré').length,
-            rejected: orders.filter(o => o.status === 'Refusée').length
-        };
-
-        // Animate numbers
-        animateValue('totalOrders', 0, stats.total, 1000);
-        animateValue('pendingOrdersStat', 0, stats.pending, 1000);
-        animateValue('deliveredOrdersStat', 0, stats.delivered, 1000);
-        animateValue('rejectedOrdersStat', 0, stats.rejected, 1000);
-
-    } catch (err) {
-        console.error("Failed to load order stats:", err);
-    }
-}
+// Order statistics: consolidated implementation exists further below (keeps chart + counters)
 
 // Helper for animation (optional but nice)
 function animateValue(id, start, end, duration) {
