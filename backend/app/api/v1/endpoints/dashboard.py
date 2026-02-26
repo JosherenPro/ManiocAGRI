@@ -38,7 +38,7 @@ def get_summary(
         stats["pending_orders"] = session.exec(
             select(func.count(Order.id)).where(Order.status == OrderStatus.PENDING)
         ).one()
-        # Revenue (paid orders) 
+        # Revenue (paid orders)
         paid_total = session.exec(
             select(func.sum(Order.total_price)).where(Order.paid == True)
         ).one()
@@ -65,7 +65,8 @@ def get_summary(
         ).one()
         stats["revenue_today_fcfa"] = paid_today or 0
         stats["unassigned_orders"] = session.exec(
-            select(func.count(Order.id)).where(Order.livreur_id == None)
+            select(func.count(Order.id))
+            .where(Order.livreur_id == None)
             .where(Order.status != OrderStatus.DELIVERED)
             .where(Order.status != OrderStatus.REJECTED)
         ).one()
@@ -102,15 +103,19 @@ def get_summary(
             .where(Product.stock_quantity < 50)
         ).all()
         stats["low_stock_products"] = [
-            {"id": p.id, "name": p.name, "stock": p.stock_quantity} for p in low_stock_items
+            {"id": p.id, "name": p.name, "stock": p.stock_quantity}
+            for p in low_stock_items
         ]
 
     # ── Agent terrain ─────────────────────────────────────────────────────
     elif current_user.role == "agent":
         stats["my_field_data_count"] = session.exec(
-            select(func.count(FieldData.id)).where(FieldData.agent_id == current_user.id)
+            select(func.count(FieldData.id)).where(
+                FieldData.agent_id == current_user.id
+            )
         ).one()
         from models.harvest import Harvest
+
         stats["my_harvests_count"] = session.exec(
             select(func.count(Harvest.id)).where(Harvest.agent_id == current_user.id)
         ).one()
