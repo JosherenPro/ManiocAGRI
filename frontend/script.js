@@ -1204,12 +1204,32 @@ function openLivreurStatusModal(orderId, currentStatus) {
     }
 }
 
-function optimizeLivreurRoute() {
-    showToast("Optimisation de l'itinéraire en cours...", "info");
-    setTimeout(() => {
-        showToast("Itinéraire optimisé pour vos destinations !", "success");
-        refreshLivreurDeliveries();
-    }, 1500);
+async function optimizeLivreurRoute() {
+    showToast("Génération de l'itinéraire Google Maps...", "info");
+    try {
+        const orders = await apiCall('/orders/', 'GET');
+        const deliveries = orders.filter(o => o.status === 'Prêt pour livraison' || o.status === 'En transit');
+
+        if (deliveries.length === 0) {
+            showToast("Aucune livraison en cours pour générer un itinéraire", "warning");
+            return;
+        }
+
+        const baseUrl = "https://www.google.com/maps/dir/?api=1";
+        const destination = deliveries[deliveries.length - 1].delivery_address || 'Lomé, Togo';
+
+        let url = `${baseUrl}&destination=${encodeURIComponent(destination)}`;
+
+        if (deliveries.length > 1) {
+            const waypoints = deliveries.slice(0, -1).map(o => o.delivery_address || 'Lomé, Togo').join('|');
+            url += `&waypoints=${encodeURIComponent(waypoints)}`;
+        }
+
+        window.open(url, '_blank');
+    } catch (err) {
+        console.error("Route optimization error:", err);
+        showToast("Erreur lors de la création de l'itinéraire", "error");
+    }
 }
 
 async function updateOrderStatus(orderId, newStatus) {
@@ -1511,9 +1531,13 @@ async function loadClientOrders() {
                         <span class="badge bg-${statusColor(order.status)}">${order.status}</span>
                     </td>
                     <td class="text-end">
-                        <button class="btn btn-sm btn-outline-primary" onclick="showTracking('${order.order_number}')">
-                            <i class="fas fa-eye me-1"></i> Suivre
+                        <button class="btn btn-sm btn-outline-primary mb-1" onclick="showTracking('${order.order_number}')" title="Suivre">
+                            <i class="fas fa-eye"></i>
                         </button>
+                        ${(order.status === 'En attente de validation' || order.status === 'Validée - En préparation') ?
+                        `<button class="btn btn-sm btn-outline-danger mb-1" onclick="cancelOrder(${order.id})" title="Annuler">
+                            <i class="fas fa-times"></i>
+                        </button>` : ''}
                     </td>
                 </tr>
             `}).join('');
@@ -1575,6 +1599,17 @@ window.showTracking = async function (orderNumber) {
     }
 }
 
+
+window.cancelOrder = async function (orderId) {
+    if (!confirm('Êtes-vous sûr de vouloir annuler cette commande ?')) return;
+    try {
+        await apiCall(`/orders/${orderId}/cancel`, 'PATCH', {});
+        showToast('Commande annulée avec succès', 'success');
+        loadClientOrders();
+    } catch (err) {
+        showToast("Erreur lors de l'annulation: " + err.message, 'error');
+    }
+}
 
 
 function initLogout() {

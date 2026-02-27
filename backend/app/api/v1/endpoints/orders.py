@@ -180,6 +180,39 @@ def update_order_status(
     return order
 
 
+@router.patch("/{id}/cancel", response_model=OrderRead)
+def cancel_order(
+    *,
+    session: Session = Depends(get_session),
+    id: int,
+    current_user: User = Depends(deps.get_current_user),
+) -> Any:
+    """Cancel an order. Client only."""
+    from datetime import datetime
+    order = session.get(Order, id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Commande non trouvée")
+        
+    if current_user.role != "client" or order.client_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Vous ne pouvez annuler que vos propres commandes")
+        
+    if order.status not in [OrderStatus.PENDING, OrderStatus.VALIDATED]:
+        raise HTTPException(
+            status_code=400, 
+            detail="Cette commande ne peut plus être annulée car elle est déjà en cours de traitement."
+        )
+        
+    order.status = OrderStatus.REJECTED
+    order.updated_at = datetime.utcnow()
+    note = " [Annulée par le client]"
+    order.delivery_notes = (order.delivery_notes + note) if order.delivery_notes else note
+    
+    session.add(order)
+    session.commit()
+    session.refresh(order)
+    return order
+
+
 @router.patch("/{id}/assign", response_model=OrderRead)
 def assign_order_to_livreur(
     *,
