@@ -1,6 +1,7 @@
 // Scripts pour ManiocAgri - Version Premium avec Toast Notifications
 
 const API_BASE_URL = 'https://maniocagri.onrender.com/api/v1';
+//const API_BASE_URL = 'http://localhost:8000/api/v1';
 
 // ==========================================
 // Globals
@@ -237,9 +238,20 @@ async function handleGoogleCallback(response) {
         sessionStorage.setItem('userRole', data.user.role);
         sessionStorage.setItem('username', data.user.username);
 
+        // Mapping rôle → page dashboard
+        const roleDashboards = {
+            'admin': 'admin.html',
+            'client': 'client.html',
+            'producteur': 'producteur.html',
+            'livreur': 'livreur.html',
+            'gestionnaire': 'gestionnaire.html',
+            'agent': 'agent_terrain.html',
+        };
+        const dashboard = roleDashboards[data.user.role] || 'client.html';
+
         showToast('Connexion réussie! Redirection...', 'success');
         setTimeout(() => {
-            window.location.href = data.user.role + '.html';
+            window.location.href = dashboard;
         }, 500);
 
     } catch (err) {
