@@ -102,9 +102,21 @@ def google_auth(
     """
     # Guard: ensure GOOGLE_CLIENT_ID is configured
     if not settings.GOOGLE_CLIENT_ID:
+        logger.error("GOOGLE_CLIENT_ID missing in settings")
         raise HTTPException(
             status_code=500, detail="GOOGLE_CLIENT_ID not configured on server"
         )
+
+    # Diagnostic log: token presence/size (do not log full token)
+    try:
+        token_len = len(request.token or "")
+    except Exception:
+        token_len = 0
+    logger.info(
+        "google_auth called — client_id_present=%s, token_len=%d",
+        bool(settings.GOOGLE_CLIENT_ID),
+        token_len,
+    )
 
     try:
         # Validate the token with Google
@@ -114,6 +126,13 @@ def google_auth(
         idinfo = id_token.verify_oauth2_token(
             request.token, requests.Request(), settings.GOOGLE_CLIENT_ID
         )
+
+        # Log a small subset of idinfo for diagnostics (avoid PII leak)
+        if isinstance(idinfo, dict):
+            safe_idinfo = {
+                k: idinfo.get(k) for k in ("email", "sub", "aud", "iss") if k in idinfo
+            }
+            logger.info("google_auth: token verified, idinfo=%s", safe_idinfo)
 
         email = idinfo.get("email")
         first_name = idinfo.get("given_name", "")
