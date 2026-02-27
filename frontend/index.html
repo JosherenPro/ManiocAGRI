@@ -3,20 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="ManiocAgri - Plateforme d'excellence pour la gestion de la ferme MOKPOKPO. Produits dérivés du manioc d'une qualité exceptionnelle au Togo.">
+    <meta name="theme-color" content="#10b981">
     <title>ManiocAgri - Excellence Agricole et Produits Dérivés</title>
+
+    <!-- Preconnect pour les performances -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    </noscript>
 </head>
 
 <body>
     <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader-spinner"></div>
-    </div>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -61,8 +74,8 @@
     <!-- À propos -->
     <section id="apropos" class="py-5 mt-n5">
         <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0 reveal">
+            <div class="row align-items-center g-4">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0 reveal">
                     <div class="pe-lg-5">
                         <h6 class="text-success fw-bold text-uppercase mb-3">Notre Histoire</h6>
                         <h2 class="fw-bold mb-4">La ferme MOKPOKPO : Un héritage de qualité</h2>
@@ -81,12 +94,12 @@
                             avec soin, transformer avec passion, nourrir avec confiance."</p>
                     </div>
                 </div>
-                <div class="col-lg-6 reveal delay-200">
+                <div class="col-12 col-lg-6 reveal delay-200">
                     <div class="row g-3">
                         <div class="col-6"><img src="images/champ2.jpg" alt="Plantation"
-                                class="img-fluid rounded-4 shadow-sm hover-lift"></div>
+                                class="img-fluid rounded-4 shadow-sm hover-lift" loading="lazy" decoding="async"></div>
                         <div class="col-6 mt-5"><img src="images/champ.jpg" alt="Récolte"
-                                class="img-fluid rounded-4 shadow-sm hover-lift"></div>
+                                class="img-fluid rounded-4 shadow-sm hover-lift" loading="lazy" decoding="async"></div>
                     </div>
                 </div>
             </div>
@@ -104,11 +117,11 @@
                     produits transformés de manioc du Togo, de la terre à votre table.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-3 reveal delay-100">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-100">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden hover-lift">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/products/manioc2.jpg" alt="Manioc"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Manioc Frais</h5>
@@ -124,11 +137,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3 reveal delay-200">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-200">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden hover-lift">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/products/gari.jpg" alt="Gari"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Gari d'Or</h5>
@@ -145,11 +158,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3 reveal delay-300">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-300">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden hover-lift">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/products/tapioca.jpeg" alt="Tapioca"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Tapioca</h5>
@@ -165,11 +178,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/products/atieke.jpg" alt="Attiéké"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Attiéké</h5>
@@ -185,11 +198,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/garipur.jpeg" alt="Gari Pur"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Gari Pur</h5>
@@ -205,11 +218,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/tubercule_manioc.jpg" alt="Tubercule de Manioc"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Tubercule de Manioc</h5>
@@ -225,11 +238,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/manic1.jpg" alt="Manioc Premium"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Manioc Premium</h5>
@@ -245,11 +258,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="images/farine_manioc.webp" alt="Farine de Manioc"
-                                class="w-100 h-100 object-fit-cover transition">
+                                class="w-100 h-100 object-fit-cover transition" loading="lazy" decoding="async">
                         </div>
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-2">Farine de Manioc</h5>
@@ -355,7 +368,7 @@
             </div>
             <div class="row g-4">
                 <!-- Étape 1 -->
-                <div class="col-md-6 col-lg-3 reveal delay-100">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-100">
                     <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
                         <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
                             style="width: 60px; height: 60px;">
@@ -367,7 +380,7 @@
                     </div>
                 </div>
                 <!-- Étape 2 -->
-                <div class="col-md-6 col-lg-3 reveal delay-200">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-200">
                     <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
                         <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
                             style="width: 60px; height: 60px;">
@@ -379,7 +392,7 @@
                     </div>
                 </div>
                 <!-- Étape 3 -->
-                <div class="col-md-6 col-lg-3 reveal delay-300">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-300">
                     <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
                         <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
                             style="width: 60px; height: 60px;">
@@ -391,7 +404,7 @@
                     </div>
                 </div>
                 <!-- Étape 4 -->
-                <div class="col-md-6 col-lg-3 reveal delay-400">
+                <div class="col-12 col-md-6 col-lg-3 reveal delay-400">
                     <div class="card border-0 shadow-sm h-100 p-4 text-center hover-lift">
                         <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
                             style="width: 60px; height: 60px;">
@@ -413,7 +426,7 @@
                             plus strictes.</p>
                     </div>
                 </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-4 text-center">
                         <div class="feature-icon bg-warning text-white mb-3 shadow-none">⚡</div>
                         <h4 class="h5 fw-bold mb-3">Production Locale</h4>
@@ -421,7 +434,7 @@
                             durable.</p>
                     </div>
                 </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-4 text-center">
                         <div class="feature-icon bg-info text-white mb-3 shadow-none">🚚</div>
                         <h4 class="h5 fw-bold mb-3">Livraison Rapide</h4>
@@ -507,29 +520,27 @@
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
-    </button>
+        <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js" defer></script>
+        <script src="script.js" defer></script>
 
-    <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            AOS.init({
-                duration: 800,
-                once: true,
-                offset: 50
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                AOS.init({
+                    duration: 800,
+                    once: true,
+                    offset: 50
+                });
+                // Hide preloader
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    setTimeout(() => {
+                        preloader.classList.add('hidden');
+                        setTimeout(() => preloader.remove(), 600);
+                    }, 500); // Small artificial delay for premium feel
+                }
             });
-            // Hide preloader
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                setTimeout(() => {
-                    preloader.classList.add('hidden');
-                    setTimeout(() => preloader.remove(), 600);
-                }, 500); // Small artificial delay for premium feel
-            }
-        });
-    </script>
+        </script>
 </body>
 
 </html>
