@@ -109,8 +109,10 @@ def google_auth(
     try:
         # Validate the token with Google
         # clock_skew allows for a small difference in time between the server and Google's servers
+        # Note: some versions of google-auth library don't accept `clock_skew` here.
+        # Call without `clock_skew` for compatibility.
         idinfo = id_token.verify_oauth2_token(
-            request.token, requests.Request(), settings.GOOGLE_CLIENT_ID, clock_skew=10
+            request.token, requests.Request(), settings.GOOGLE_CLIENT_ID
         )
 
         email = idinfo.get("email")
